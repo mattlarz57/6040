@@ -49,6 +49,7 @@ public class Robot {
     public BNO055IMU bno055IMU;
     public DeviceInterfaceModule dim;
     public VuforiaLocalizer vuforia;
+    public VuforiaTrackable relicTemplate;
 
 
 
