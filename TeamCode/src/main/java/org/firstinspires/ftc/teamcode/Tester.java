@@ -34,8 +34,8 @@ public class Tester extends LinearOpMode {
             // telemetry.addLine("X (heading): "+ Math.round(angles[0]));
             //  telemetry.addLine("Y: (heading) "+ Math.round(angles[1]));
             telemetry.addLine("heading "+Math.round(robot.getheading()));
-            telemetry.addData("Time Elapsed: ", Math.round(getRuntime()));
             telemetry.addData("vuMark" , vumark);
+            telemetry.addData("Time Elapsed: ", Math.round(getRuntime()));
             telemetry.update();
         }
 
@@ -43,12 +43,7 @@ public class Tester extends LinearOpMode {
         //sleep(10000);
         //robot.Sideways("Right",.2,10);
 
-
-
-
     }
-
-
 
 }
 
