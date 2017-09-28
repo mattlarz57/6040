@@ -37,7 +37,6 @@ public class Tester extends LinearOpMode {
             telemetry.addData("Time Elapsed: ", Math.round(getRuntime()));
             telemetry.addData("vuMark" , vumark);
             telemetry.update();
-
         }
 
         //robot.Move(.1,25);
