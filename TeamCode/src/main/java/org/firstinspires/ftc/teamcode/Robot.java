@@ -49,6 +49,7 @@ public class Robot {
     public BNO055IMU bno055IMU;
     public DeviceInterfaceModule dim;
     public VuforiaLocalizer vuforia;
+    public VuforiaTrackable relicTemplate;
 
 
 
@@ -67,12 +68,12 @@ public class Robot {
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bno055IMU = hardwareMap.get(BNO055IMU.class,IMUNAME);
         SetParameters();
-        vuforia(hardwareMap);
+        vuforia(hardwareMap,telemetry);
 
 
     }
 
-    public void vuforia(HardwareMap hardwareMap){
+    public VuforiaTrackable vuforia(HardwareMap hardwareMap, Telemetry telemetry){
         int cameraID = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraID);
         parameters.vuforiaLicenseKey = "AS27cgT/////AAAAGacqx+RYz0dSqIWMSx+FB79tKwqL9bLs7dBcaOXHn9ZQu/mYUYWrJ2MDCHK9cKYXXKxjngTt8l0UvX854CETHuQxzI9LqSzYMyLp+Dz+hv7gV1OSZsA2mpimvfj/4mKuw7IvK8W8vBJ1IeeLkI9Zv+njNHofzdqJeMcYS35Yt/fsNSGaNo9KanFBiy4GnV1SAHSQ7qODzXN6PzbHPXw5mVWewb1XuJez0VdebTS7X5bTYzvXnMt8od4YYqIChFoLox70Jf3OKoS9IZZLUVDwBBJUG3TspO2jusJHahFWAPw5hWZkE60VUXDcfF1Pc2Q5n57FlDe5I94Sg9ca61yx6aUs42vrDPcBvq+T6mxiG52c";
@@ -82,6 +83,9 @@ public class Robot {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate");
         relicTrackables.activate();
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        //telemetry.addData("Vumark:","%", vuMark );
+        return relicTemplate;
     }
 
     public void SetParameters(){
@@ -92,7 +96,8 @@ public class Robot {
         bno055IMU.initialize(parameters);
 
     }
-    public String GetVuMark() {
+
+    public RelicRecoveryVuMark getvuMark(VuforiaTrackable relicTemplate){
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
         return vuMark;
     }
@@ -172,45 +177,45 @@ public class Robot {
         SetDrivePower(0);
     }
 
-    /* public void GyroTurn(String direction, double power, double degrees, Telemetry telemetry) {
-        double heading = Gyro.getHeading();
-        telemetry.addData("Heading", heading);
+   /* public void GyroTurn(String direction, double power, double degrees, Telemetry telemetry) {
+       double heading = Gyro.getHeading();
+       telemetry.addData("Heading", heading);
 
 
-        if (direction == "ClockWise") {
-            while (heading < degrees - 3) {
-                BackRight.setPower(-power);
-                BackLeft.setPower(power);
-                FrontRight.setPower(-power);
-                FrontLeft.setPower(power);
-                heading = Gyro.getHeading();
-                telemetry.addData("Heading", heading);
+       if (direction == "ClockWise") {
+           while (heading < degrees - 3) {
+               BackRight.setPower(-power);
+               BackLeft.setPower(power);
+               FrontRight.setPower(-power);
+               FrontLeft.setPower(power);
+               heading = Gyro.getHeading();
+               telemetry.addData("Heading", heading);
 
-            }
-            SetDrivePower(0);
-            Gyro.calibrate();
-        } else if (direction == "CounterClockWise") {
+           }
+           SetDrivePower(0);
+           Gyro.calibrate();
+       } else if (direction == "CounterClockWise") {
 
-            while (heading > degrees + 3) {
-                BackRight.setPower(power);
-                BackLeft.setPower(-power);
-                FrontRight.setPower(power);
-                FrontLeft.setPower(-power);
-                heading = Gyro.getHeading();
-                telemetry.addData("Heading", heading);
+           while (heading > degrees + 3) {
+               BackRight.setPower(power);
+               BackLeft.setPower(-power);
+               FrontRight.setPower(power);
+               FrontLeft.setPower(-power);
+               heading = Gyro.getHeading();
+               telemetry.addData("Heading", heading);
 
-            }
-            SetDrivePower(0);
-            Gyro.calibrate();
-        }
+           }
+           SetDrivePower(0);
+           Gyro.calibrate();
+       }
 
 
-    }
-    */
+   }
+   */
 
     public double[] getorientaion() {
-         Orientation degrees;
-         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        Orientation degrees;
+        degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
         return new double[]{degrees.firstAngle,degrees.secondAngle,degrees.thirdAngle,0};
     }
@@ -258,3 +263,4 @@ public class Robot {
 
 
 }
+
