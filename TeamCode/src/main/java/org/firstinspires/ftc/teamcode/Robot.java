@@ -67,7 +67,6 @@ public class Robot {
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bno055IMU = hardwareMap.get(BNO055IMU.class,IMUNAME);
         SetParameters();
-        vuforia(hardwareMap,telemetry);
 
 
     }
@@ -95,6 +94,7 @@ public class Robot {
     }
 
     public RelicRecoveryVuMark getvuMark(VuforiaTrackable relicTemplate){
+
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         relicTrackables.activate();
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
