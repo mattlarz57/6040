@@ -84,7 +84,7 @@ public class Robot {
         relicTemplate.setName("relicVuMarkTemplate");
         relicTrackables.activate();
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        telemetry.addData("Vumark:","%", vuMark );
+        //telemetry.addData("Vumark:","%", vuMark );
         return relicTemplate;
     }
 
