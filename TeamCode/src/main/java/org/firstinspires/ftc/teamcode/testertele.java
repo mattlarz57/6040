@@ -25,8 +25,10 @@ public class testertele extends OpMode {
         Glyphter = hardwareMap.dcMotor.get("3a");
         RightGlyph = hardwareMap.servo.get("RightGlyph");
         LeftGlyph = hardwareMap.servo.get("LeftGlyph");
+        BL.setDirection(DcMotorSimple.Direction.REVERSE);
         BR.setDirection(DcMotorSimple.Direction.REVERSE);
         FR.setDirection(DcMotorSimple.Direction.REVERSE);
+        FL.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         RightGlyph.setPosition(30);
@@ -38,10 +40,10 @@ public class testertele extends OpMode {
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;
 
-        BR.setPower((-turn + -strafe +drive)/3);
-        BL.setPower((turn + strafe + drive)/3);
-        FR.setPower((-turn + strafe + drive)/3);
-        FL.setPower((turn + -strafe+ drive)/3);
+        BR.setPower((-turn + -strafe +drive));
+        BL.setPower((-turn + strafe + drive));
+        FR.setPower((turn + strafe + drive));
+        FL.setPower((turn + -strafe+ drive));
 
 
         if (gamepad1.a){
