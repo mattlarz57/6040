@@ -19,7 +19,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 public class Tester extends LinearOpMode {
 
     Robot robot = new Robot();
-    double[] angles;
     VuforiaLocalizer vuforia;
 
 
