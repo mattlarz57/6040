@@ -32,11 +32,11 @@ public class Robot {
 
 
     public final double TicksPerRev = 28;
-    public final double MotorGearRatio = 10.0;
+    public final double MotorGearRatio = 20.0;
     public final double WheelCircumfrence_cm = Math.PI * 4.0;
     public final double in2cm = 2.54;
     public final double Tickspercm = (TicksPerRev * MotorGearRatio) / (WheelCircumfrence_cm *in2cm );
-    public final double Sidewaystickspercm = 50000 / 3003;
+    public final double Sidewaystickspercm = 1;
 
     public static final String BackRightName = "2a";
     public static final String BackLeftName = "2b";

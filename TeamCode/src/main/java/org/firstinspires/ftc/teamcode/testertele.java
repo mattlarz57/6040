@@ -31,11 +31,11 @@ public class testertele extends OpMode {
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-        RightGlyph.setPosition(30);
-        LeftGlyph.setPosition(150);
+        RightGlyph.setPosition(.75);
+        LeftGlyph.setPosition(.25);
     }
     @Override
-    public void loop(){
+    public void loop(){ //this is what happens when you press the play button
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;
@@ -46,23 +46,23 @@ public class testertele extends OpMode {
         FL.setPower((turn + -strafe+ drive));
 
 
-        if (gamepad1.a){
+        if (gamepad2.y){
             Glyphter.setPower(1);
         }
-        else if(gamepad1.y){
+        else if(gamepad2.a){
             Glyphter.setPower(-1);
         }
         else{
             Glyphter.setPower(0);
         }
 
-        if(gamepad1.b){
-            RightGlyph.setPosition(90);
-            LeftGlyph.setPosition(60);
+        if(gamepad2.b){
+            RightGlyph.setPosition(.75);
+            LeftGlyph.setPosition(.25);
         }
-        else if (gamepad1.x){
-            RightGlyph.setPosition(30);
-            LeftGlyph.setPosition(150);
+        else if (gamepad2.x){
+            RightGlyph.setPosition(.99);
+            LeftGlyph.setPosition(.01);
         }
 
     }
