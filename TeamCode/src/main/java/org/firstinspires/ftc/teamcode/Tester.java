@@ -37,14 +37,12 @@ public class Tester extends LinearOpMode {
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate");
-
+        RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
 
 
         waitForStart();
 
-
         relicTrackables.activate();
-        RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
 
         while(opModeIsActive()) {
             // telemetry.addLine("X (heading): "+ Math.round(angles[0]));
@@ -55,7 +53,6 @@ public class Tester extends LinearOpMode {
             telemetry.update();
         }
 
-        //robot.Move(.1,25);
         //sleep(10000);
         //robot.Sideways("Right",.2,10);
 
