@@ -28,13 +28,14 @@ public class Tester extends LinearOpMode {
         AutoTransitioner.transitionOnStop(this,"testertele");
 
 
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AS27cgT/////AAAAGacqx+RYz0dSqIWMSx+FB79tKwqL9bLs7dBcaOXHn9ZQu/mYUYWrJ2MDCHK9cKYXXKxjngTt8l0UvX854CETHuQxzI9LqSzYMyLp+Dz+hv7gV1OSZsA2mpimvfj/4mKuw7IvK8W8vBJ1IeeLkI9Zv+njNHofzdqJeMcYS35Yt/fsNSGaNo9KanFBiy4GnV1SAHSQ7qODzXN6PzbHPXw5mVWewb1XuJez0VdebTS7X5bTYzvXnMt8od4YYqIChFoLox70Jf3OKoS9IZZLUVDwBBJUG3TspO2jusJHahFWAPw5hWZkE60VUXDcfF1Pc2Q5n57FlDe5I94Sg9ca61yx6aUs42vrDPcBvq+T6mxiG52c";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables picture = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = picture.get(0);
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate");
 
 
@@ -42,14 +43,14 @@ public class Tester extends LinearOpMode {
         waitForStart();
 
 
-        picture.activate();
-       // RelicRecoveryVuMark vumark = robot.getvuMark(relicTemplate);
+        relicTrackables.activate();
+        RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
 
         while(opModeIsActive()) {
             // telemetry.addLine("X (heading): "+ Math.round(angles[0]));
             //  telemetry.addLine("Y: (heading) "+ Math.round(angles[1]));
             telemetry.addLine("heading "+Math.round(robot.getheading()));
-          //  telemetry.addData("vuMark" , vumark);
+            telemetry.addData("vuMark" , vumark);
             telemetry.addData("Time Elapsed: ", Math.round(getRuntime()));
             telemetry.update();
         }
