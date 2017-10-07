@@ -35,7 +35,9 @@ public class Tester extends LinearOpMode {
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackables jewels = this.vuforia.loadTrackablesFromAsset("StonesAndChips");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        VuforiaTrackable jewelTemplate = jewels.get(0);
 
 
         telemetry.addLine("Initialization Complete");
@@ -43,13 +45,15 @@ public class Tester extends LinearOpMode {
         double startruntime = getRuntime();
 
 
-        relicTrackables.activate();
+        //relicTrackables.activate();
+        jewels.activate();
 
         while(opModeIsActive()) {
             RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
-            telemetry.addLine("heading "+Math.round(robot.getheading()));
+            RelicRecoveryVuMark jewel = RelicRecoveryVuMark.from(jewelTemplate);
+            telemetry.addLine("heading "+ Math.round(robot.getheading()));
             telemetry.addData("Time Elapsed: ", Math.round(getRuntime()-startruntime));
-            telemetry.addData("VuMark", "%s visable", vumark);
+            telemetry.addData("VuMark", "%s visable", jewel);
 
             telemetry.update();
         }
