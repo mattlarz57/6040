@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -38,14 +40,9 @@ public class Robot {
     public final double Tickspercm = (TicksPerRev * MotorGearRatio) / (WheelCircumfrence_cm *in2cm );
     public final double Sidewaystickspercm = 1;
 
-    public static final String BackRightName = "2a";
-    public static final String BackLeftName = "2b";
-    public static final String FrontRightName = "1a";
-    public static final String FrontLeftName = "1b";
-    public static final String IMUNAME = "IMU";
 
-
-    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft;
+    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter;
+    public Servo RightGlyph, LeftGlyph, Grabber1, Grabber2;
     public BNO055IMU bno055IMU;
 
 
@@ -53,18 +50,28 @@ public class Robot {
     Telemetry t;
 
 
-    public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
+    public boolean initialize(HardwareMap hardwareMap, Telemetry telemetry) {
 
         t = telemetry;
-
-        BackRight = hardwareMap.dcMotor.get(BackRightName);
-        BackLeft = hardwareMap.dcMotor.get(BackLeftName);
-        FrontLeft = hardwareMap.dcMotor.get(FrontLeftName);
-        FrontRight = hardwareMap.dcMotor.get(FrontRightName);
+        BackRight=hardwareMap.dcMotor.get("2a");
+        BackLeft= hardwareMap.dcMotor.get("2b");
+        FrontRight = hardwareMap.dcMotor.get("1a");
+        FrontLeft = hardwareMap.dcMotor.get("1b");
+        Glyphter = hardwareMap.dcMotor.get("3a");
+        RightGlyph = hardwareMap.servo.get("RightGlyph");
+        LeftGlyph = hardwareMap.servo.get("LeftGlyph");
+        Grabber1 = hardwareMap.servo.get("Grabber1");
+        Grabber2 = hardwareMap.servo.get("Grabber2");
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        bno055IMU = hardwareMap.get(BNO055IMU.class,IMUNAME);
+        bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
+
+        RightGlyph.setPosition(.75);
+        LeftGlyph.setPosition(.25);
         SetParameters();
+        return true;
 
 
     }
@@ -206,7 +213,7 @@ public class Robot {
     public double[] getorientaion() {
         Orientation degrees;
         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
+        t.update();
         return new double[]{degrees.firstAngle,degrees.secondAngle,degrees.thirdAngle,0};
     }
 

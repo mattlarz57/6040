@@ -25,7 +25,7 @@ public class Tester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
         robot.initialize(hardwareMap, telemetry);
-        AutoTransitioner.transitionOnStop(this,"testertele");
+        //AutoTransitioner.transitionOnStop(this,"testertele");
 
 
 
@@ -36,22 +36,24 @@ public class Tester extends LinearOpMode {
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate");
-        RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
 
 
+        telemetry.addLine("Initialization Complete");
         waitForStart();
+        double startruntime = getRuntime();
+
 
         relicTrackables.activate();
 
         while(opModeIsActive()) {
-            // telemetry.addLine("X (heading): "+ Math.round(angles[0]));
-            //  telemetry.addLine("Y: (heading) "+ Math.round(angles[1]));
+            RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
             telemetry.addLine("heading "+Math.round(robot.getheading()));
-            telemetry.addData("vuMark" , vumark);
-            telemetry.addData("Time Elapsed: ", Math.round(getRuntime()));
+            telemetry.addData("Time Elapsed: ", Math.round(getRuntime()-startruntime));
+            telemetry.addData("VuMark", "%s visable", vumark);
+
             telemetry.update();
         }
+
 
         //sleep(10000);
         //robot.Sideways("Right",.2,10);
