@@ -52,7 +52,7 @@ public abstract class VisionOpMode extends VisionOpModeCore {
      *
      * @param extension Extension ID
      */
-    public void enableExtension(Extensions extension) {
+    protected void enableExtension(Extensions extension) {
         //Don't initialize extension if we haven't ever called init() yet
         if (extensionsInitialized)
             extension.instance.init(this);

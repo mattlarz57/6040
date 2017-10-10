@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Arthur Pachachura, LASA Robotics, and contributors
  * MIT licensed
  */
-package org.firstinspires.ftc.teamcode.extensions;
+package org.firstinspires.ftc.teamcode.Vision.extensions;
 
 import org.lasarobotics.vision.opmode.VisionOpMode;
 import org.opencv.core.Mat;

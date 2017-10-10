@@ -3,7 +3,7 @@
  * MIT licensed
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Vision;
 
 import android.app.Activity;
 import android.util.Log;

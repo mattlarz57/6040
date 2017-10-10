@@ -2,12 +2,11 @@
  * Copyright (c) 2016 Arthur Pachachura, LASA Robotics, and contributors
  * MIT licensed
  */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Vision.extensions;
 
 import org.lasarobotics.vision.detection.objects.Rectangle;
 import org.lasarobotics.vision.ftc.resq.Beacon;
 import org.lasarobotics.vision.opmode.VisionOpMode;
-import org.lasarobotics.vision.opmode.extensions.VisionExtension;
 import org.lasarobotics.vision.util.ScreenOrientation;
 import org.opencv.core.Mat;
 
@@ -15,9 +14,9 @@ import org.opencv.core.Mat;
  * Extension that supports finding and reading beacon color data
  */
 public class BeaconExtension implements VisionExtension {
-    public Beacon beacon;
+    private Beacon beacon;
 
-    public Beacon.BeaconAnalysis analysis = new Beacon.BeaconAnalysis();
+    private Beacon.BeaconAnalysis analysis = new Beacon.BeaconAnalysis();
 
     /**
      * Get latest beacon analysis

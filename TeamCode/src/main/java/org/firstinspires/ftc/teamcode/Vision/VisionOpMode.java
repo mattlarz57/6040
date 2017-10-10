@@ -2,9 +2,8 @@
  * Copyright (c) 2016 Arthur Pachachura, LASA Robotics, and contributors
  * MIT licensed
  */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Vision;
 
-import org.lasarobotics.vision.opmode.VisionOpModeCore;
 import org.lasarobotics.vision.opmode.extensions.BeaconExtension;
 import org.lasarobotics.vision.opmode.extensions.CameraControlExtension;
 import org.lasarobotics.vision.opmode.extensions.ImageRotationExtension;
@@ -16,7 +15,7 @@ import org.opencv.imgproc.Imgproc;
  * Easy-to-use, extensible vision op mode
  * For more custom implementations, use ManualVisionOpMode or modify core extensions in opmode.extensions.*
  */
-public abstract class VisionOpMode extends VisionOpModeCore {
+public abstract class VisionOpMode extends org.lasarobotics.vision.opmode.VisionOpMode {
 
     /***
      * CUSTOM EXTENSION INITIALIZATION
@@ -53,7 +52,7 @@ public abstract class VisionOpMode extends VisionOpModeCore {
      *
      * @param extension Extension ID
      */
-    public void enableExtension(Extensions extension) {
+    protected void enableExtension(Extensions extension) {
         //Don't initialize extension if we haven't ever called init() yet
         if (extensionsInitialized)
             extension.instance.init(this);

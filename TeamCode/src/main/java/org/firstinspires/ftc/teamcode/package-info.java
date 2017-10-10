@@ -25,4 +25,4 @@
 /**
  * Vision extensions supporting VisionOpMode, LinearVisionOpMode, and TestableVisionOpMode
  */
-package org.firstinspires.ftc.teamcode.extensions;
+package org.firstinspires.ftc.teamcode;
