@@ -36,6 +36,7 @@ public class testertele extends OpMode {
         LeftGlyph = hardwareMap.servo.get("LeftGlyph");
         Grabber1 = hardwareMap.servo.get("Grabber1");
         Grabber2 = hardwareMap.servo.get("Grabber2");
+        Glyphter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -62,13 +63,14 @@ public class testertele extends OpMode {
          FrontLeft.setPower((turn + -strafe+ drive));
 
 
-        if (gamepad2.y){Glyphter.setPower(1);}
-        else if(gamepad2.a){Glyphter.setPower(-1);}
-        else{Glyphter.setPower(0);}
+        //if (gamepad2.y){Glyphter.setPower(1);}
+       // else if(gamepad2.a){Glyphter.setPower(-1);}
+       // else{Glyphter.setPower(0);}
 
         if(gamepad2.b){
             RightGlyph.setPosition(.75);
-            LeftGlyph.setPosition(.25);}
+            LeftGlyph.setPosition(.25);
+        }
         else if (gamepad2.x){
             RightGlyph.setPosition(.99);
             LeftGlyph.setPosition(.01);}
@@ -85,6 +87,22 @@ public class testertele extends OpMode {
         else if(gamepad1.dpad_down){
             Grabber2.setPosition(1);
         }
+
+
+        if(gamepad2.right_bumper){
+            RightGlyph.setPosition(.75);
+            LeftGlyph.setPosition(.25);
+            Glyphter.setTargetPosition(300);
+            Glyphter.setPower(.5);
+        }
+        else if(gamepad2.left_bumper){
+            RightGlyph.setPosition(.99);
+            LeftGlyph.setPosition(.01);
+            Glyphter.setTargetPosition(0);
+            Glyphter.setPower(-.5);
+
+        }
+
 
 
     }

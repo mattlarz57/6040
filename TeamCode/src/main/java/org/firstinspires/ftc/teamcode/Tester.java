@@ -24,7 +24,7 @@ public class Tester extends LinearOpMode {
 
     Robot robot = new Robot();
     //BasicVisionSample vision = new BasicVisionSample();
-    VisionOpMode visionOpMode;
+    VisionTester visionTester;
 
 
     VuforiaLocalizer vuforia;
@@ -32,15 +32,14 @@ public class Tester extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException{
-        super.init();
+        //super.init();
         robot.initialize(hardwareMap, telemetry);
-       // vision.setCamera(Cameras.PRIMARY);
-       // vision.setFrameSize(new Size(900, 900));
-       // enableExtension(VisionOpMode.Extensions.BEACON);         //Beacon detection
+        visionTester.setCamera(Cameras.PRIMARY);
+        visionTester.setFrameSize(new Size(900,900));
+        visionTester.beacon.setAnalysisMethod(Beacon.AnalysisMethod.FAST);
+        visionTester.beacon.setColorToleranceBlue(0);
+        visionTester.beacon.setColorToleranceRed(0);
 
-       // vision.beacon.setAnalysisMethod(Beacon.AnalysisMethod.FAST);
-       // vision.beacon.setColorToleranceBlue(0);
-       // vision.beacon.setColorToleranceRed(0);
 
 
         //AutoTransitioner.transitionOnStop(this,"testertele");
@@ -55,17 +54,21 @@ public class Tester extends LinearOpMode {
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
 
+
         waitForStart();
         double startruntime = getRuntime();
 
 
-        //relicTrackables.activate();
+        relicTrackables.activate();
 
         while(opModeIsActive()) {
+
+            String Jewel = visionTester.beacon.getAnalysis().getColorString();
             RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
             telemetry.addLine("heading "+ Math.round(robot.getheading()));
             telemetry.addData("Time Elapsed: ", Math.round(getRuntime()-startruntime));
-           // telemetry.addData("Beacon Color", vision.beacon.getAnalysis().getColorString());
+            telemetry.addData("Beacon:" ,Jewel);
+            telemetry.addData("VuMark", vumark);
 
             telemetry.update();
         }
