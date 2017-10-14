@@ -90,16 +90,22 @@ public class testertele extends OpMode {
 
 
         if(gamepad2.right_bumper){
-            RightGlyph.setPosition(.75);
-            LeftGlyph.setPosition(.25);
-            Glyphter.setTargetPosition(300);
-            Glyphter.setPower(.5);
-        }
-        else if(gamepad2.left_bumper){
             RightGlyph.setPosition(.99);
             LeftGlyph.setPosition(.01);
+            Glyphter.setTargetPosition(500);
+            Glyphter.setPower(.5);
+            if(Glyphter.getCurrentPosition() == Glyphter.getTargetPosition()){
+                Glyphter.setPower(0);
+            }
+        }
+        else if(gamepad2.left_bumper){
+            RightGlyph.setPosition(.75);
+            LeftGlyph.setPosition(.25);;
             Glyphter.setTargetPosition(0);
             Glyphter.setPower(-.5);
+            if(Glyphter.getCurrentPosition() == Glyphter.getTargetPosition()){
+                Glyphter.setPower(0);
+            }
 
         }
 

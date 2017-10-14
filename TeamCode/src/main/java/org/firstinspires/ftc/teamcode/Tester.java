@@ -34,12 +34,6 @@ public class Tester extends LinearOpMode {
     public void runOpMode() throws InterruptedException{
         //super.init();
         robot.initialize(hardwareMap, telemetry);
-        visionTester.setCamera(Cameras.PRIMARY);
-        visionTester.setFrameSize(new Size(900,900));
-        visionTester.beacon.setAnalysisMethod(Beacon.AnalysisMethod.FAST);
-        visionTester.beacon.setColorToleranceBlue(0);
-        visionTester.beacon.setColorToleranceRed(0);
-
 
 
         //AutoTransitioner.transitionOnStop(this,"testertele");
