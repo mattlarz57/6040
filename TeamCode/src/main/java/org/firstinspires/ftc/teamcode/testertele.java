@@ -4,6 +4,7 @@ import com.google.gson.graph.GraphAdapterBuilder;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -19,6 +20,7 @@ public class testertele extends OpMode {
 
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter;
     public Servo RightGlyph, LeftGlyph, Grabber1, Grabber2;
+    public CRServo Sucker1, Sucker2;
 
 
 
@@ -36,6 +38,8 @@ public class testertele extends OpMode {
         LeftGlyph = hardwareMap.servo.get("LeftGlyph");
         Grabber1 = hardwareMap.servo.get("Grabber1");
         Grabber2 = hardwareMap.servo.get("Grabber2");
+        Sucker1 = hardwareMap.crservo.get("Sucker1");
+        Sucker2 = hardwareMap.crservo.get("Sucker2");
         Glyphter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -43,8 +47,8 @@ public class testertele extends OpMode {
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         robot.bno055IMU= hardwareMap.get(BNO055IMU.class,"IMU");
 
-        RightGlyph.setPosition(.75);
-        LeftGlyph.setPosition(.25);
+        RightGlyph.setPosition(0);
+        LeftGlyph.setPosition(.6);
         robot.SetParameters();
 
 
@@ -88,7 +92,7 @@ public class testertele extends OpMode {
             Grabber2.setPosition(1);
         }
 
-
+/*
         if(gamepad2.right_bumper){
             RightGlyph.setPosition(.99);
             LeftGlyph.setPosition(.01);
@@ -98,7 +102,7 @@ public class testertele extends OpMode {
                 Glyphter.setPower(0);
             }
         }
-        else if(gamepad2.left_bumper){
+       else if(gamepad2.left_bumper){
             RightGlyph.setPosition(.75);
             LeftGlyph.setPosition(.25);;
             Glyphter.setTargetPosition(0);
@@ -107,7 +111,25 @@ public class testertele extends OpMode {
                 Glyphter.setPower(0);
             }
 
+
         }
+        */
+        if(gamepad2.right_trigger >.1){
+            Sucker1.setPower(1);
+            Sucker2.setPower(-1);
+
+        }
+        else if (gamepad2.left_trigger>.1){
+            Sucker2.setPower(-1);
+            Sucker1.setPower(1);
+        }
+        else{
+            Sucker1.setPower(0);
+            Sucker2.setPower(0);
+        }
+
+
+
 
 
 
