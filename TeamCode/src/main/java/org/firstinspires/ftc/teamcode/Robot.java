@@ -41,8 +41,7 @@ public class Robot {
     public final double Sidewaystickspercm = 1;
 
 
-    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter;
-    public Servo RightGlyph, LeftGlyph, Grabber1, Grabber2;
+    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft;
     public BNO055IMU bno055IMU;
 
 
@@ -57,19 +56,13 @@ public class Robot {
         BackLeft= hardwareMap.dcMotor.get("2b");
         FrontRight = hardwareMap.dcMotor.get("1a");
         FrontLeft = hardwareMap.dcMotor.get("1b");
-        Glyphter = hardwareMap.dcMotor.get("3a");
-        RightGlyph = hardwareMap.servo.get("RightGlyph");
-        LeftGlyph = hardwareMap.servo.get("LeftGlyph");
-        Grabber1 = hardwareMap.servo.get("Grabber1");
-        Grabber2 = hardwareMap.servo.get("Grabber2");
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
 
-        RightGlyph.setPosition(.75);
-        LeftGlyph.setPosition(.25);
+
         SetParameters();
         return true;
 
