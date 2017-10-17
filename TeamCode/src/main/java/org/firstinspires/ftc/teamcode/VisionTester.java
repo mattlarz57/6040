@@ -22,6 +22,7 @@ public class VisionTester extends LinearVisionOpMode {
     Robot robot = new Robot();
 
     VuforiaLocalizer vuforia;
+    int counter = 1;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -80,7 +81,11 @@ public class VisionTester extends LinearVisionOpMode {
             VuforiaTrackable relicTemplate = relicTrackables.get(0);
 
             relicTrackables.activate();
+
+
+
             while (opModeIsActive()) {
+
                 RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
 
                 telemetry.addData("Vumark:", vumark);
@@ -88,6 +93,12 @@ public class VisionTester extends LinearVisionOpMode {
                 telemetry.addLine("heading " + Math.round(robot.getheading()));
                 telemetry.addData("Time Elapsed: ", Math.round(getRuntime() - startruntime));
                 telemetry.update();
+
+
+                if(counter == 1){
+                    robot.Sideways("Right",.5,10);
+                    counter = 2;
+                }
 
             }
 

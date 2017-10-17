@@ -21,7 +21,6 @@ import org.opencv.core.Size;
  */
 @Autonomous
 public class Tester extends LinearOpMode {
-
     Robot robot = new Robot();
     //BasicVisionSample vision = new BasicVisionSample();
     VisionTester visionTester;
@@ -55,9 +54,12 @@ public class Tester extends LinearOpMode {
 
         if (counter == 1){
 
-            sleep(10000);
             robot.Sideways("Right",.5, 1000);
 
+            counter = 2;
+        }
+        if(counter == 2){
+            sleep(10000);
         }
 
         while(opModeIsActive()) {

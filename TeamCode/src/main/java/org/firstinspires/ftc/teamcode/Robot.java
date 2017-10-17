@@ -38,7 +38,7 @@ public class Robot {
     public final double WheelCircumfrence_cm = Math.PI * 4.0;
     public final double in2cm = 2.54;
     public final double Tickspercm = (TicksPerRev * MotorGearRatio) / (WheelCircumfrence_cm *in2cm );
-    public final double Sidewaystickspercm = 1;
+    public final double Sidewaystickspercm = 1000000/(9*11*17*15.75*in2cm);
 
 
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft;
