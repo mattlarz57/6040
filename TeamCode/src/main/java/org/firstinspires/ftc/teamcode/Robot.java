@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -41,8 +43,10 @@ public class Robot {
     public final double Sidewaystickspercm = 1000000/(9*11*17*15.75*in2cm);
 
 
-    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft;
+    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter;
+    public CRServo GBR,GBL,GTR,GTL;
     public BNO055IMU bno055IMU;
+    public TouchSensor Touch;
 
 
 
@@ -56,11 +60,19 @@ public class Robot {
         BackLeft= hardwareMap.dcMotor.get("2b");
         FrontRight = hardwareMap.dcMotor.get("1a");
         FrontLeft = hardwareMap.dcMotor.get("1b");
+        Glyphter = hardwareMap.dcMotor.get("3a");
+        GTL = hardwareMap.crservo.get("3");
+        GBL = hardwareMap.crservo.get("4");
+        GTR = hardwareMap.crservo.get("5");
+        GBR = hardwareMap.crservo.get("6");
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        GTL.setDirection(DcMotorSimple.Direction.REVERSE);
+        GBL.setDirection(DcMotorSimple.Direction.REVERSE);
         bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
+        Touch = hardwareMap.touchSensor.get("Touch");
 
 
         SetParameters();
@@ -165,6 +177,18 @@ public class Robot {
             avg = (BRPos + BLPos + FRPos + FLPos) / 4;
         }
         SetDrivePower(0);
+    }
+    public void GlypthtoPos(String position){
+        if(position == "down"){
+           // Glyphter.setTargetPosition();
+        }
+        else if (position == "middle"){
+
+        }
+        else if(position == "top"){
+
+        }
+
     }
 
    /* public void GyroTurn(String direction, double power, double degrees, Telemetry telemetry) {

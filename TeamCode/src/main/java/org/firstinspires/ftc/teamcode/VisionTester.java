@@ -96,8 +96,13 @@ public class VisionTester extends LinearVisionOpMode {
 
 
                 if(counter == 1){
-                    robot.Sideways("Right",.5,10);
+                    robot.Move(.5,25);
                     counter = 2;
+                }
+                if(counter == 2){
+                    robot.Sideways("Right",.25,10);
+                    counter = 3;
+
                 }
 
             }

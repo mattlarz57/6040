@@ -30,11 +30,49 @@ public class testertele extends OpMode {
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;
+        int touchpressed;
+        if(robot.Touch.isPressed()){
+            touchpressed = 0;
+        }
+        else{
+            touchpressed=1;
+        }
 
         robot.BackRight.setPower((-turn + -strafe +drive));
         robot.BackLeft.setPower((-turn + strafe + drive));
         robot.FrontRight.setPower((turn + strafe + drive));
         robot.FrontLeft.setPower((turn + -strafe+ drive));
+
+
+        if(gamepad1.right_trigger>=.1){
+            robot.GTR.setPower(touchpressed);
+            robot.GBR.setPower(1);
+            robot.GTL.setPower(touchpressed);
+            robot.GBL.setPower(1);
+        }
+        else if (gamepad1.left_trigger>=1){
+            robot.GBL.setPower(-1);
+            robot.GBR.setPower(-1);
+            robot.GTL.setPower(-1);
+            robot.GTR.setPower(-1);
+        }
+        else{
+            robot.GBL.setPower(0);
+            robot.GBR.setPower(0);
+            robot.GTL.setPower(0);
+            robot.GTR.setPower(0);
+        }
+
+        if(gamepad1.dpad_up){
+            robot.Glyphter.setPower(1);
+        }
+        else if(gamepad1.dpad_down){
+            robot.Glyphter.setPower(-1);
+        }
+        else{
+            robot.Glyphter.setPower(0);
+        }
+
 
 
 
