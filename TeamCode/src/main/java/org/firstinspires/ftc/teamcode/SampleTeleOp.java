@@ -9,21 +9,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class SampleTeleOp extends OpMode {
-
-    DcMotor Starwars1, Starwars2;
-    Servo Cringe;
+    Robot robot = new Robot();
 
 
 
 
     @Override
     public void init(){
-        Cringe = hardwareMap.servo.get("Servo");
-        Starwars1 = hardwareMap.dcMotor.get("Motor1");
-        Starwars2 = hardwareMap.dcMotor.get("Motor2");
-        Starwars1.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.initialize(hardwareMap,telemetry);
 
-        Cringe.setPosition(35);
     }
 
 
@@ -31,20 +25,7 @@ public class SampleTeleOp extends OpMode {
     @Override
     public void loop(){
 
-        double RightPower = gamepad1.right_stick_y;
-        double LeftPower = gamepad1.left_stick_y;
-        Starwars1.setPower(RightPower);
-        Starwars2.setPower(LeftPower);
-
-
-        if(gamepad1.right_trigger > .1 ){
-            Cringe.setPosition(200);
-        }
-        else if(gamepad1.left_trigger>.1){
-            Cringe.setPosition(35);
-        }
-
-
+        
     }
 
 

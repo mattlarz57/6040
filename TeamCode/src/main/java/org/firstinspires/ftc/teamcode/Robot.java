@@ -74,8 +74,7 @@ public class Robot {
         bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
         Touch = hardwareMap.touchSensor.get("Touch");
 
-
-        SetParameters();
+        //SetParameters();
         return true;
 
 

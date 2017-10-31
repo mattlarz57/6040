@@ -18,11 +18,11 @@ import javax.microedition.khronos.opengles.GL;
 public class testertele extends OpMode {
     Robot robot = new Robot();
 
+
     @Override
     public void init(){
         robot.initialize(hardwareMap, telemetry);
-        robot.SetParameters();
-
+        //robot.SetParameters();
 
     }
     @Override
@@ -44,13 +44,13 @@ public class testertele extends OpMode {
         robot.FrontLeft.setPower((turn + -strafe+ drive));
 
 
-        if(gamepad1.right_trigger>=.1){
+        if(gamepad2.right_trigger>=.1){
             robot.GTR.setPower(touchpressed);
             robot.GBR.setPower(1);
             robot.GTL.setPower(touchpressed);
             robot.GBL.setPower(1);
         }
-        else if (gamepad1.left_trigger>=1){
+        else if (gamepad2.left_trigger>=1){
             robot.GBL.setPower(-1);
             robot.GBR.setPower(-1);
             robot.GTL.setPower(-1);
@@ -63,10 +63,10 @@ public class testertele extends OpMode {
             robot.GTR.setPower(0);
         }
 
-        if(gamepad1.dpad_up){
+        if(gamepad2.dpad_up){
             robot.Glyphter.setPower(1);
         }
-        else if(gamepad1.dpad_down){
+        else if(gamepad2.dpad_down){
             robot.Glyphter.setPower(-1);
         }
         else{
