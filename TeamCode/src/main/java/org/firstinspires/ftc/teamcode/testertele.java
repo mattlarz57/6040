@@ -30,6 +30,8 @@ public class testertele extends OpMode {
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;
+        double glyph = gamepad2.left_stick_y;
+        double relic = gamepad2.right_stick_x;
         int touchpressed;
         if(robot.Touch.isPressed()){
             touchpressed = 0;
@@ -42,6 +44,8 @@ public class testertele extends OpMode {
         robot.BackLeft.setPower((-turn + strafe + drive));
         robot.FrontRight.setPower((turn + strafe + drive));
         robot.FrontLeft.setPower((turn + -strafe+ drive));
+        robot.Glyphter.setPower(-glyph);
+        robot.relicArm.setPower(-relic /2);
 
 
         if(gamepad2.right_trigger>=.1){
@@ -63,23 +67,8 @@ public class testertele extends OpMode {
             robot.GTR.setPower(0);
         }
 
-        if(gamepad2.dpad_up){
-            telemetry.addData("Curr",robot.Glyphter.getCurrentPosition());
-            try {
-                robot.GlypthtoPos("Top");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
-        else if(gamepad2.dpad_down){
-            telemetry.addData("Curr",robot.Glyphter.getCurrentPosition());
-            try {
-                robot.GlypthtoPos("Down");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
 
         if(gamepad1.dpad_left){
             robot.Jeweler2.setPosition(0);
@@ -107,6 +96,21 @@ public class testertele extends OpMode {
             robot.SqueezerR.setPosition(.05);
             robot.SqueezerL.setPosition(.95);
         }
+        if (gamepad2.dpad_up){
+            robot.relicBig.setPosition(.75);
+
+        }
+        else if (gamepad2.dpad_down){
+            robot.relicBig.setPosition(.1);
+        }
+        if (gamepad2.dpad_right){
+            robot.relicSmall.setPosition(1);
+
+        }
+        else if (gamepad2.dpad_left){
+            robot.relicSmall.setPosition(0);
+        }
+
 
 
 

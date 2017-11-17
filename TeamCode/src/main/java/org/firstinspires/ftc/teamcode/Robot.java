@@ -38,8 +38,8 @@ public class Robot {
 
 
 
-    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter;
-    public Servo Jeweler1, Jeweler2, SqueezerR, SqueezerL;
+    public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
+    public Servo Jeweler1, Jeweler2, SqueezerR, SqueezerL, relicBig,relicSmall;
     public CRServo GBR,GBL,GTR,GTL;
     public BNO055IMU bno055IMU;
     public TouchSensor Touch;
@@ -58,6 +58,7 @@ public class Robot {
         FrontRight = hardwareMap.dcMotor.get("1a");
         FrontLeft = hardwareMap.dcMotor.get("1b");
         Glyphter = hardwareMap.dcMotor.get("3a");
+        relicArm = hardwareMap.dcMotor.get("3b");
         GTL = hardwareMap.crservo.get("3");
         GBL = hardwareMap.crservo.get("4");
         GTR = hardwareMap.crservo.get("5");
@@ -66,19 +67,22 @@ public class Robot {
         Jeweler2 = hardwareMap.servo.get("2");
         SqueezerL = hardwareMap.servo.get("B1");
         SqueezerR = hardwareMap.servo.get("B2");
+        relicBig = hardwareMap.servo.get("B3");
+        relicSmall = hardwareMap.servo.get("B4");
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         GTL.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
-        Glyphter.setMode(robotConstants.Position);
         //bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
         Touch = hardwareMap.touchSensor.get("Touch");
         Jeweler2.setPosition(0);
         Jeweler1.setPosition(.97);
         SqueezerL.setPosition(.79);
         SqueezerR.setPosition(.21);
+        relicBig.setPosition(.1);
+
 
         //SetParameters();
         return true;
@@ -183,25 +187,7 @@ public class Robot {
         }
         SetDrivePower(0);
     }
-    public void GlypthtoPos(String position) throws InterruptedException {
-        if(position == "Down"){
-            Glyphter.setTargetPosition(-robotConstants.Glyphter_2Up_Counts);//robotConstants.Glyphter_0UP_Counts);
-            Glyphter.setPower(-1);
-            Thread.sleep(870L);
-            Glyphter.setPower(0);
-        }
 
-        else if(position == "Top"){
-            Glyphter.setTargetPosition(robotConstants.Glyphter_2Up_Counts);
-            Glyphter.setPower(1);
-            Thread.sleep(870L);
-            Glyphter.setPower(0);
-
-
-        }
-
-
-    }
 
    /* public void GyroTurn(String direction, double power, double degrees, Telemetry telemetry) {
        double heading = Gyro.getHeading();
