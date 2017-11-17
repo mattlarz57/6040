@@ -73,15 +73,19 @@ public class Robot {
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        GTL.setDirection(DcMotorSimple.Direction.REVERSE);
+        GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
         //bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
         Touch = hardwareMap.touchSensor.get("Touch");
         Jeweler2.setPosition(0);
-        Jeweler1.setPosition(.97);
+        Jeweler1.setPosition(.9);
         SqueezerL.setPosition(.79);
         SqueezerR.setPosition(.21);
         relicBig.setPosition(.15);
+        GTR.setPower(0);
+        GTL.setPower(0);
+        GBR.setPower(0);
+        GBL.setPower(0);
 
 
         //SetParameters();

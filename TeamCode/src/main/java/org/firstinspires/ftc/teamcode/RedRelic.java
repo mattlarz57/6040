@@ -53,7 +53,6 @@ public class RedRelic extends LinearVisionOpMode {
 
 
         while (!(beacon.getAnalysis().isBeaconFound() || getRuntime() - startruntime > 5)) {
-            telemetry.addData("heading ", Math.round(robot.getheading()));
             telemetry.addData("Time Elapsed: ", Math.round(getRuntime() - startruntime));
             telemetry.addLine("Beacon: Searching");
             telemetry.update();
@@ -83,12 +82,11 @@ public class RedRelic extends LinearVisionOpMode {
                 telemetry.addLine(Jewels);
                 telemetry.addLine("blue, red");
                 telemetry.addLine("Right Blue?" + RightBlue);
-                telemetry.addLine("heading " + Math.round(robot.getheading()));
                 telemetry.addData("Time Elapsed: ", Math.round(getRuntime() - startruntime));
                 telemetry.update();
 
                 if (counter == 1) {
-                    robot.Jeweler1.setPosition(.15);
+                    robot.Jeweler1.setPosition(0);
                     sleep(100);
                     robot.Jeweler2.setPosition(.5);
                     sleep(500);
@@ -100,7 +98,7 @@ public class RedRelic extends LinearVisionOpMode {
                             repeat ++;
                         }
 
-                        robot.Jeweler1.setPosition(.97);
+                        robot.Jeweler1.setPosition(.85);
                         robot.Jeweler2.setPosition(.5);
 
                     }
@@ -111,7 +109,7 @@ public class RedRelic extends LinearVisionOpMode {
                             robot.Jeweler2.setPosition(.5);
                             repeat ++;
                         }
-                        robot.Jeweler1.setPosition(.97);
+                        robot.Jeweler1.setPosition(.9);
                         robot.Jeweler2.setPosition(.5);
                     }
                     else {

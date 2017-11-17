@@ -80,13 +80,16 @@ public class testertele extends OpMode {
             robot.Jeweler2.setPosition(.5);
         }
 
-
         if(gamepad1.dpad_up){
-            robot.Jeweler1.setPosition(.97);
+            robot.Jeweler1.setPosition(.75);
         }
         else if(gamepad1.dpad_down){
-            robot.Jeweler1.setPosition(.15);
+            robot.Jeweler1.setPosition(0);
         }
+
+
+
+
         if(gamepad2.a){
             robot.SqueezerR.setPosition(.3);  //21
             robot.SqueezerL.setPosition(.73);//79
