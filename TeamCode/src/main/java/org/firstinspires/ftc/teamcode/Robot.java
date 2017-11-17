@@ -81,7 +81,7 @@ public class Robot {
         Jeweler1.setPosition(.97);
         SqueezerL.setPosition(.79);
         SqueezerR.setPosition(.21);
-        relicBig.setPosition(.1);
+        relicBig.setPosition(.15);
 
 
         //SetParameters();

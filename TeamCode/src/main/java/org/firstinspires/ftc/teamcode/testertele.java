@@ -101,7 +101,7 @@ public class testertele extends OpMode {
 
         }
         else if (gamepad2.dpad_down){
-            robot.relicBig.setPosition(.1);
+            robot.relicBig.setPosition(.15);
         }
         if (gamepad2.dpad_right){
             robot.relicSmall.setPosition(1);
