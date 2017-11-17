@@ -41,7 +41,7 @@ public class RedRelic extends LinearVisionOpMode {
         beacon.setColorToleranceBlue(0);
         beacon.setColorToleranceRed(0);
 
-        rotation.setActivityOrientationFixed(ScreenOrientation.LANDSCAPE);
+        rotation.enableAutoRotate();
         telemetry.addLine("Initialization: Success");
 
 
@@ -91,23 +91,24 @@ public class RedRelic extends LinearVisionOpMode {
                     robot.Jeweler2.setPosition(.5);
                     sleep(500);
                     if (!RightBlue) {
-                        robot.Jeweler2.setPosition(0);
+                        robot.Jeweler2.setPosition(1);
                         sleep(250);
-                        robot.Jeweler2.setPosition(.5);
-                        robot.Jeweler1.setPosition(.9);
                         robot.Jeweler2.setPosition(.5);
 
                     }
                     else if (RightBlue) {
-                        robot.Jeweler2.setPosition(1);
+                        robot.Jeweler2.setPosition(0);
                         sleep(250);
                         robot.Jeweler2.setPosition(.5);
-                        robot.Jeweler1.setPosition(.9);
-                        robot.Jeweler2.setPosition(.5);
+                        counter = 2;
+
                     }
-                    else {
-                        telemetry.addLine("HUH?");
-                    }
+
+                }
+                if (counter == 2){
+                    robot.Jeweler1.setPosition(.9);
+                    robot.Jeweler2.setPosition(.5);
+                    telemetry.addLine("vuMark"+vuMark);
                 }
 
 
