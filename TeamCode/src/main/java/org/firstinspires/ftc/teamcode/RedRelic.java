@@ -91,7 +91,7 @@ public class RedRelic extends LinearVisionOpMode {
                     robot.Jeweler2.setPosition(.5);
                     sleep(500);
                     if (!RightBlue) {
-                        robot.Jeweler2.setPosition(1);
+                        robot.Jeweler2.setPosition(0);
                         sleep(250);
                         robot.Jeweler2.setPosition(.5);
                         robot.Jeweler1.setPosition(.9);
@@ -99,7 +99,7 @@ public class RedRelic extends LinearVisionOpMode {
 
                     }
                     else if (RightBlue) {
-                        robot.Jeweler2.setPosition(0);
+                        robot.Jeweler2.setPosition(1);
                         sleep(250);
                         robot.Jeweler2.setPosition(.5);
                         robot.Jeweler1.setPosition(.9);
