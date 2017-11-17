@@ -91,24 +91,17 @@ public class RedRelic extends LinearVisionOpMode {
                     robot.Jeweler2.setPosition(.5);
                     sleep(500);
                     if (!RightBlue) {
-                        while (repeat < 5) {
-                            robot.Jeweler2.setPosition(0);
-                            sleep(250);
-                            robot.Jeweler2.setPosition(.5);
-                            repeat ++;
-                        }
-
-                        robot.Jeweler1.setPosition(.85);
+                        robot.Jeweler2.setPosition(1);
+                        sleep(250);
+                        robot.Jeweler2.setPosition(.5);
+                        robot.Jeweler1.setPosition(.9);
                         robot.Jeweler2.setPosition(.5);
 
                     }
                     else if (RightBlue) {
-                        while (repeat < 5) {
-                            robot.Jeweler2.setPosition(0);
-                            sleep(250);
-                            robot.Jeweler2.setPosition(.5);
-                            repeat ++;
-                        }
+                        robot.Jeweler2.setPosition(0);
+                        sleep(250);
+                        robot.Jeweler2.setPosition(.5);
                         robot.Jeweler1.setPosition(.9);
                         robot.Jeweler2.setPosition(.5);
                     }
