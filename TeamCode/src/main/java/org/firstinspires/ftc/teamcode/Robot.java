@@ -75,10 +75,10 @@ public class Robot {
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
-        //bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
+        bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
         Touch = hardwareMap.touchSensor.get("Touch");
-        Jeweler2.setPosition(0);
-        Jeweler1.setPosition(.9);
+        Jeweler2.setPosition(robotConstants.Jeweler2_Left);
+        Jeweler1.setPosition(RobotConstants.Jeweler1_Up);
         SqueezerL.setPosition(.79);
         SqueezerR.setPosition(.21);
         relicBig.setPosition(.15);
@@ -194,31 +194,26 @@ public class Robot {
 
 
    /* public void GyroTurn(String direction, double power, double degrees, Telemetry telemetry) {
-       double heading = Gyro.getHeading();
-       telemetry.addData("Heading", heading);
-
-
+       telemetry.addData("Heading", robot.getheading());
        if (direction == "ClockWise") {
-           while (heading < degrees - 3) {
+           while (robot.getheading() < degrees - 3) {
                BackRight.setPower(-power);
                BackLeft.setPower(power);
                FrontRight.setPower(-power);
                FrontLeft.setPower(power);
-               heading = Gyro.getHeading();
-               telemetry.addData("Heading", heading);
+               telemetry.addData("Heading", robot.getheading());
 
            }
            SetDrivePower(0);
            Gyro.calibrate();
        } else if (direction == "CounterClockWise") {
 
-           while (heading > degrees + 3) {
+           while (robot.getheading() > degrees + 3) {
                BackRight.setPower(power);
                BackLeft.setPower(-power);
                FrontRight.setPower(power);
                FrontLeft.setPower(-power);
-               heading = Gyro.getHeading();
-               telemetry.addData("Heading", heading);
+               telemetry.addData("Heading", robot.getheading());
 
            }
            SetDrivePower(0);
@@ -253,7 +248,7 @@ public class Robot {
     }
 
     private void LeftTurn(double power, double degrees){
-        while(getheading() > degrees){
+        while(getheading() > degrees-3){
             BackRight.setPower(power);
             BackLeft.setPower(power);
             FrontRight.setPower(-power);
@@ -265,7 +260,7 @@ public class Robot {
 
 
     private void RightTurn(double power, double degrees){
-        while(getheading() <  degrees){
+        while(getheading() <  degrees +3){
             BackRight.setPower(-power);
             BackLeft.setPower(-power);
             FrontRight.setPower(power);

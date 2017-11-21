@@ -21,6 +21,7 @@ public class RedRelic extends LinearVisionOpMode {
 
     Robot robot = new Robot();
     VuforiaLocalizer vuforia;
+    String VuMarkSeen;
     int counter;
     int repeat = 0;
 
@@ -78,7 +79,10 @@ public class RedRelic extends LinearVisionOpMode {
 
             while (opModeIsActive()) {
                 RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                telemetry.addData("Vumark:", vuMark);
+                if (vuMark != RelicRecoveryVuMark.UNKNOWN){
+                    VuMarkSeen = vuMark.toString();
+                }
+                telemetry.addData("Vumark:", VuMarkSeen);
                 telemetry.addLine(Jewels);
                 telemetry.addLine("blue, red");
                 telemetry.addLine("Right Blue?" + RightBlue);
@@ -86,29 +90,50 @@ public class RedRelic extends LinearVisionOpMode {
                 telemetry.update();
 
                 if (counter == 1) {
-                    robot.Jeweler1.setPosition(0);
+                    robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
                     sleep(100);
-                    robot.Jeweler2.setPosition(.5);
+                    robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
                     sleep(500);
                     if (!RightBlue) {
-                        robot.Jeweler2.setPosition(1);
+                        robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
                         sleep(250);
-                        robot.Jeweler2.setPosition(.5);
+                        robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
 
                     }
                     else if (RightBlue) {
-                        robot.Jeweler2.setPosition(0);
+                        robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
                         sleep(250);
-                        robot.Jeweler2.setPosition(.5);
+                        robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
                         counter = 2;
 
                     }
 
                 }
                 if (counter == 2){
-                    robot.Jeweler1.setPosition(.9);
-                    robot.Jeweler2.setPosition(.5);
-                    telemetry.addLine("vuMark"+vuMark);
+                    robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Up);
+                    robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
+                    counter = 3;
+                }
+
+                if(counter == 3){
+                    switch(VuMarkSeen){
+
+                        case "Center":
+                            robot.Move(-1,70);
+
+                        case "Right":
+                            robot.Move(-1,90);
+
+                        default:
+                            robot.Move(-1,50);
+                    }
+                    counter = 4;
+
+                }
+
+                if(counter == 4){
+                    robot.Sideways("Right",.5,15);
+                    robot.DegreeTurn("CounterClockWise",.75,90);
                 }
 
 

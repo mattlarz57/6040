@@ -20,26 +20,13 @@ class RobotConstants {
 
 
 
-    static final double Jeweler1_Down = .15;
-    static final double Jeweler1_Up = .97;
+    static final double Jeweler1_Down = .7;
+    static final double Jeweler1_Up = .15;
     static final double Jeweler2_Right = 1;
     static final double Jeweler2_Left = 0;
     static final double Jeweler2_Middle = .5;
 
 
-
-
-
-    static final int Glyphter_TicksPerRev = 28;
-    static final int Glyphter_GearRatio = 30;
-    static final float Glyphter_Circumfrence = 3.14f*2f;
-    static final float Glyphter_TicksPerInch = Glyphter_TicksPerRev*Glyphter_GearRatio/Glyphter_Circumfrence;
-    static final int Glyphter_2Up_Counts = Math.round(14*Glyphter_TicksPerInch);
-
-
-    static final double Glyphter_Suck = 1;
-    static final double Glyphter_Spit = -1;
-    static final double Glypther_Stay = 0;
 
 
 

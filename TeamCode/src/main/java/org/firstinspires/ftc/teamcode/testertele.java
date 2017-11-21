@@ -22,11 +22,12 @@ public class testertele extends OpMode {
     @Override
     public void init(){
         robot.initialize(hardwareMap, telemetry);
-        //robot.SetParameters();
+        robot.SetParameters();
 
     }
     @Override
     public void loop(){ //this is what happens when you press the play button
+        telemetry.addData("Heading:",robot.getheading());
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;
@@ -71,20 +72,20 @@ public class testertele extends OpMode {
 
 
         if(gamepad1.dpad_left){
-            robot.Jeweler2.setPosition(0);
+            robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Left);
         }
         else if(gamepad1.dpad_right){
-            robot.Jeweler2.setPosition(1);
+            robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
         }
         else {
-            robot.Jeweler2.setPosition(.5);
+            robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
         }
 
         if(gamepad1.dpad_up){
-            robot.Jeweler1.setPosition(.75);
+            robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Up);
         }
         else if(gamepad1.dpad_down){
-            robot.Jeweler1.setPosition(0);
+            robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
         }
 
 
@@ -104,7 +105,7 @@ public class testertele extends OpMode {
 
         }
         else if (gamepad2.dpad_down){
-            robot.relicBig.setPosition(.15);
+            robot.relicBig.setPosition(.24);
         }
         if (gamepad2.dpad_right){
             robot.relicSmall.setPosition(1);
