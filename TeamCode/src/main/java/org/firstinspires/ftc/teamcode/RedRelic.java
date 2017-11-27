@@ -16,18 +16,17 @@ import org.opencv.core.Size;
 /**
  * Created by user on 2017-11-04.
  */
+
 @Autonomous
 public class RedRelic extends LinearVisionOpMode {
 
     Robot robot = new Robot();
     VuforiaLocalizer vuforia;
-    String VuMarkSeen;
-    int counter;
+    int counter = -1;
     int repeat = 0;
+    int vuMarkSeen = 0;
 
 
-
-    @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addLine("Initialization: Loading...");
         waitForVisionStart();
@@ -43,6 +42,7 @@ public class RedRelic extends LinearVisionOpMode {
         beacon.setColorToleranceRed(0);
 
         rotation.enableAutoRotate();
+        robot.ResetDriveEncoders();
         telemetry.addLine("Initialization: Success");
 
 
@@ -51,6 +51,8 @@ public class RedRelic extends LinearVisionOpMode {
 
         double startruntime = getRuntime();
         String Jewels;
+
+
 
 
         while (!(beacon.getAnalysis().isBeaconFound() || getRuntime() - startruntime > 5)) {
@@ -79,25 +81,20 @@ public class RedRelic extends LinearVisionOpMode {
 
             while (opModeIsActive()) {
                 RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                if (vuMark == RelicRecoveryVuMark.RIGHT){
-                    VuMarkSeen = "Right";
-                }
-                else if (vuMark == RelicRecoveryVuMark.LEFT){
-                    VuMarkSeen = "Left";
-                }
-                else if (vuMark == RelicRecoveryVuMark.CENTER){
-                    VuMarkSeen = "Center";
-                }
-                telemetry.addData("Vumark:", VuMarkSeen);
-                telemetry.addLine(Jewels);
-                telemetry.addLine("blue, red");
+
+                if(vuMark == RelicRecoveryVuMark.RIGHT){ vuMarkSeen = 1;}
+                else if (vuMark == RelicRecoveryVuMark.CENTER){ vuMarkSeen = 2;}
+                else if (vuMark == RelicRecoveryVuMark.LEFT){ vuMarkSeen = 3;}
+
+
+
+                telemetry.addData("Step:",counter);
                 telemetry.addLine("Right Blue?" + RightBlue);
-                telemetry.addData("Time Elapsed: ", Math.round(getRuntime() - startruntime));
                 telemetry.update();
 
                 if (counter == 1) {
                     robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
-                    sleep(100);
+                    sleep(150);
                     robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
                     sleep(500);
                     if (!RightBlue) {
@@ -121,25 +118,28 @@ public class RedRelic extends LinearVisionOpMode {
                     robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
                     counter = 3;
                 }
-
-                if(counter == 3){
-                    robot.Move(-1,-20);
-                    switch(VuMarkSeen){
-
-                        case "Center":
-                            robot.Move(-1,-50);
-
-                        case "Right":
-                            robot.Move(-1,-70);
-
-                        default:
-                            robot.Move(-1,-30);
-                    }
+                if (counter == 3){
+                    robot.Backwards(.5,-20);
                     counter = 4;
-
                 }
 
                 if(counter == 4){
+                    switch(vuMarkSeen){
+
+                        case (2):
+                            robot.Backwards(.5,-50);
+
+                        case (3):
+                            robot.Backwards(.5,-70);
+
+                        default:
+                            robot.Backwards(.5,-30);
+                    }
+                    counter = 5;
+
+                }
+
+                if(counter == 5){
                     robot.Sideways("Right",.5,15);
                     robot.DegreeTurn("CounterClockWise",.75,90);
                 }

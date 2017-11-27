@@ -68,9 +68,7 @@ public class Robot {
         SqueezerR = hardwareMap.servo.get("B2");
         relicBig = hardwareMap.servo.get("B3");
         relicSmall = hardwareMap.servo.get("B4");
-        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -160,6 +158,26 @@ public class Robot {
         }
         SetDrivePower(0);
     }
+    public void Backwards(double power, double centimeters){
+        ResetDriveEncoders();
+        double ticks = centimeters * robotConstants.Tickspercm;
+        int BRPos = Math.abs(BackRight.getCurrentPosition());
+        int BLPos = Math.abs(BackLeft.getCurrentPosition());
+        int FRPos = Math.abs(FrontRight.getCurrentPosition());
+        int FLPos = Math.abs(FrontLeft.getCurrentPosition());
+
+        double avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
+
+        while (avg > ticks) {
+            SetDrivePower(-power);
+            BRPos = Math.abs(BackRight.getCurrentPosition());
+            BLPos = Math.abs(BackLeft.getCurrentPosition());
+            FRPos = Math.abs(FrontRight.getCurrentPosition());
+            FLPos = Math.abs(FrontLeft.getCurrentPosition());
+            avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
+        }
+        SetDrivePower(0);
+    }
 
     public void Sideways(String direction, double power, double centimeters) {
         ResetDriveEncoders();
@@ -234,7 +252,7 @@ public class Robot {
         Orientation degrees;
         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
-        return (degrees.thirdAngle);
+        return (degrees.thirdAngle+180);
     }
 
     public void DegreeTurn(String Direction , double power, double degrees){
