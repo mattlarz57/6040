@@ -79,8 +79,14 @@ public class RedRelic extends LinearVisionOpMode {
 
             while (opModeIsActive()) {
                 RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                if (vuMark != RelicRecoveryVuMark.UNKNOWN){
-                    VuMarkSeen = vuMark.toString();
+                if (vuMark == RelicRecoveryVuMark.RIGHT){
+                    VuMarkSeen = "Right";
+                }
+                else if (vuMark == RelicRecoveryVuMark.LEFT){
+                    VuMarkSeen = "Left";
+                }
+                else if (vuMark == RelicRecoveryVuMark.CENTER){
+                    VuMarkSeen = "Center";
                 }
                 telemetry.addData("Vumark:", VuMarkSeen);
                 telemetry.addLine(Jewels);
@@ -95,9 +101,10 @@ public class RedRelic extends LinearVisionOpMode {
                     robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
                     sleep(500);
                     if (!RightBlue) {
-                        robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
+                        robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Left);
                         sleep(250);
                         robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
+                        counter = 2;
 
                     }
                     else if (RightBlue) {
@@ -116,16 +123,17 @@ public class RedRelic extends LinearVisionOpMode {
                 }
 
                 if(counter == 3){
+                    robot.Move(-1,-20);
                     switch(VuMarkSeen){
 
                         case "Center":
-                            robot.Move(-1,70);
+                            robot.Move(-1,-50);
 
                         case "Right":
-                            robot.Move(-1,90);
+                            robot.Move(-1,-70);
 
                         default:
-                            robot.Move(-1,50);
+                            robot.Move(-1,-30);
                     }
                     counter = 4;
 

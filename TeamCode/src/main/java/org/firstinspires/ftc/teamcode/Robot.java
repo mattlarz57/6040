@@ -37,7 +37,6 @@ public class Robot {
 
 
 
-
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
     public Servo Jeweler1, Jeweler2, SqueezerR, SqueezerL, relicBig,relicSmall;
     public CRServo GBR,GBL,GTR,GTL;
@@ -228,7 +227,7 @@ public class Robot {
         Orientation degrees;
         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         t.update();
-        return new double[]{degrees.firstAngle,degrees.secondAngle,degrees.thirdAngle,0};
+        return new double[]{degrees.firstAngle,degrees.secondAngle,degrees.thirdAngle};
     }
 
     public float getheading() {
