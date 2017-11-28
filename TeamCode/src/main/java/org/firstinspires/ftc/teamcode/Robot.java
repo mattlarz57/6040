@@ -68,8 +68,6 @@ public class Robot {
         SqueezerR = hardwareMap.servo.get("B2");
         relicBig = hardwareMap.servo.get("B3");
         relicSmall = hardwareMap.servo.get("B4");
-        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
         bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
@@ -83,6 +81,7 @@ public class Robot {
         GTL.setPower(0);
         GBR.setPower(0);
         GBL.setPower(0);
+
 
 
         //SetParameters();
@@ -124,6 +123,7 @@ public class Robot {
         while (BackRight.getCurrentPosition() != 0 || BackLeft.getCurrentPosition() != 0 || FrontRight.getCurrentPosition() != 0 || FrontLeft.getCurrentPosition() != 0) {
 
         }
+
         BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -161,19 +161,19 @@ public class Robot {
     public void Backwards(double power, double centimeters){
         ResetDriveEncoders();
         double ticks = centimeters * robotConstants.Tickspercm;
-        int BRPos = Math.abs(BackRight.getCurrentPosition());
-        int BLPos = Math.abs(BackLeft.getCurrentPosition());
-        int FRPos = Math.abs(FrontRight.getCurrentPosition());
-        int FLPos = Math.abs(FrontLeft.getCurrentPosition());
+        int BRPos = (BackRight.getCurrentPosition());
+        int BLPos = (BackLeft.getCurrentPosition());
+        int FRPos = (FrontRight.getCurrentPosition());
+        int FLPos = (FrontLeft.getCurrentPosition());
 
         double avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
 
         while (avg > ticks) {
             SetDrivePower(-power);
-            BRPos = Math.abs(BackRight.getCurrentPosition());
-            BLPos = Math.abs(BackLeft.getCurrentPosition());
-            FRPos = Math.abs(FrontRight.getCurrentPosition());
-            FLPos = Math.abs(FrontLeft.getCurrentPosition());
+            BRPos = (BackRight.getCurrentPosition());
+            BLPos = (BackLeft.getCurrentPosition());
+            FRPos = (FrontRight.getCurrentPosition());
+            FLPos = (FrontLeft.getCurrentPosition());
             avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
         }
         SetDrivePower(0);

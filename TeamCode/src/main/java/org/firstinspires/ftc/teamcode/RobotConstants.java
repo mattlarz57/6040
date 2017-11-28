@@ -8,9 +8,9 @@ class RobotConstants {
     static final DcMotor.RunMode Position = DcMotor.RunMode.RUN_TO_POSITION;
     static final double TicksPerRev = 28;
     static final double MotorGearRatio = 20.0;
-    static final double WheelCircumfrence_cm = Math.PI * 4.0;
+    static final double WheelCircumfrence_in = Math.PI * 4.0;
     static final double in2cm = 2.54;
-    static final double Tickspercm = (TicksPerRev * MotorGearRatio) / (WheelCircumfrence_cm *in2cm );
+    static final double Tickspercm = (TicksPerRev * MotorGearRatio) / (WheelCircumfrence_in * in2cm);
     static final double Sidewaystickspercm = 1000000/(9*11*17*15.75*in2cm);
 
 

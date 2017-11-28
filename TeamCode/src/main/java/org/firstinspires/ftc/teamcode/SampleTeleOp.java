@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp
 public class SampleTeleOp extends OpMode {
     Robot robot = new Robot();
 

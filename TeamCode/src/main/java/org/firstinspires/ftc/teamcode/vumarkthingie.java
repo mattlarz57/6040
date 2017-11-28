@@ -19,7 +19,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous
 public class vumarkthingie extends LinearOpMode{
 
         VuforiaLocalizer vuforia;

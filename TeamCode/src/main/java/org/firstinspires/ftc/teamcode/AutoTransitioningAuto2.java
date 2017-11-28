@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-@Autonomous(name = "AutoTransitioningAuto2")
+//@Autonomous(name = "AutoTransitioningAuto2")
 public class AutoTransitioningAuto2 extends OpMode {
     @Override
     public void init() {

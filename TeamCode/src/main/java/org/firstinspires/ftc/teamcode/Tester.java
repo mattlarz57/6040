@@ -19,7 +19,6 @@ import org.opencv.core.Size;
 /**
  * Created by user on 2017-08-29.
  */
-@Autonomous
 public class Tester extends LinearOpMode {
     Robot robot = new Robot();
     //BasicVisionSample vision = new BasicVisionSample();

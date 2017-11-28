@@ -31,12 +31,14 @@ public class RedRelic extends LinearVisionOpMode {
         telemetry.addLine("Initialization: Loading...");
         waitForVisionStart();
 
+
         robot.initialize(hardwareMap, telemetry);
         this.setCamera(Cameras.PRIMARY);
         this.setFrameSize(new Size(900, 900));
         enableExtension(Extensions.BEACON);
         enableExtension(Extensions.ROTATION);
         enableExtension(Extensions.CAMERA_CONTROL);
+
         beacon.setAnalysisMethod(Beacon.AnalysisMethod.COMPLEX);
         beacon.setColorToleranceBlue(0);
         beacon.setColorToleranceRed(0);
@@ -44,6 +46,7 @@ public class RedRelic extends LinearVisionOpMode {
         rotation.enableAutoRotate();
         robot.ResetDriveEncoders();
         telemetry.addLine("Initialization: Success");
+
 
 
         waitForStart();
@@ -78,68 +81,114 @@ public class RedRelic extends LinearVisionOpMode {
 
             relicTrackables.activate();
             counter = 1;
+            telemetry.addData("heading: ",robot.getheading());
+            telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
+            telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
+            telemetry.addData("Step: ", counter);
+            telemetry.addLine("Right Blue? " + RightBlue);
+
 
             while (opModeIsActive()) {
                 RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-
                 if(vuMark == RelicRecoveryVuMark.RIGHT){ vuMarkSeen = 1;}
                 else if (vuMark == RelicRecoveryVuMark.CENTER){ vuMarkSeen = 2;}
                 else if (vuMark == RelicRecoveryVuMark.LEFT){ vuMarkSeen = 3;}
 
 
-
-                telemetry.addData("Step:",counter);
-                telemetry.addLine("Right Blue?" + RightBlue);
-                telemetry.update();
-
                 if (counter == 1) {
+                    telemetry.addLine("Right Blue? " + RightBlue);
+                    telemetry.addData("Step: ", counter);
+                    telemetry.update();
                     robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
                     sleep(150);
                     robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
                     sleep(500);
-                    if (!RightBlue) {
+                    if (RightBlue) {
+                        telemetry.addLine("Right Blue? " + RightBlue);
+                        telemetry.addData("Step: ", counter);
+                        telemetry.update();
                         robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Left);
                         sleep(250);
                         robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
+                        telemetry.update();
                         counter = 2;
 
                     }
-                    else if (RightBlue) {
+                    else if (!RightBlue) {
+                        telemetry.addLine("Right Blue? " + RightBlue);
+                        telemetry.addData("Step: ", counter);
+                        telemetry.update();
                         robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
                         sleep(250);
                         robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
+                        telemetry.update();
                         counter = 2;
 
                     }
 
                 }
                 if (counter == 2){
+                    telemetry.addData("heading: ",robot.getheading());
+                    telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
+                    telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
+                    telemetry.addData("Step: ", counter);
+                    telemetry.update();
                     robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Up);
                     robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
+                    sleep(2500);
+                    telemetry.addData("heading: ",robot.getheading());
+                    telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
+                    telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
+                    telemetry.addData("Step: ", counter);
+                    telemetry.update();
                     counter = 3;
                 }
                 if (counter == 3){
-                    robot.Backwards(.5,-20);
-                    counter = 4;
+                    telemetry.addData("heading: ",robot.getheading());
+                    telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition()   ));//+ robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
+                    telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
+                    telemetry.addData("Step: ", counter);
+                    telemetry.update();
+                    robot.Backwards(.01,-.1);
+                    sleep(1000);
+                    telemetry.addData("heading: ",robot.getheading());
+                    telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition()   )); //+ robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
+                    telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
+                    telemetry.addData("Step: ", counter);
+                    telemetry.update();
+
+                    counter = 9;
                 }
 
                 if(counter == 4){
+                    telemetry.addData("heading: ",robot.getheading());
+                    telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
+                    telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
+                    telemetry.addData("Step: ", counter);
+                    telemetry.update();
                     switch(vuMarkSeen){
 
                         case (2):
-                            robot.Backwards(.5,-50);
+                            robot.Backwards(.1,-50);
 
                         case (3):
-                            robot.Backwards(.5,-70);
+                            robot.Backwards(.1,-70);
 
                         default:
-                            robot.Backwards(.5,-30);
+                            robot.Backwards(.1,-30);
                     }
+                    telemetry.update();
+
                     counter = 5;
 
                 }
 
                 if(counter == 5){
+                    telemetry.addData("heading: ",robot.getheading());
+                    telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
+                    telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
+                    telemetry.addData("Step: ", counter);
+                    telemetry.update();
                     robot.Sideways("Right",.5,15);
                     robot.DegreeTurn("CounterClockWise",.75,90);
                 }

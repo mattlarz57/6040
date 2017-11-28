@@ -16,7 +16,6 @@ import org.opencv.core.Size;
 /**
  * Created by user on 2017-10-10.
  */
-@Autonomous
 public class VisionTester extends LinearVisionOpMode {
 
     Robot robot = new Robot();

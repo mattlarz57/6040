@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
-@Autonomous(name = "AutoTransitioningAuto")
+//@Autonomous(name = "AutoTransitioningAuto")
 public class AutoTransitioningAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

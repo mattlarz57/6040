@@ -45,10 +45,10 @@ public class testertele extends OpMode {
             touchpressed=1;
         }
 
-        robot.BackRight.setPower((-turn + -strafe +drive));
+        robot.BackRight.setPower((turn + strafe -drive));
         robot.BackLeft.setPower((turn - strafe - drive));
         robot.FrontRight.setPower((-turn - strafe - drive));
-        robot.FrontLeft.setPower((turn + -strafe+ drive));
+        robot.FrontLeft.setPower((-turn + strafe - drive));
         robot.Glyphter.setPower(-glyph);
         robot.relicArm.setPower(-relic /2);
 
