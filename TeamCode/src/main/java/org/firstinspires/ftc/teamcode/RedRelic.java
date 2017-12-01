@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -45,9 +46,11 @@ public class RedRelic extends LinearVisionOpMode {
 
         rotation.enableAutoRotate();
         robot.ResetDriveEncoders();
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addLine("Initialization: Success");
-
-
 
         waitForStart();
 

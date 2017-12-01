@@ -70,17 +70,20 @@ public class Robot {
         relicSmall = hardwareMap.servo.get("B4");
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        Glyphter.setDirection(DcMotorSimple.Direction.REVERSE);
         bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
         Touch = hardwareMap.touchSensor.get("Touch");
+
+
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         Jeweler1.setPosition(RobotConstants.Jeweler1_Up);
-        SqueezerL.setPosition(.79);
-        SqueezerR.setPosition(.21);
-        relicBig.setPosition(.15);
-        GTR.setPower(0);
-        GTL.setPower(0);
-        GBR.setPower(0);
-        GBL.setPower(0);
+        SqueezerL.setPosition(robotConstants.SqueezerL_Close);
+        SqueezerR.setPosition(robotConstants.SqueezerR_Close);
+        relicBig.setPosition(robotConstants.Big_Relic_Down);
+        GTR.setPower(robotConstants.Suckers_Stay);
+        GTL.setPower(robotConstants.Suckers_Stay);
+        GBR.setPower(robotConstants.Suckers_Stay);
+        GBL.setPower(robotConstants.Suckers_Stay);
 
 
 

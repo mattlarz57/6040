@@ -29,8 +29,8 @@ class RobotConstants {
     static final double Jeweler2_Left = 0;
     static final double Jeweler2_Middle = .5;
 
-    static final double Big_Relic_Up = .75;
-    static final double Big_Relic_Down = .24;
+    static final double Big_Relic_Up = 0;
+    static final double Big_Relic_Down = 1;
     static final double Small_Relic_Close = 1;
     static final double Small_Relic_Open = 0;
 

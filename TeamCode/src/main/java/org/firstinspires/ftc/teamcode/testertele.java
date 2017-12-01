@@ -34,7 +34,6 @@ public class testertele extends OpMode {
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;
-        double glyph = gamepad2.left_stick_y;
         double relic = gamepad2.right_stick_x;
         int touchpressed;
 
@@ -49,7 +48,6 @@ public class testertele extends OpMode {
         robot.BackLeft.setPower((turn - strafe - drive));
         robot.FrontRight.setPower((-turn - strafe - drive));
         robot.FrontLeft.setPower((-turn + strafe - drive));
-        robot.Glyphter.setPower(-glyph);
         robot.relicArm.setPower(-relic /2);
 
 
@@ -78,9 +76,7 @@ public class testertele extends OpMode {
         else if(gamepad1.dpad_right){
             robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
         }
-        else {
-            robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
-        }
+
 
         if(gamepad1.dpad_up){
             robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Up);
@@ -109,6 +105,15 @@ public class testertele extends OpMode {
         }
         else if (gamepad2.dpad_left){
             robot.relicSmall.setPosition(RobotConstants.Small_Relic_Open);
+        }
+        if(gamepad2.right_bumper){
+            robot.Glyphter.setPower(.75);
+        }
+        else if (gamepad2.left_bumper){
+            robot.Glyphter.setPower(-.75);
+        }
+        else{
+            robot.Glyphter.setPower(0);
         }
 
     }
