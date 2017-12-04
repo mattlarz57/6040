@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
@@ -33,16 +35,16 @@ public class Robot {
     public enum team {
         Red, Blue, NotSensed
     }
+
     RobotConstants robotConstants = new RobotConstants();
 
 
-
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
-    public Servo Jeweler1, Jeweler2, SqueezerR, SqueezerL, relicBig,relicSmall;
-    public CRServo GBR,GBL,GTR,GTL;
+    public Servo Jeweler1, Jeweler2, SqueezerR, SqueezerL, relicBig, relicSmall;
+    public CRServo GBR, GBL, GTR, GTL;
     public BNO055IMU bno055IMU;
     public TouchSensor Touch;
-
+    public ModernRoboticsI2cColorSensor Color;
 
 
     Telemetry t;
@@ -52,8 +54,8 @@ public class Robot {
 
         t = telemetry;
 
-        BackRight=hardwareMap.dcMotor.get("2a");
-        BackLeft= hardwareMap.dcMotor.get("2b");
+        BackRight = hardwareMap.dcMotor.get("2a");
+        BackLeft = hardwareMap.dcMotor.get("2b");
         FrontRight = hardwareMap.dcMotor.get("1a");
         FrontLeft = hardwareMap.dcMotor.get("1b");
         Glyphter = hardwareMap.dcMotor.get("3a");
@@ -71,8 +73,10 @@ public class Robot {
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
         Glyphter.setDirection(DcMotorSimple.Direction.REVERSE);
-        bno055IMU = hardwareMap.get(BNO055IMU.class,"IMU");
+        bno055IMU = hardwareMap.get(BNO055IMU.class, "IMU");
         Touch = hardwareMap.touchSensor.get("Touch");
+        Color = hardwareMap.get(ModernRoboticsI2cColorSensor.class,"Color");
+        Color.enableLed(true);
 
 
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
@@ -80,11 +84,11 @@ public class Robot {
         SqueezerL.setPosition(robotConstants.SqueezerL_Close);
         SqueezerR.setPosition(robotConstants.SqueezerR_Close);
         relicBig.setPosition(robotConstants.Big_Relic_Down);
+        relicSmall.setPosition(robotConstants.Small_Relic_Close);
         GTR.setPower(robotConstants.Suckers_Stay);
         GTL.setPower(robotConstants.Suckers_Stay);
         GBR.setPower(robotConstants.Suckers_Stay);
         GBL.setPower(robotConstants.Suckers_Stay);
-
 
 
         //SetParameters();
@@ -107,7 +111,7 @@ public class Robot {
     }
     */
 
-    public void SetParameters(){
+    public void SetParameters() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.i2cAddr = BNO055IMU.I2CADDR_DEFAULT;
@@ -161,7 +165,8 @@ public class Robot {
         }
         SetDrivePower(0);
     }
-    public void Backwards(double power, double centimeters){
+
+    public void Backwards(double power, double centimeters) {
         ResetDriveEncoders();
         double ticks = centimeters * robotConstants.Tickspercm;
         int BRPos = (BackRight.getCurrentPosition());
@@ -248,27 +253,26 @@ public class Robot {
         Orientation degrees;
         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         t.update();
-        return new double[]{degrees.firstAngle,degrees.secondAngle,degrees.thirdAngle};
+        return new double[]{degrees.firstAngle, degrees.secondAngle, degrees.thirdAngle};
     }
 
     public float getheading() {
         Orientation degrees;
         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
-        return (degrees.thirdAngle+180);
+        return (degrees.thirdAngle + 180);
     }
 
-    public void DegreeTurn(String Direction , double power, double degrees){
-        if (Direction == "Left"){
+    public void DegreeTurn(String Direction, double power, double degrees) {
+        if (Direction == "Left") {
             LeftTurn(power, degrees);
-        }
-        else if(Direction == "Right"){
-            RightTurn(power,degrees);
+        } else if (Direction == "Right") {
+            RightTurn(power, degrees);
         }
     }
 
-    private void LeftTurn(double power, double degrees){
-        while(getheading() > degrees-3){
+    private void LeftTurn(double power, double degrees) {
+        while (getheading() > degrees - 3) {
             BackRight.setPower(power);
             BackLeft.setPower(power);
             FrontRight.setPower(-power);
@@ -279,8 +283,8 @@ public class Robot {
     }
 
 
-    private void RightTurn(double power, double degrees){
-        while(getheading() <  degrees +3){
+    private void RightTurn(double power, double degrees) {
+        while (getheading() < degrees + 3) {
             BackRight.setPower(-power);
             BackLeft.setPower(-power);
             FrontRight.setPower(power);
@@ -290,8 +294,41 @@ public class Robot {
     }
 
 
+    public void WackJewel(team TeamColor) throws InterruptedException {
+        Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
+        Thread.sleep(100);
+        Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
+        Thread.sleep(1500);
 
+        if (TeamColor == team.Red) {
+            if (Color.blue() > Color.red() + 1) {
+                Jeweler2.setPosition(robotConstants.Jeweler2_Left);
+                Thread.sleep(250);
+                Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
+            } else if (Color.red() > Color.blue() + 1) {
+                Jeweler2.setPosition(robotConstants.Jeweler2_Right);
+
+            }
+            Jeweler1.setPosition(robotConstants.Jeweler1_Up);
+            Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
+
+        }
+        else if (TeamColor == team.Blue){
+            if (Color.blue() > Color.red() + 1) {
+                Jeweler2.setPosition(robotConstants.Jeweler2_Right);
+                Thread.sleep(250);
+                Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
+            } else if (Color.red() > Color.blue() + 1) {
+                Jeweler2.setPosition(robotConstants.Jeweler2_Left);
+
+            }
+            Jeweler1.setPosition(robotConstants.Jeweler1_Up);
+            Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
+        }
     }
+
+
+}
 
 
 

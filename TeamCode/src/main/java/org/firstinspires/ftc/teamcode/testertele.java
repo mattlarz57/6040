@@ -22,7 +22,7 @@ public class testertele extends OpMode {
     @Override
     public void init(){
        robot.initialize(hardwareMap,telemetry);
-        robot.SetParameters();
+        //robot.SetParameters();
 
 
 
@@ -106,10 +106,10 @@ public class testertele extends OpMode {
         else if (gamepad2.dpad_left){
             robot.relicSmall.setPosition(RobotConstants.Small_Relic_Open);
         }
-        if(gamepad2.right_bumper){
+        if(gamepad2.left_stick_y > .1){
             robot.Glyphter.setPower(.75);
         }
-        else if (gamepad2.left_bumper){
+        else if (gamepad2.left_stick_y < -.1){
             robot.Glyphter.setPower(-.75);
         }
         else{

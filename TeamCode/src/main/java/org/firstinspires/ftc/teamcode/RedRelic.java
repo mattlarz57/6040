@@ -40,7 +40,7 @@ public class RedRelic extends LinearVisionOpMode {
         enableExtension(Extensions.ROTATION);
         enableExtension(Extensions.CAMERA_CONTROL);
 
-        beacon.setAnalysisMethod(Beacon.AnalysisMethod.COMPLEX);
+        beacon.setAnalysisMethod(Beacon.AnalysisMethod.DEFAULT);
         beacon.setColorToleranceBlue(0);
         beacon.setColorToleranceRed(0);
 
@@ -144,7 +144,7 @@ public class RedRelic extends LinearVisionOpMode {
                     telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
                     telemetry.addData("Step: ", counter);
                     telemetry.update();
-                    counter = 3;
+                    counter = 999;
                 }
                 if (counter == 3){
                     telemetry.addData("heading: ",robot.getheading());
