@@ -48,7 +48,6 @@ public class RedPrimary extends LinearOpMode {
 
         while (opModeIsActive()) {
             RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
-            telemetry.addData("heading", robot.getheading());
             if(vumark == RelicRecoveryVuMark.LEFT){vumarkseen = 1;}
             else if(vumark == RelicRecoveryVuMark.CENTER){vumarkseen = 2;}
             else if(vumark == RelicRecoveryVuMark.RIGHT){vumarkseen = 3;}
@@ -59,25 +58,25 @@ public class RedPrimary extends LinearOpMode {
                 counter++;
             }
             if (counter == 2) {
-                robot.Move(-.5, 8);
+                robot.Move(-.5, 10);
                 sleep(500);
                 counter++;
             }
             if (counter == 3) {
 
                 if (vumarkseen == 1) {
-                    robot.Move(-.5,20);
+                    robot.Move(-.5,25);
                     sleep(500);
                     counter ++;
                 }
                 else if (vumarkseen == 2){
-                    robot.Move(-.5,40);
+                    robot.Move(-.5,45);
                     sleep(500);
                     counter ++;
                 }
                 else if (vumarkseen == 3){
 
-                    robot.Move(-.5,60);
+                    robot.Move(-.5,65);
                     sleep(500);
                     counter ++;
                 }
@@ -90,7 +89,20 @@ public class RedPrimary extends LinearOpMode {
                 counter ++;
             }
             if(counter == 5){
-
+                robot.Move(.5,10);
+                counter ++;
+            }
+            if(counter == 6){
+                robot.Suckers(RobotConstants.Suckers_Out);
+                sleep(250);
+                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
+                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
+                counter ++;
+            }
+            if( counter == 7){
+                robot.Move(-.5,10);
+                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
+                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
             }
 
 

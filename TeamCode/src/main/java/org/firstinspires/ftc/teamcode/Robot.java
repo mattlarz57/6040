@@ -353,6 +353,12 @@ public class Robot {
         }
 
     }
+    public void Suckers(double power){
+        GTR.setPower(power);
+        GBR.setPower(power);
+        GBL.setPower(power);
+        GTL.setPower(power);
+    }
 
 
 }
