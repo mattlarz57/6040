@@ -12,6 +12,7 @@ class RobotConstants {
     static final double in2cm = 2.54;
     static final double Tickspercm = (TicksPerRev * MotorGearRatio) / (WheelCircumfrence_in * in2cm);
     static final double Sidewaystickspercm = 1000000/(9*11*17*15.75*in2cm);
+    static final double cmPerDegree = (9.85*Math.PI)/90;
 
 
     static final double Suckers_In = 1;

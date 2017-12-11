@@ -29,7 +29,6 @@ public class RedPrimary extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry.addLine("Initialization: Loading...");
         robot.initialize(hardwareMap, telemetry);
-        robot.SetParameters();
         robot.ResetDriveEncoders();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -86,9 +85,12 @@ public class RedPrimary extends LinearOpMode {
             }
 
             if (counter == 4){
-              //  robot.DegreeTurn("Right",.5,270);
+              robot.EncoderTurn("CounterClockWise",.5,90);
                 sleep(500);
                 counter ++;
+            }
+            if(counter == 5){
+
             }
 
 

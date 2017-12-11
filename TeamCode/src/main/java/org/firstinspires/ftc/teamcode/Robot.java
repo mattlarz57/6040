@@ -45,6 +45,7 @@ public class Robot {
     public BNO055IMU bno055IMU;
     public TouchSensor Touch;
     public ModernRoboticsI2cColorSensor Color;
+    public ModernRoboticsI2cGyro Gyro;
 
 
     Telemetry t;
@@ -73,10 +74,11 @@ public class Robot {
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
         Glyphter.setDirection(DcMotorSimple.Direction.REVERSE);
-        bno055IMU = hardwareMap.get(BNO055IMU.class, "IMU");
+        //bno055IMU = hardwareMap.get(BNO055IMU.class, "IMU");
         Touch = hardwareMap.touchSensor.get("Touch");
         Color = hardwareMap.get(ModernRoboticsI2cColorSensor.class,"Color");
         Color.enableLed(true);
+
 
 
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
@@ -217,31 +219,52 @@ public class Robot {
         SetDrivePower(0);
     }
 
+    public void EncoderTurn(String Direction , double power, double degrees ){
+        ResetDriveEncoders();
+        double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
+        if(Direction == "CounterClockWise"){
+            int BRPos = Math.abs(BackRight.getCurrentPosition());
+            int BLPos = Math.abs(BackLeft.getCurrentPosition());
+            int FRPos = Math.abs(FrontRight.getCurrentPosition());
+            int FLPos = Math.abs(FrontLeft.getCurrentPosition());
+            int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
 
-    public void GyroTurn(String direction, double power, double degrees) {
-       if (direction == "ClockWise") {
-           while (getheading() < degrees - 3) {
-               BackRight.setPower(-power);
-               BackLeft.setPower(power);
-               FrontRight.setPower(-power);
-               FrontLeft.setPower(power);
+            while(avg < ticks){
+                BackRight.setPower(-power);
+                BackLeft.setPower(-power);
+                FrontRight.setPower(power);
+                FrontLeft.setPower(power);
+                BRPos = Math.abs(BackRight.getCurrentPosition());
+                BLPos = Math.abs(BackLeft.getCurrentPosition());
+                FRPos = Math.abs(FrontRight.getCurrentPosition());
+                FLPos = Math.abs(FrontLeft.getCurrentPosition());
+                avg = (BRPos + BLPos + FRPos + FLPos) / 4;
+            }
+            SetDrivePower(0);
 
-           }
-           SetDrivePower(0);
+        }
+        else if (Direction == "ClockWise"){
+            int BRPos = Math.abs(BackRight.getCurrentPosition());
+            int BLPos = Math.abs(BackLeft.getCurrentPosition());
+            int FRPos = Math.abs(FrontRight.getCurrentPosition());
+            int FLPos = Math.abs(FrontLeft.getCurrentPosition());
+            int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
 
-       } else if (direction == "CounterClockWise") {
-           while (getheading() > degrees + 3) {
-               BackRight.setPower(power);
-               BackLeft.setPower(-power);
-               FrontRight.setPower(power);
-               FrontLeft.setPower(-power);
+            while(avg< ticks){
+                BackRight.setPower(power);
+                BackLeft.setPower(power);
+                FrontRight.setPower(-power);
+                FrontLeft.setPower(-power);
+                BRPos = Math.abs(BackRight.getCurrentPosition());
+                BLPos = Math.abs(BackLeft.getCurrentPosition());
+                FRPos = Math.abs(FrontRight.getCurrentPosition());
+                FLPos = Math.abs(FrontLeft.getCurrentPosition());
+                avg = (BRPos + BLPos + FRPos + FLPos) / 4;
+            }
+            SetDrivePower(0);
+        }
 
-           }
-           SetDrivePower(0);
-       }
-
-
-   }
+    }
 
 
     public double[] getorientaion() {
@@ -256,6 +279,12 @@ public class Robot {
         return (degrees.thirdAngle + 180);
 
     }
+    public double[] gyroOrientation() {
+        Orientation degrees;
+        degrees = Gyro.getAngularOrientation(AxesReference.INTRINSIC,AxesOrder.XYZ,AngleUnit.DEGREES);
+        return new double []{degrees.firstAngle,degrees.secondAngle,degrees.thirdAngle};
+    }
+
 
     public void DegreeTurn(String Direction, double power, double degrees) {
         if (Direction == "Left") {
