@@ -11,7 +11,7 @@ public class RedWack extends LinearOpMode {
 
     Robot robot = new Robot();
     int counter = 0;
-    Robot.team Team = Robot.team.Red;
+    Robot.team TeamColor = Robot.team.Red;
     public void runOpMode() throws InterruptedException{
         robot.initialize(hardwareMap,telemetry);
 
@@ -23,14 +23,12 @@ public class RedWack extends LinearOpMode {
         counter =1;
 
         if(counter == 1){
-            robot.WackJewel(Team);
-            sleep(3000);
+            robot.WackJewel(TeamColor);
+            sleep(1000);
             counter =2;
         }
         if(counter == 2){
-            robot.SetDrivePower(-.5);
-            sleep(1000);
-            robot.SetDrivePower(0);
+            robot.Move(-.5,38);
             counter = 3;
         }
 

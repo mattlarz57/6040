@@ -218,49 +218,43 @@ public class Robot {
     }
 
 
-   /* public void GyroTurn(String direction, double power, double degrees, Telemetry telemetry) {
-       telemetry.addData("Heading", robot.getheading());
+    public void GyroTurn(String direction, double power, double degrees) {
        if (direction == "ClockWise") {
-           while (robot.getheading() < degrees - 3) {
+           while (getheading() < degrees - 3) {
                BackRight.setPower(-power);
                BackLeft.setPower(power);
                FrontRight.setPower(-power);
                FrontLeft.setPower(power);
-               telemetry.addData("Heading", robot.getheading());
 
            }
            SetDrivePower(0);
-           Gyro.calibrate();
-       } else if (direction == "CounterClockWise") {
 
-           while (robot.getheading() > degrees + 3) {
+       } else if (direction == "CounterClockWise") {
+           while (getheading() > degrees + 3) {
                BackRight.setPower(power);
                BackLeft.setPower(-power);
                FrontRight.setPower(power);
                FrontLeft.setPower(-power);
-               telemetry.addData("Heading", robot.getheading());
 
            }
            SetDrivePower(0);
-           Gyro.calibrate();
        }
 
 
    }
-   */
+
 
     public double[] getorientaion() {
         Orientation degrees;
         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        t.update();
         return new double[]{degrees.firstAngle, degrees.secondAngle, degrees.thirdAngle};
     }
 
     public float getheading() {
         Orientation degrees;
         degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
         return (degrees.thirdAngle + 180);
+
     }
 
     public void DegreeTurn(String Direction, double power, double degrees) {
@@ -272,11 +266,13 @@ public class Robot {
     }
 
     private void LeftTurn(double power, double degrees) {
-        while (getheading() > degrees - 3) {
+        double curr = getheading();
+        while (curr > degrees + 3) {
             BackRight.setPower(power);
             BackLeft.setPower(power);
             FrontRight.setPower(-power);
             FrontLeft.setPower(-power);
+            curr = getheading();
         }
         SetDrivePower(0);
 
@@ -284,11 +280,13 @@ public class Robot {
 
 
     private void RightTurn(double power, double degrees) {
-        while (getheading() < degrees + 3) {
+        double curr = getheading();
+        while (curr < degrees - 3) {
             BackRight.setPower(-power);
             BackLeft.setPower(-power);
             FrontRight.setPower(power);
             FrontLeft.setPower(power);
+            curr = getheading();
         }
         SetDrivePower(0);
     }
@@ -296,35 +294,35 @@ public class Robot {
 
     public void WackJewel(team TeamColor) throws InterruptedException {
         Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
-        Thread.sleep(100);
+        Thread.sleep(700);
         Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
-        Thread.sleep(1500);
+        Thread.sleep(2500);
 
-        if (TeamColor == team.Red) {
+        if (TeamColor == team.Blue) {
             if (Color.blue() > Color.red() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(250);
-                Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
+                Thread.sleep(4000);
             } else if (Color.red() > Color.blue() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-
+                Thread.sleep(4000);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
-
+            Thread.sleep(1000);
+            Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
-        else if (TeamColor == team.Blue){
+        else if (TeamColor == team.Red){
             if (Color.blue() > Color.red() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(250);
-                Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
+                Thread.sleep(4000);
             } else if (Color.red() > Color.blue() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-
+                Thread.sleep(4000);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Jeweler2.setPosition(robotConstants.Jeweler2_Middle);
+            Thread.sleep(1000);
+            Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
+
     }
 
 

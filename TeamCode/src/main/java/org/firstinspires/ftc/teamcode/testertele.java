@@ -29,8 +29,8 @@ public class testertele extends OpMode {
     }
     @Override
     public void loop(){ //this is what happens when you press the play button
-        telemetry.addData("Heading:",robot.getheading());
-        //telemetry.addLine("X,Y,Z:"+Math.round(robot.getorientaion()[0]) + "," +Math.round(robot.getorientaion()[1]) + "," +Math.round(robot.getorientaion()[2]));
+        telemetry.addLine("Heading:" + robot.getheading());
+        telemetry.addLine("X,Y,Z:"+Math.round(robot.getorientaion()[0]) + "," +Math.round(robot.getorientaion()[1]) + "," +Math.round(robot.getorientaion()[2]));
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;

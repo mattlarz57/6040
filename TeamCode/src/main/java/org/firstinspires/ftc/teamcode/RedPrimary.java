@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -15,10 +18,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(group = "Final")
 public class RedPrimary extends LinearOpMode {
     Robot robot = new Robot();
-    int counter = -1;
+    int counter;
     VuforiaLocalizer vuforia;
     int vumarkseen;
     Robot.team TeamColor = Robot.team.Red;
+
 
 
     @Override
@@ -36,6 +40,8 @@ public class RedPrimary extends LinearOpMode {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTrackables.activate();
 
+
+
         telemetry.addLine("Initialization: Success");
         counter = 1;
 
@@ -43,40 +49,44 @@ public class RedPrimary extends LinearOpMode {
 
         while (opModeIsActive()) {
             RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
-            if(vumark == RelicRecoveryVuMark.LEFT){vumarkseen =1;}
+            telemetry.addData("heading", robot.getheading());
+            if(vumark == RelicRecoveryVuMark.LEFT){vumarkseen = 1;}
             else if(vumark == RelicRecoveryVuMark.CENTER){vumarkseen = 2;}
-            else if(vumark == RelicRecoveryVuMark.RIGHT){vumarkseen =3;}
+            else if(vumark == RelicRecoveryVuMark.RIGHT){vumarkseen = 3;}
 
             if (counter == 1) {
                 robot.WackJewel(TeamColor);
-                sleep(500);
+                sleep(1000);
                 counter++;
             }
             if (counter == 2) {
-                robot.Move(.5, 37);
+                robot.Move(-.5, 8);
                 sleep(500);
                 counter++;
             }
             if (counter == 3) {
 
-                switch (vumarkseen){
-                    case(1):
-                        robot.Move(.5,40);
-                        sleep(500);
-                        counter ++;
-
-                    case(2):
-                        robot.Move(.5,60);
-                        sleep(500);
-                        counter ++;
-                    case(3):
-                        robot.Move(.5,60);
-                        sleep(500);
-                        counter ++;
+                if (vumarkseen == 1) {
+                    robot.Move(-.5,20);
+                    sleep(500);
+                    counter ++;
                 }
+                else if (vumarkseen == 2){
+                    robot.Move(-.5,40);
+                    sleep(500);
+                    counter ++;
+                }
+                else if (vumarkseen == 3){
+
+                    robot.Move(-.5,60);
+                    sleep(500);
+                    counter ++;
+                }
+
             }
+
             if (counter == 4){
-                robot.DegreeTurn("Right",.5,270);
+              //  robot.DegreeTurn("Right",.5,270);
                 sleep(500);
                 counter ++;
             }
