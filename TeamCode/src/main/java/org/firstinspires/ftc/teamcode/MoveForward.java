@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 /**
  * Created by user on 11/30/17.
  */
-@Autonomous
 public class MoveForward extends LinearOpMode {
 
 

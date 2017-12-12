@@ -54,31 +54,29 @@ public class RedPrimary extends LinearOpMode {
 
             if (counter == 1) {
                 robot.WackJewel(TeamColor);
-                sleep(1000);
                 counter++;
             }
             if (counter == 2) {
                 robot.Move(-.5, 10);
-                sleep(500);
                 counter++;
             }
             if (counter == 3) {
 
                 if (vumarkseen == 1) {
                     robot.Move(-.5,25);
-                    sleep(500);
-                    counter ++;
+                    sleep(300);
+                    counter = 4;
                 }
                 else if (vumarkseen == 2){
                     robot.Move(-.5,45);
-                    sleep(500);
-                    counter ++;
+                    sleep(300);
+                    counter = 4;
                 }
                 else if (vumarkseen == 3){
 
-                    robot.Move(-.5,65);
-                    sleep(500);
-                    counter ++;
+                    robot.Move(-.5,60);
+                    sleep(300);
+                    counter = 4;
                 }
 
             }
@@ -100,11 +98,50 @@ public class RedPrimary extends LinearOpMode {
                 counter ++;
             }
             if( counter == 7){
-                robot.Move(-.5,10);
+                robot.Move(-.5,20);
+                robot.Suckers(RobotConstants.Suckers_Stay);
+                counter ++;
+            }
+            if(counter == 8){
+                robot.EncoderTurn("ClockWise",1,180);
+                sleep(1500);
+                counter ++;
+            }
+            if(counter == 9){
+                robot.Suckers(RobotConstants.Suckers_In);
+                counter ++;
+            }
+            if(counter == 10){
+                robot.Move(1,100);
+                counter ++;
+            }
+            if(counter == 11){
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
+                counter ++;
             }
-
+            if (counter == 12) {
+                robot.Move(-1,100);
+                counter ++;
+            }
+            if(counter == 13){
+                robot.EncoderTurn("CounterClockWise",1,180);
+                sleep(1500);
+                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
+                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
+                counter ++;
+            }
+            if(counter == 14){
+                robot.Move(1,20);
+                counter ++;
+            }
+            if(counter == 15){
+                robot.Suckers(RobotConstants.Suckers_Out);
+                counter ++;
+            }
+            if(counter == 16){
+                robot.Move(-1,10);
+            }
 
         }
 

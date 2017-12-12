@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 /**
  * Created by user on 12/02/17.
  */
-@Autonomous
 public class RedWack extends LinearOpMode {
 
     Robot robot = new Robot();

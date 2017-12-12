@@ -18,7 +18,6 @@ import org.opencv.core.Size;
  * Created by user on 2017-11-04.
  */
 
-@Autonomous
 public class RedRelic extends LinearVisionOpMode {
 
     Robot robot = new Robot();
@@ -84,7 +83,6 @@ public class RedRelic extends LinearVisionOpMode {
 
             relicTrackables.activate();
             counter = 1;
-            telemetry.addData("heading: ",robot.getheading());
             telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
             telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
             telemetry.addData("Step: ", counter);
@@ -131,7 +129,6 @@ public class RedRelic extends LinearVisionOpMode {
 
                 }
                 if (counter == 2){
-                    telemetry.addData("heading: ",robot.getheading());
                     telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
                     telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
                     telemetry.addData("Step: ", counter);
@@ -139,7 +136,6 @@ public class RedRelic extends LinearVisionOpMode {
                     robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Up);
                     robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
                     sleep(2500);
-                    telemetry.addData("heading: ",robot.getheading());
                     telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
                     telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
                     telemetry.addData("Step: ", counter);
@@ -147,14 +143,12 @@ public class RedRelic extends LinearVisionOpMode {
                     counter = 999;
                 }
                 if (counter == 3){
-                    telemetry.addData("heading: ",robot.getheading());
                     telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition()   ));//+ robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
                     telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
                     telemetry.addData("Step: ", counter);
                     telemetry.update();
                     robot.Backwards(.01,-.1);
                     sleep(1000);
-                    telemetry.addData("heading: ",robot.getheading());
                     telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition()   )); //+ robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
                     telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
                     telemetry.addData("Step: ", counter);
@@ -164,7 +158,6 @@ public class RedRelic extends LinearVisionOpMode {
                 }
 
                 if(counter == 4){
-                    telemetry.addData("heading: ",robot.getheading());
                     telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
                     telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
                     telemetry.addData("Step: ", counter);
@@ -187,13 +180,11 @@ public class RedRelic extends LinearVisionOpMode {
                 }
 
                 if(counter == 5){
-                    telemetry.addData("heading: ",robot.getheading());
                     telemetry.addData("AveragePos: ",(robot.FrontLeft.getCurrentPosition() + robot.FrontRight.getCurrentPosition()+robot.BackRight.getCurrentPosition()+robot.BackLeft.getCurrentPosition())/4);
                     telemetry.addData("VuMark: 1=R,2=C,3=L ",vuMarkSeen);
                     telemetry.addData("Step: ", counter);
                     telemetry.update();
                     robot.Sideways("Right",.5,15);
-                    robot.DegreeTurn("CounterClockWise",.75,90);
                 }
 
 

@@ -267,88 +267,35 @@ public class Robot {
     }
 
 
-    public double[] getorientaion() {
-        Orientation degrees;
-        degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        return new double[]{degrees.firstAngle, degrees.secondAngle, degrees.thirdAngle};
-    }
-
-    public float getheading() {
-        Orientation degrees;
-        degrees = bno055IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        return (degrees.thirdAngle + 180);
-
-    }
-    public double[] gyroOrientation() {
-        Orientation degrees;
-        degrees = Gyro.getAngularOrientation(AxesReference.INTRINSIC,AxesOrder.XYZ,AngleUnit.DEGREES);
-        return new double []{degrees.firstAngle,degrees.secondAngle,degrees.thirdAngle};
-    }
-
-
-    public void DegreeTurn(String Direction, double power, double degrees) {
-        if (Direction == "Left") {
-            LeftTurn(power, degrees);
-        } else if (Direction == "Right") {
-            RightTurn(power, degrees);
-        }
-    }
-
-    private void LeftTurn(double power, double degrees) {
-        double curr = getheading();
-        while (curr > degrees + 3) {
-            BackRight.setPower(power);
-            BackLeft.setPower(power);
-            FrontRight.setPower(-power);
-            FrontLeft.setPower(-power);
-            curr = getheading();
-        }
-        SetDrivePower(0);
-
-    }
-
-
-    private void RightTurn(double power, double degrees) {
-        double curr = getheading();
-        while (curr < degrees - 3) {
-            BackRight.setPower(-power);
-            BackLeft.setPower(-power);
-            FrontRight.setPower(power);
-            FrontLeft.setPower(power);
-            curr = getheading();
-        }
-        SetDrivePower(0);
-    }
-
 
     public void WackJewel(team TeamColor) throws InterruptedException {
         Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
-        Thread.sleep(700);
+        Thread.sleep(775);
         Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
-        Thread.sleep(2500);
+        Thread.sleep(1500);
 
         if (TeamColor == team.Blue) {
             if (Color.blue() > Color.red() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(4000);
+                Thread.sleep(200);
             } else if (Color.red() > Color.blue() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(4000);
+                Thread.sleep(200);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Thread.sleep(1000);
+            Thread.sleep(100);
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
         else if (TeamColor == team.Red){
             if (Color.blue() > Color.red() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(4000);
+                Thread.sleep(200);
             } else if (Color.red() > Color.blue() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(4000);
+                Thread.sleep(200);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Thread.sleep(1000);
+            Thread.sleep(100);
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
 

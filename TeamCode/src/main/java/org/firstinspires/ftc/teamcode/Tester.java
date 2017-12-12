@@ -64,7 +64,6 @@ public class Tester extends LinearOpMode {
         while(opModeIsActive()) {
 
             RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
-            telemetry.addLine("heading "+ Math.round(robot.getheading()));
             telemetry.addData("Time Elapsed: ", Math.round(getRuntime()-startruntime));
             telemetry.addData("VuMark", vumark);
 

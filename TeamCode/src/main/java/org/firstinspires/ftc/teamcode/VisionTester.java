@@ -61,7 +61,6 @@ public class VisionTester extends LinearVisionOpMode {
 
 
         while(!(beacon.getAnalysis().isBeaconFound())) {
-            telemetry.addLine("heading " + Math.round(robot.getheading()));
             telemetry.addData("Time Elapsed: ", Math.round(getRuntime() - startruntime));
             telemetry.addLine("Beacon: Searching");
             telemetry.update();
@@ -89,7 +88,6 @@ public class VisionTester extends LinearVisionOpMode {
 
                 telemetry.addData("Vumark:", vumark);
                 telemetry.addLine("Jewel Orientation:" + Jewels);
-                telemetry.addLine("heading " + Math.round(robot.getheading()));
                 telemetry.addData("Time Elapsed: ", Math.round(getRuntime() - startruntime));
                 telemetry.update();
 
