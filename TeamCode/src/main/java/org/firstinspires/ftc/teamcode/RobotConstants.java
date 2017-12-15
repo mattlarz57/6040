@@ -25,10 +25,10 @@ class RobotConstants {
     static final double SqueezerL_Close = .73;
 
     static final double Jeweler1_Down = .01;
-    static final double Jeweler1_Up = .05;
+    static final double Jeweler1_Up = .045;
     static final double Jeweler2_Right = 1;
     static final double Jeweler2_Left = 0;
-    static final double Jeweler2_Middle = .6;
+    static final double Jeweler2_Middle = .55;
 
     static final double Big_Relic_Up = 0;
     static final double Big_Relic_Down = 1;

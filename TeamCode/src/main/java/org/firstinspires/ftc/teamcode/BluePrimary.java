@@ -4,29 +4,28 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
- * Created by user on 12/05/17.
+ * Created by user on 12/13/17.
  */
 @Autonomous(group = "Final")
-public class RedPrimary extends LinearOpMode {
+public class BluePrimary extends LinearOpMode {
     Robot robot = new Robot();
+    RobotConstants robotConstants = new RobotConstants();
     int counter;
     VuforiaLocalizer vuforia;
     int vumarkseen;
-    Robot.team TeamColor = Robot.team.Red;
+    Robot.team TeamColor = Robot.team.Blue;
+
 
 
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() throws InterruptedException{
         telemetry.addLine("Initialization: Loading...");
         robot.initialize(hardwareMap, telemetry);
         robot.ResetDriveEncoders();
@@ -46,6 +45,7 @@ public class RedPrimary extends LinearOpMode {
 
         waitForStart();
 
+
         while (opModeIsActive()) {
             RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
             if(vumark == RelicRecoveryVuMark.LEFT){vumarkseen = 1;}
@@ -54,29 +54,27 @@ public class RedPrimary extends LinearOpMode {
 
             if (counter == 1) {
                 robot.WackJewel(TeamColor);
-
-               counter++;
+                counter++;
             }
-
             if (counter == 2) {
-                robot.Move(-.25, 10);
+                robot.Move(.25, 10);
                 counter++;
             }
             if (counter == 3) {
 
-                if (vumarkseen == 1) { //Left
-                    robot.Move(-.25,52);
+                if (vumarkseen == 1) {
+                    robot.Move(.25,20);
                     sleep(300);
                     counter = 4;
                 }
-                else if (vumarkseen == 2){ //center
-                    robot.Move(-.25,35);
+                else if (vumarkseen == 2){
+                    robot.Move(.25,40);
                     sleep(300);
                     counter = 4;
                 }
-                else if (vumarkseen == 3){ //Right
+                else if (vumarkseen == 3){
 
-                    robot.Move(-.25,25);
+                    robot.Move(.25,60);
                     sleep(300);
                     counter = 4;
                 }
@@ -84,7 +82,7 @@ public class RedPrimary extends LinearOpMode {
             }
 
             if (counter == 4){
-              robot.EncoderTurn("CounterClockWise",.3,100);// we made the turn 100 so that it goes in at an angle , seemed to be more consistantly in rather than straight on at 90 degrees
+                robot.EncoderTurn("CounterClockWise",.3,90);
                 sleep(500);
                 counter ++;
             }
@@ -114,19 +112,19 @@ public class RedPrimary extends LinearOpMode {
                 robot.Suckers(RobotConstants.Suckers_Stay);
                 counter ++;
             }
-/*
+
+            /*
             if(counter == 8){
-                robot.EncoderTurn("CounterClockWise",.5,180);
-                sleep(1500);
+                robot.EncoderTurn("ClockWise",1,180);
+                sleep(2000);
                 counter ++;
             }
-
             if(counter == 9){
                 robot.Suckers(RobotConstants.Suckers_In);
                 counter ++;
             }
             if(counter == 10){
-                robot.Move(1,60);
+                robot.Move(1,100);
                 counter ++;
             }
             if(counter == 11){
@@ -135,18 +133,18 @@ public class RedPrimary extends LinearOpMode {
                 counter ++;
             }
             if (counter == 12) {
-                robot.Move(-1,60);
+                robot.Move(-1,100);
                 counter ++;
             }
             if(counter == 13){
                 robot.EncoderTurn("CounterClockWise",1,180);
-                sleep(1500);
+                sleep(2000);
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
                 counter ++;
             }
             if(counter == 14){
-                robot.Move(.5,20);
+                robot.Move(1,20);
                 counter ++;
             }
             if(counter == 15){
@@ -156,9 +154,10 @@ public class RedPrimary extends LinearOpMode {
             if(counter == 16){
                 robot.Move(-1,10);
             }
-*/
-        }
-        if (counter == 10){ //with this here, the program doesnt crash at the end of 30 seconds, it just ends with no errors or issues
+            */
+            if(counter == 10){
+
+            }
 
         }
 

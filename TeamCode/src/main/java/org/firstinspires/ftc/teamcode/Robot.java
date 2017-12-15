@@ -219,8 +219,9 @@ public class Robot {
         SetDrivePower(0);
     }
 
-    public void EncoderTurn(String Direction , double power, double degrees ){
+    public void EncoderTurn(String Direction , double power, double degrees ) throws InterruptedException{
         ResetDriveEncoders();
+        Thread.sleep(150);
         double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
         if(Direction == "CounterClockWise"){
             int BRPos = Math.abs(BackRight.getCurrentPosition());
@@ -250,7 +251,7 @@ public class Robot {
             int FLPos = Math.abs(FrontLeft.getCurrentPosition());
             int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
 
-            while(avg< ticks){
+            while(avg < ticks){
                 BackRight.setPower(power);
                 BackLeft.setPower(power);
                 FrontRight.setPower(-power);
@@ -272,30 +273,30 @@ public class Robot {
         Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
         Thread.sleep(775);
         Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
-        Thread.sleep(1500);
+        Thread.sleep(2000);
 
         if (TeamColor == team.Blue) {
             if (Color.blue() > Color.red() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(200);
+                Thread.sleep(500);
             } else if (Color.red() > Color.blue() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(200);
+                Thread.sleep(500);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Thread.sleep(100);
+            Thread.sleep(400);
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
         else if (TeamColor == team.Red){
             if (Color.blue() > Color.red() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(200);
+                Thread.sleep(500);
             } else if (Color.red() > Color.blue() + 1) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(200);
+                Thread.sleep(500);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Thread.sleep(100);
+            Thread.sleep(400);
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
 

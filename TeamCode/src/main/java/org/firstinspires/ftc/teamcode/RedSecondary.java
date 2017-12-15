@@ -4,19 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
- * Created by user on 12/05/17.
+ * Created by user on 12/13/17.
  */
 @Autonomous(group = "Final")
-public class RedPrimary extends LinearOpMode {
+public class RedSecondary extends LinearOpMode {
+
     Robot robot = new Robot();
     int counter;
     VuforiaLocalizer vuforia;
@@ -40,127 +38,92 @@ public class RedPrimary extends LinearOpMode {
         relicTrackables.activate();
 
 
-
         telemetry.addLine("Initialization: Success");
         counter = 1;
 
-        waitForStart();
 
+        waitForStart();
         while (opModeIsActive()) {
             RelicRecoveryVuMark vumark = RelicRecoveryVuMark.from(relicTemplate);
-            if(vumark == RelicRecoveryVuMark.LEFT){vumarkseen = 1;}
-            else if(vumark == RelicRecoveryVuMark.CENTER){vumarkseen = 2;}
-            else if(vumark == RelicRecoveryVuMark.RIGHT){vumarkseen = 3;}
+            if (vumark == RelicRecoveryVuMark.LEFT) {
+                vumarkseen = 1;
+            } else if (vumark == RelicRecoveryVuMark.CENTER) {
+                vumarkseen = 2;
+            } else if (vumark == RelicRecoveryVuMark.RIGHT) {
+                vumarkseen = 3;
+            }
 
             if (counter == 1) {
                 robot.WackJewel(TeamColor);
-
-               counter++;
+                counter++;
             }
-
             if (counter == 2) {
+                robot.Move(-.25, 10);
+                counter= 99;
+            }
+            if (counter == 99){
+                telemetry.addData("Vumark Seen",vumarkseen);
+                counter =3;
+            }
+            if (counter == 3) {
                 robot.Move(-.25, 10);
                 counter++;
             }
-            if (counter == 3) {
-
-                if (vumarkseen == 1) { //Left
-                    robot.Move(-.25,52);
-                    sleep(300);
-                    counter = 4;
-                }
-                else if (vumarkseen == 2){ //center
-                    robot.Move(-.25,35);
-                    sleep(300);
-                    counter = 4;
-                }
-                else if (vumarkseen == 3){ //Right
-
-                    robot.Move(-.25,25);
-                    sleep(300);
-                    counter = 4;
-                }
-
-            }
-
-            if (counter == 4){
-              robot.EncoderTurn("CounterClockWise",.3,100);// we made the turn 100 so that it goes in at an angle , seemed to be more consistantly in rather than straight on at 90 degrees
+            if (counter == 4) {
+                robot.EncoderTurn("ClockWise", .3, 90);
                 sleep(500);
-                counter ++;
+                counter++;
             }
-            if(counter == 5){
-                robot.Move(.25,10);
-                counter ++;
+            if (counter == 5) {
+                if (vumarkseen == 1) {
+                    robot.Move(.25, 45);
+                    sleep(300);
+                    counter = 6;
+                } else if (vumarkseen == 2) {
+                    robot.Move(.25, 25);
+                    sleep(300);
+                    counter = 6;
+                } else if (vumarkseen == 3) {
+
+                    robot.Move(.25, 5);
+                    sleep(300);
+                    counter = 6;
+                }
             }
-            if(counter == 6){
+            if (counter == 6) {
+                robot.EncoderTurn("ClockWise", .3, 90);
+                counter++;
+            }
+            if (counter == 7) {
+                robot.Move(.25, 10);
+                counter++;
+            }
+            if (counter == 8) {
                 robot.Suckers(RobotConstants.Suckers_Out);
                 sleep(250);
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
-                counter ++;
+                counter++;
             }
-            if( counter == 7){
+            if( counter == 9){
                 robot.Move(-.25,20);
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
                 counter ++;
             }
-            if(counter == 8){
+            if(counter == 10){
                 robot.Move(.25,10);
                 counter ++;
             }
-            if( counter == 9){
+            if( counter == 11){
                 robot.Move(-.25,20);
                 robot.Suckers(RobotConstants.Suckers_Stay);
                 counter ++;
             }
-/*
-            if(counter == 8){
-                robot.EncoderTurn("CounterClockWise",.5,180);
-                sleep(1500);
-                counter ++;
-            }
+            if (counter==12){
 
-            if(counter == 9){
-                robot.Suckers(RobotConstants.Suckers_In);
-                counter ++;
             }
-            if(counter == 10){
-                robot.Move(1,60);
-                counter ++;
-            }
-            if(counter == 11){
-                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
-                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
-                counter ++;
-            }
-            if (counter == 12) {
-                robot.Move(-1,60);
-                counter ++;
-            }
-            if(counter == 13){
-                robot.EncoderTurn("CounterClockWise",1,180);
-                sleep(1500);
-                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
-                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
-                counter ++;
-            }
-            if(counter == 14){
-                robot.Move(.5,20);
-                counter ++;
-            }
-            if(counter == 15){
-                robot.Suckers(RobotConstants.Suckers_Out);
-                counter ++;
-            }
-            if(counter == 16){
-                robot.Move(-1,10);
-            }
-*/
-        }
-        if (counter == 10){ //with this here, the program doesnt crash at the end of 30 seconds, it just ends with no errors or issues
 
         }
-
     }
 }
