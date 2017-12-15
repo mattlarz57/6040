@@ -57,7 +57,7 @@ public class BluePrimary extends LinearOpMode {
                 counter++;
             }
             if (counter == 2) {
-                robot.Move(.25, 10);
+                robot.Move(.1, 10);
                 counter++;
             }
             if (counter == 3) {
@@ -68,13 +68,13 @@ public class BluePrimary extends LinearOpMode {
                     counter = 4;
                 }
                 else if (vumarkseen == 2){
-                    robot.Move(.25,40);
+                    robot.Move(.25,35);
                     sleep(300);
                     counter = 4;
                 }
                 else if (vumarkseen == 3){
 
-                    robot.Move(.25,60);
+                    robot.Move(.25,50);
                     sleep(300);
                     counter = 4;
                 }
@@ -88,6 +88,7 @@ public class BluePrimary extends LinearOpMode {
             }
             if(counter == 5){
                 robot.Move(.25,10);
+                sleep(500);
                 counter ++;
             }
             if(counter == 6){
@@ -98,18 +99,20 @@ public class BluePrimary extends LinearOpMode {
                 counter ++;
             }
             if( counter == 7){
-                robot.Move(-.25,20);
-                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
-                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
+                robot.Move(-.25,7);
+                robot.Suckers(RobotConstants.Suckers_Stay);
+                sleep(500);
                 counter ++;
             }
             if(counter == 8){
                 robot.Move(.25,10);
+                sleep(500);
                 counter ++;
             }
             if( counter == 9){
-                robot.Move(-.25,20);
+                robot.Move(-.25,10);
                 robot.Suckers(RobotConstants.Suckers_Stay);
+                sleep(500);
                 counter ++;
             }
 
@@ -155,11 +158,11 @@ public class BluePrimary extends LinearOpMode {
                 robot.Move(-1,10);
             }
             */
-            if(counter == 10){
 
-            }
 
         }
+        if(counter == 10){
 
+        }
     }
 }

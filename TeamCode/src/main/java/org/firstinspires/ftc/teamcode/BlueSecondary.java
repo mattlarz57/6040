@@ -53,47 +53,48 @@ public class BlueSecondary extends LinearOpMode {
 
             if (counter == 1) {
                 robot.WackJewel(TeamColor);
+                sleep(300);
                 counter++;
             }
             if (counter == 2) {
                 robot.Move(.25, 10);
-                counter = 99;
-            }
-            if (counter == 99) {
-                telemetry.addData("Vumark Seen", vumarkseen);
-                counter = 3;
+                sleep(500);
+                counter ++;
             }
             if (counter == 3) {
                 robot.Move(.25, 10);
+                sleep(500);
                 counter++;
             }
             if (counter == 4) {
                 robot.EncoderTurn("ClockWise", .3, 90);
-                sleep(500);
+                sleep(750);
                 counter++;
             }
             if (counter == 5) {
                 if (vumarkseen == 1) {
                     robot.Move(.25, 5);
-                    sleep(300);
+                    sleep(500);
                     counter = 6;
                 } else if (vumarkseen == 2) {
                     robot.Move(.25, 25);
-                    sleep(300);
+                    sleep(500);
                     counter = 6;
                 } else if (vumarkseen == 3) {
 
                     robot.Move(.25, 45);
-                    sleep(300);
+                    sleep(500);
                     counter = 6;
                 }
             }
             if (counter == 6) {
                 robot.EncoderTurn("CounterClockWise", .3, 90);
+                sleep(750);
                 counter++;
             }
             if (counter == 7) {
                 robot.Move(.25, 10);
+                sleep(500);
                 counter++;
             }
             if (counter == 8) {
@@ -104,18 +105,21 @@ public class BlueSecondary extends LinearOpMode {
                 counter++;
             }
             if( counter == 9){
-                robot.Move(-.25,20);
+                robot.Move(-.25,10);
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
+                sleep(500);
                 counter ++;
             }
             if(counter == 10){
                 robot.Move(.25,10);
+                sleep(500);
                 counter ++;
             }
             if( counter == 11){
-                robot.Move(-.25,20);
+                robot.Move(-.25,10);
                 robot.Suckers(RobotConstants.Suckers_Stay);
+                sleep(500);
                 counter ++;
             }
             if (counter==12){

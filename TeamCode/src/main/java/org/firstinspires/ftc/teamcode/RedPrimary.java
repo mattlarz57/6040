@@ -59,7 +59,7 @@ public class RedPrimary extends LinearOpMode {
             }
 
             if (counter == 2) {
-                robot.Move(-.25, 10);
+                robot.Move(-.1, 10);
                 counter++;
             }
             if (counter == 3) {
@@ -70,13 +70,13 @@ public class RedPrimary extends LinearOpMode {
                     counter = 4;
                 }
                 else if (vumarkseen == 2){ //center
-                    robot.Move(-.25,35);
+                    robot.Move(-.25,42);
                     sleep(300);
                     counter = 4;
                 }
                 else if (vumarkseen == 3){ //Right
 
-                    robot.Move(-.25,25);
+                    robot.Move(-.25,30);
                     sleep(300);
                     counter = 4;
                 }
@@ -100,20 +100,12 @@ public class RedPrimary extends LinearOpMode {
                 counter ++;
             }
             if( counter == 7){
-                robot.Move(-.25,20);
-                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
-                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
-                counter ++;
-            }
-            if(counter == 8){
-                robot.Move(.25,10);
-                counter ++;
-            }
-            if( counter == 9){
-                robot.Move(-.25,20);
+                robot.Move(-.25,10);
                 robot.Suckers(RobotConstants.Suckers_Stay);
+                sleep(500);
                 counter ++;
             }
+
 /*
             if(counter == 8){
                 robot.EncoderTurn("CounterClockWise",.5,180);
@@ -158,7 +150,7 @@ public class RedPrimary extends LinearOpMode {
             }
 */
         }
-        if (counter == 10){ //with this here, the program doesnt crash at the end of 30 seconds, it just ends with no errors or issues
+        if (counter == 8){ //with this here, the program doesnt crash at the end of 30 seconds, it just ends with no errors or issues
 
         }
 

@@ -106,7 +106,7 @@ public class RedSecondary extends LinearOpMode {
                 counter++;
             }
             if( counter == 9){
-                robot.Move(-.25,20);
+                robot.Move(-.25,10);
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
                 counter ++;
@@ -116,7 +116,7 @@ public class RedSecondary extends LinearOpMode {
                 counter ++;
             }
             if( counter == 11){
-                robot.Move(-.25,20);
+                robot.Move(-.25,10);
                 robot.Suckers(RobotConstants.Suckers_Stay);
                 counter ++;
             }
