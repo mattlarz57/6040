@@ -38,7 +38,7 @@ public class RedPrimary extends LinearOpMode {
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTrackables.activate();
-
+        AutoTransitioner.transitionOnStop(this, "testertele");
 
 
         telemetry.addLine("Initialization: Success");
