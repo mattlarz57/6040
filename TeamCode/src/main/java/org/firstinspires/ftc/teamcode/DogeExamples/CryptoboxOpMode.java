@@ -56,7 +56,7 @@ public class CryptoboxOpMode extends OpMode
 
     @Override
     public void start() {
-        runtime.reset();
+        runtime.reset();  
 
 
     }
