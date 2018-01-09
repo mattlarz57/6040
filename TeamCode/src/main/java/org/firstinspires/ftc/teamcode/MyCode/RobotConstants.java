@@ -20,7 +20,7 @@ public class RobotConstants {
     public   static final double Suckers_Stay = 90;
 
     public   static final double SqueezerR_Open = 0;
-    public   static final double SqueezerL_Open = 2;
+    public   static final double SqueezerL_Open = 2 ;
     public   static final double SqueezerR_Close = 178 ;
     public   static final double SqueezerL_Close = 180;
 
