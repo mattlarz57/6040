@@ -35,9 +35,9 @@ public class RobotConstants {
     public   static final double Jeweler2_Middle = .55;
 
     public  static final double Big_Relic_Up = 0;//1
-    public   static final double Big_Relic_Down = 1.3;//0
-    public   static final double Small_Relic_Close = 0;
-    public   static final double Small_Relic_Open = 1;
+    public   static final double Big_Relic_Down = .95;//0
+    public   static final double Small_Relic_Close = 1;
+    public   static final double Small_Relic_Open = -1;
 
 
 

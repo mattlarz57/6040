@@ -56,8 +56,8 @@ public class NewJeweler extends LinearOpMode{
 
                 Bitmap half = Bitmap.createBitmap(Width / 2, Height, Bitmap.Config.ARGB_8888);
 
-                for (int x = 0; x <= half.getWidth(); x++) {
-                    for (int y = 0; y <= half.getHeight(); y++) {
+                for (int x = 0; x <half.getWidth(); x++) {
+                    for (int y = 0; y < half.getHeight(); y++) {
 
                         if (blue(half.getPixel(x, y)) > red(half.getPixel(x, y))) {
                             blueness++;

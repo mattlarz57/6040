@@ -32,6 +32,7 @@ public class FinalTele extends OpMode {
 
     @Override
     public void loop() { //this is what happens when you press the play button
+        telemetry.addData("AutoSucc On:", AutoSucc);
         telemetry.update();
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
