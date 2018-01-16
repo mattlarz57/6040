@@ -48,7 +48,7 @@ public class Robot {
 
 
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
-    public Servo  SqueezerR, SqueezerL;
+    public Servo  SqueezerR, SqueezerL, relicSmall, relicBig;
     public CRServo GBR, GBL, GTR, GTL;
     public BNO055IMU bno055IMU;
     public ModernRoboticsTouchSensor Touch;
@@ -78,8 +78,8 @@ public class Robot {
         GBR = hardwareMap.crservo.get("6");
         SqueezerL = hardwareMap.servo.get("B1");
         SqueezerR = hardwareMap.servo.get("B2");
-        //relicBig = hardwareMap.servo.get("B3");
-       // relicSmall = hardwareMap.servo.get("B4");
+       relicBig = hardwareMap.servo.get("B3");
+       relicSmall = hardwareMap.servo.get("B4");
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -96,10 +96,15 @@ public class Robot {
 
         SqueezerL.setPosition(robotConstants.SqueezerL_Close);
         SqueezerR.setPosition(robotConstants.SqueezerR_Close);
-        GTR.setPower(robotConstants.Suckers_Stay);
-        GTL.setPower(robotConstants.Suckers_Stay);
-        GBR.setPower(robotConstants.Suckers_Stay);
-        GBL.setPower(robotConstants.Suckers_Stay);
+       // GTR.setPower(robotConstants.Suckers_Stay);
+        //GTL.setPower(robotConstants.Suckers_Stay);
+        //GBR.setPower(robotConstants.Suckers_Stay);
+        //GBL.setPower(robotConstants.Suckers_Stay);
+        GTR.setPower(-.07);
+        GTL.setPower(-.12);
+        GBR.setPower(-.137);
+        GBL.setPower(0);
+
 
 
         //SetParameters();
@@ -359,10 +364,17 @@ public class Robot {
     */
 
     public void Suckers(double power){
-        GTR.setPower(power);
-        GBR.setPower(power);
-        GBL.setPower(power);
-        GTL.setPower(power);
+        GTR.setPower(power-.07);
+        GBR.setPower(power-.137);
+        GBL.setPower(power-0);
+        GTL.setPower(power-.12);
+
+    }
+    public void SuckersStop(){
+        GTR.setPower(-.07);
+        GTL.setPower(-.12);
+        GBR.setPower(-.137);
+        GBL.setPower(0);
     }
 
 

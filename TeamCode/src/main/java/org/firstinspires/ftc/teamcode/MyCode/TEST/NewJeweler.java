@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.MyCode.TEST;
 
 import android.graphics.Bitmap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.vuforia.PIXEL_FORMAT;
@@ -18,7 +19,7 @@ import static android.graphics.Color.red;
 /**
  * Created by matthew on 1/13/2018.
  */
-
+@Autonomous
 public class NewJeweler extends LinearOpMode{
     Robot robot = new Robot();
     VuforiaLocalizer vuforia;

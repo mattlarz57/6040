@@ -42,31 +42,25 @@ public class FinalTele extends OpMode {
         if (robot.Touch.isPressed()) {
             touchpressed = 0;
         } else {
-            touchpressed = 1;
+            touchpressed = -1;
         }
 
-        robot.BackRight.setPower((turn + strafe - drive));
+        robot.BackRight.setPower((-turn + strafe - drive));
         robot.BackLeft.setPower((turn - strafe - drive));
         robot.FrontRight.setPower((-turn - strafe - drive));
-        robot.FrontLeft.setPower((-turn + strafe - drive));
+        robot.FrontLeft.setPower((turn + strafe - drive));
         robot.relicArm.setPower(-relic / 2);
 
 
         if (gamepad2.right_trigger >= .1) {
-            robot.GTR.setPower(touchpressed);
-            robot.GBR.setPower(RobotConstants.Suckers_In);
-            robot.GTL.setPower(touchpressed);
-            robot.GBL.setPower(RobotConstants.Suckers_In);
+            robot.GTR.setPower(touchpressed-0.07);
+            robot.GBR.setPower(RobotConstants.Suckers_In-.137);
+            robot.GTL.setPower(touchpressed-.12);
+            robot.GBL.setPower(RobotConstants.Suckers_In-0);
         } else if (gamepad2.left_trigger >= .1) {
-            robot.GBL.setPower(RobotConstants.Suckers_Out);
-            robot.GBR.setPower(RobotConstants.Suckers_Out);
-            robot.GTL.setPower(RobotConstants.Suckers_Out);
-            robot.GTR.setPower(RobotConstants.Suckers_Out);
+            robot.Suckers(RobotConstants.Suckers_Out);
         } else {
-            robot.GBL.setPower(RobotConstants.Suckers_Stay);
-            robot.GBR.setPower(RobotConstants.Suckers_Stay);
-            robot.GTL.setPower(RobotConstants.Suckers_Stay);
-            robot.GTR.setPower(RobotConstants.Suckers_Stay);
+            robot.Suckers(RobotConstants.Suckers_Stay);
         }
 
        /* if (gamepad1.dpad_left) {
@@ -85,14 +79,14 @@ public class FinalTele extends OpMode {
         */
 
         if (gamepad2.a) {
-            robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);  //21
-            robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);//79
+            robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
+            robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
 
         } else if (gamepad2.b) {
             robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
             robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
         }
-        /*if (gamepad2.dpad_up) {
+        if (gamepad2.dpad_up) {
             robot.relicBig.setPosition(RobotConstants.Big_Relic_Up);
         } else if (gamepad2.dpad_down) {
             robot.relicBig.setPosition(RobotConstants.Big_Relic_Down);
@@ -102,11 +96,11 @@ public class FinalTele extends OpMode {
         } else if (gamepad2.dpad_left) {
             robot.relicSmall.setPosition(RobotConstants.Small_Relic_Open);
         }
-        */
+
         if (gamepad2.left_stick_y > .1) {
-            robot.Glyphter.setPower(.75);
+            robot.Glyphter.setPower(1);
         } else if (gamepad2.left_stick_y < -.1) {
-            robot.Glyphter.setPower(-.75);
+            robot.Glyphter.setPower(-1);
         } else {
             robot.Glyphter.setPower(0);
         }

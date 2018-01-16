@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.MyCode.TEST;
 
 import android.graphics.Bitmap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
@@ -19,7 +20,7 @@ import org.opencv.imgproc.Moments;
 /**
  * Created by matthew on 1/14/2018.
  */
-
+@Autonomous
 public class JewelConfig extends LinearOpMode {
 
 

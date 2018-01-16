@@ -15,14 +15,18 @@ public class RobotConstants {
     public   static final double cmPerDegree = (9.85*Math.PI)/90;
 
 
-    public   static final double Suckers_In = 180;
-    public   static final double Suckers_Out = 0;
-    public   static final double Suckers_Stay = 90;
+    public   static final double Suckers_In = -1;
+    public   static final double Suckers_Out = 1;
+    public   static final double Suckers_Stay = 0;
+    public  static final double TRZero = 0;  // unsure of this
+    public  static final double TLZero = -0.0244;
+    public  static final double BRZero = -0.137;
+    public  static final double BLZero = 0;
 
-    public   static final double SqueezerR_Open = 0;
-    public   static final double SqueezerL_Open = 2 ;
-    public   static final double SqueezerR_Close = 178 ;
-    public   static final double SqueezerL_Close = 180;
+    public   static final double SqueezerR_Open = .055;//220/255
+    public   static final double SqueezerL_Open = .95;//1
+    public   static final double SqueezerR_Close =.24;//0
+    public   static final double SqueezerL_Close = .8;//220/255
 
     public   static final double Jeweler1_Down = .01;
     public   static final double Jeweler1_Up = .045;
@@ -30,10 +34,10 @@ public class RobotConstants {
     public   static final double Jeweler2_Left = 0;
     public   static final double Jeweler2_Middle = .55;
 
-    public  static final double Big_Relic_Up = 0;
-    public   static final double Big_Relic_Down = 1;
-    public   static final double Small_Relic_Close = 1;
-    public   static final double Small_Relic_Open = 0;
+    public  static final double Big_Relic_Up = 0;//1
+    public   static final double Big_Relic_Down = 1.3;//0
+    public   static final double Small_Relic_Close = 0;
+    public   static final double Small_Relic_Open = 1;
 
 
 
