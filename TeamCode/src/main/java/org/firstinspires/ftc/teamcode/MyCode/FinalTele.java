@@ -64,7 +64,7 @@ public class FinalTele extends OpMode {
             robot.Suckers(RobotConstants.Suckers_Stay);
         }
 
-       /* if (gamepad1.dpad_left) {
+      if (gamepad1.dpad_left) {
             robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Left);
         } else if (gamepad1.dpad_right) {
             robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
@@ -77,7 +77,7 @@ public class FinalTele extends OpMode {
         } else if (gamepad1.dpad_down) {
             robot.Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
         }
-        */
+
 
         if (gamepad2.a) {
             robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);

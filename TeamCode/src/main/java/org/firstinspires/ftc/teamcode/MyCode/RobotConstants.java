@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.MyCode;
+import com.google.gson.FieldNamingPolicy;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class RobotConstants {
@@ -28,16 +29,20 @@ public class RobotConstants {
     public   static final double SqueezerR_Close =.24;//0
     public   static final double SqueezerL_Close = .8;//220/255
 
-    public   static final double Jeweler1_Down = .01;
-    public   static final double Jeweler1_Up = .045;
-    public  static final double Jeweler2_Right = 1;
-    public   static final double Jeweler2_Left = 0;
-    public   static final double Jeweler2_Middle = .55;
+    public   static final double Jeweler1_Down = 1;
+    public   static final double Jeweler1_Up = 0;
+    public  static final double Jeweler2_Right = .1;
+    public   static final double Jeweler2_Left = 1;
+    public   static final double Jeweler2_Middle = .6;
 
     public  static final double Big_Relic_Up = 0;//1
-    public   static final double Big_Relic_Down = .95;//0
+    public   static final double Big_Relic_Down = 1;//0
     public   static final double Small_Relic_Close = 1;
-    public   static final double Small_Relic_Open = -1;
+    public   static final double Small_Relic_Open = 0;
+
+    public static final double Camera_Jewel = .45;
+    public static final double Camera_VuMark = .25;
+    public static final double Camera_Forward = 1;
 
 
 

@@ -48,7 +48,7 @@ public class Robot {
 
 
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
-    public Servo  SqueezerR, SqueezerL, relicSmall, relicBig;
+    public Servo  SqueezerR, SqueezerL, relicSmall, relicBig, Jeweler1, Jeweler2, Camera ;
     public CRServo GBR, GBL, GTR, GTL;
     public BNO055IMU bno055IMU;
     public ModernRoboticsTouchSensor Touch;
@@ -65,7 +65,8 @@ public class Robot {
     public boolean initialize(HardwareMap hardwareMap, Telemetry telemetry) {
 
         t = telemetry;
-
+        Jeweler1 = hardwareMap.servo.get("Jeweler1");
+        Jeweler2 = hardwareMap.servo.get("Jeweler2");
         BackRight = hardwareMap.dcMotor.get("2a");
         BackLeft = hardwareMap.dcMotor.get("2b");
         FrontRight = hardwareMap.dcMotor.get("1a");
@@ -80,6 +81,7 @@ public class Robot {
         SqueezerR = hardwareMap.servo.get("B2");
        relicBig = hardwareMap.servo.get("B3");
        relicSmall = hardwareMap.servo.get("B4");
+        Camera = hardwareMap.servo.get("Camera");
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
         GBL.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -104,6 +106,12 @@ public class Robot {
         GTL.setPower(-.12);
         GBR.setPower(-.137);
         GBL.setPower(0);
+
+
+        Jeweler2.setPosition(robotConstants.Jeweler2_Left + .05);
+        Jeweler1.setPosition(robotConstants.Jeweler1_Up);
+        Camera.setPosition(robotConstants.Camera_VuMark);
+
 
 
 
@@ -297,17 +305,17 @@ public class Robot {
 
 
 
-    /*public void WackJewel(team TeamColor) throws InterruptedException {
+    public void WackJewel(team TeamColor, JewelDetector.JewelOrder orientation)  throws  InterruptedException{
         Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
-        Thread.sleep(775);
         Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
         Thread.sleep(2000);
 
+
         if (TeamColor == team.Blue) {
-            if (Color.blue() > Color.red() + 1) {
+            if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
                 Thread.sleep(500);
-            } else if (Color.red() > Color.blue() + 1) {
+            } else if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
                 Thread.sleep(500);
             }
@@ -316,10 +324,10 @@ public class Robot {
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
         else if (TeamColor == team.Red){
-            if (Color.blue() > Color.red() + 1) {
+            if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
                 Thread.sleep(500);
-            } else if (Color.red() > Color.blue() + 1) {
+            } else if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
                 Thread.sleep(500);
             }
@@ -361,7 +369,7 @@ public class Robot {
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
     }
-    */
+
 
     public void Suckers(double power){
         GTR.setPower(power-.07);
