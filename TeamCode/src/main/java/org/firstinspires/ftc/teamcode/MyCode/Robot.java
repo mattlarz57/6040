@@ -43,12 +43,16 @@ public class Robot {
     public enum team {
         Red, Blue, NotSensed
     }
+    public enum Direction{
+        CounterClockWise, ClockWise
+    }
+
 
     RobotConstants robotConstants = new RobotConstants();
 
 
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
-    public Servo  SqueezerR, SqueezerL, relicSmall, relicBig, Jeweler1, Jeweler2, Camera ;
+    public Servo  SqueezerR, SqueezerL, relicSmall, BigRelicBack,BigRelicFront, Jeweler1, Jeweler2, Camera ;
     public CRServo GBR, GBL, GTR, GTL;
     public BNO055IMU bno055IMU;
     public ModernRoboticsTouchSensor Touch;
@@ -79,7 +83,8 @@ public class Robot {
         GBR = hardwareMap.crservo.get("6");
         SqueezerL = hardwareMap.servo.get("B1");
         SqueezerR = hardwareMap.servo.get("B2");
-       relicBig = hardwareMap.servo.get("B3");
+        BigRelicBack = hardwareMap.servo.get("BRB");
+        BigRelicFront = hardwareMap.servo.get("BRF");
        relicSmall = hardwareMap.servo.get("B4");
         Camera = hardwareMap.servo.get("Camera");
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -106,11 +111,13 @@ public class Robot {
         GTL.setPower(-.12);
         GBR.setPower(-.137);
         GBL.setPower(0);
+        BigRelicFront.setPosition(robotConstants.BigRelicFront_In);
+        BigRelicBack.setPosition(robotConstants.BigRelicBack_In);
 
 
-        Jeweler2.setPosition(robotConstants.Jeweler2_Left + .05);
+        Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-        Camera.setPosition(robotConstants.Camera_VuMark);
+        Camera.setPosition(robotConstants.Camera_Jewel);
 
 
 
@@ -175,6 +182,12 @@ public class Robot {
         FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
+    public void DriveMotorMode(DcMotor.RunMode mode){
+        BackRight.setMode(mode);
+        BackLeft.setMode(mode);
+        FrontLeft.setMode(mode);
+        FrontRight.setMode(mode);
+    }
 
     public void SetDrivePower(double power) {
         BackRight.setPower(power);
@@ -203,6 +216,33 @@ public class Robot {
         }
         SetDrivePower(0);
     }
+    public void MoveTo(double power, long centimeters){
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        double ticks = centimeters * robotConstants.Tickspercm;
+        int rounded = (int)(ticks);
+        BackRight.setTargetPosition(rounded);
+        BackLeft.setTargetPosition(rounded);
+        FrontRight.setTargetPosition(rounded);
+        FrontLeft.setTargetPosition(rounded);
+
+
+        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+        SetDrivePower(power);
+        int BRCurr,BLCurr,FRCurr,FLCurr;
+        BRCurr = BackRight.getCurrentPosition();
+        BLCurr = BackLeft.getCurrentPosition();
+        FRCurr = FrontRight.getCurrentPosition();
+        FLCurr = FrontLeft.getCurrentPosition();
+        while (!withindistance(BRCurr,rounded,50)||!withindistance(BLCurr,rounded,50)||!withindistance(FRCurr,rounded,50) || !withindistance(FLCurr,rounded,50)){
+            BRCurr = BackRight.getCurrentPosition();
+            BLCurr = BackLeft.getCurrentPosition();
+            FRCurr = FrontRight.getCurrentPosition();
+            FLCurr = FrontLeft.getCurrentPosition();
+        }
+        SetDrivePower(0);
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
 
     public void Backwards(double power, double centimeters) {
         ResetDriveEncoders();
@@ -222,6 +262,7 @@ public class Robot {
             FLPos = (FrontLeft.getCurrentPosition());
             avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
         }
+
         SetDrivePower(0);
     }
 
@@ -257,7 +298,6 @@ public class Robot {
 
     public void EncoderTurn(String Direction , double power, double degrees ) throws InterruptedException{
         ResetDriveEncoders();
-        Thread.sleep(150);
         double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
         if(Direction == "CounterClockWise"){
             int BRPos = Math.abs(BackRight.getCurrentPosition());
@@ -280,6 +320,7 @@ public class Robot {
             SetDrivePower(0);
 
         }
+
         else if (Direction == "ClockWise"){
             int BRPos = Math.abs(BackRight.getCurrentPosition());
             int BLPos = Math.abs(BackLeft.getCurrentPosition());
@@ -300,6 +341,42 @@ public class Robot {
             }
             SetDrivePower(0);
         }
+
+    }
+
+    public void BetterTurn(Direction direction, double power, double degrees){
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
+        int rounded = (int)(ticks);
+        if (direction == Direction.ClockWise) {
+            BackRight.setTargetPosition(-rounded);
+            BackLeft.setTargetPosition(rounded);
+            FrontRight.setTargetPosition(-rounded);
+            FrontLeft.setTargetPosition(rounded);
+        }
+        else if (direction == Direction.CounterClockWise) {
+            BackRight.setTargetPosition(rounded);
+            BackLeft.setTargetPosition(-rounded);
+            FrontRight.setTargetPosition(rounded);
+            FrontLeft.setTargetPosition(-rounded);
+        }
+
+        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+        SetDrivePower(power);
+
+        int BRCurr,BLCurr,FRCurr,FLCurr;
+        BRCurr = BackRight.getCurrentPosition();
+        BLCurr = BackLeft.getCurrentPosition();
+        FRCurr = FrontRight.getCurrentPosition();
+        FLCurr = FrontLeft.getCurrentPosition();
+        while (!withindistance(BRCurr,rounded,50)||!withindistance(BLCurr,rounded,50)||!withindistance(FRCurr,rounded,50) || !withindistance(FLCurr,rounded,50)){
+            BRCurr = BackRight.getCurrentPosition();
+            BLCurr = BackLeft.getCurrentPosition();
+            FRCurr = FrontRight.getCurrentPosition();
+            FLCurr = FrontLeft.getCurrentPosition();
+        }
+        SetDrivePower(0);
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     }
 
@@ -383,6 +460,17 @@ public class Robot {
         GTL.setPower(-.12);
         GBR.setPower(-.137);
         GBL.setPower(0);
+    }
+
+    public boolean withindistance(int current, int target, int threshold ){
+        int error = target - current;
+
+        if (Math.abs(error)<=threshold){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 

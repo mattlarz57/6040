@@ -34,7 +34,7 @@ public class MoveForward extends LinearOpMode {
         counter = 1;
         waitForStart();
         if (counter == 1) {
-            //robot.WackJewel(TeamColor);
+            robot.MoveTo(.25,25);
         }
 
 

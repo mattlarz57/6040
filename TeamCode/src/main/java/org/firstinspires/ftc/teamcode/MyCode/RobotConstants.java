@@ -7,7 +7,7 @@ public class RobotConstants {
 
     public static final DcMotor.RunMode Drive_Mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
     public static final DcMotor.RunMode Position = DcMotor.RunMode.RUN_TO_POSITION;
-    public static final double TicksPerRev = 28;
+    public static final double TicksPerRev = 7;
     public static final double MotorGearRatio = 20.0;
     public static final double WheelCircumfrence_in = Math.PI * 4.0;
     public  static final double in2cm = 2.54;
@@ -35,10 +35,12 @@ public class RobotConstants {
     public   static final double Jeweler2_Left = 1;
     public   static final double Jeweler2_Middle = .6;
 
-    public  static final double Big_Relic_Up = 0;//1
-    public   static final double Big_Relic_Down = 1;//0
+    public static final double BigRelicBack_In = 236/255;
+    public static final double BigRelicBack_Out = 254/255;
+    public static final double BigRelicFront_In = 19/255;
+    public static final double BigRelicFront_Out = 1/255;
     public   static final double Small_Relic_Close = 1;
-    public   static final double Small_Relic_Open = 0;
+    public   static final double Small_Relic_Open = .92;
 
     public static final double Camera_Jewel = .45;
     public static final double Camera_VuMark = .25;

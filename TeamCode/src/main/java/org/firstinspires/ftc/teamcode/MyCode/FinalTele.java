@@ -88,9 +88,12 @@ public class FinalTele extends OpMode {
             robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
         }
         if (gamepad2.dpad_up) {
-            robot.relicBig.setPosition(RobotConstants.Big_Relic_Up);
-        } else if (gamepad2.dpad_down) {
-            robot.relicBig.setPosition(RobotConstants.Big_Relic_Down);
+            robot.BigRelicBack.setPosition(RobotConstants.BigRelicBack_In);
+            robot.BigRelicFront.setPosition(RobotConstants.BigRelicFront_In);
+        }
+        else if (gamepad2.dpad_down) {
+            robot.BigRelicFront.setPosition(RobotConstants.BigRelicFront_Out);
+            robot.BigRelicBack.setPosition(RobotConstants.BigRelicBack_Out);
         }
         if (gamepad2.dpad_right) {
             robot.relicSmall.setPosition(RobotConstants.Small_Relic_Close);
