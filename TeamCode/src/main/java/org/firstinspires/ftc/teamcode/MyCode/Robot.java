@@ -56,8 +56,6 @@ public class Robot {
     public CRServo GBR, GBL, GTR, GTL;
     public BNO055IMU bno055IMU;
     public ModernRoboticsTouchSensor Touch;
-    public ModernRoboticsI2cColorSensor Color;
-    public ModernRoboticsI2cGyro Gyro;
     public JewelDetector jewelDetector;
     public GlyphDetector glyphDetector;
     public OpticalDistanceSensor Dist;
@@ -71,53 +69,43 @@ public class Robot {
         t = telemetry;
         Jeweler1 = hardwareMap.servo.get("Jeweler1");
         Jeweler2 = hardwareMap.servo.get("Jeweler2");
-        BackRight = hardwareMap.dcMotor.get("2a");
-        BackLeft = hardwareMap.dcMotor.get("2b");
-        FrontRight = hardwareMap.dcMotor.get("1a");
-        FrontLeft = hardwareMap.dcMotor.get("1b");
-        Glyphter = hardwareMap.dcMotor.get("3a");
-        relicArm = hardwareMap.dcMotor.get("3b");
-        GTL = hardwareMap.crservo.get("3");
-        GBL = hardwareMap.crservo.get("4");
-        GTR = hardwareMap.crservo.get("5");
-        GBR = hardwareMap.crservo.get("6");
-        SqueezerL = hardwareMap.servo.get("B1");
-        SqueezerR = hardwareMap.servo.get("B2");
+        BackRight = hardwareMap.dcMotor.get("BR");
+        BackLeft = hardwareMap.dcMotor.get("BL");
+        FrontRight = hardwareMap.dcMotor.get("FR");
+        FrontLeft = hardwareMap.dcMotor.get("FL");
+        Glyphter = hardwareMap.dcMotor.get("Glyphter");
+        relicArm = hardwareMap.dcMotor.get("Relic");
+        GTL = hardwareMap.crservo.get("GTL");
+        GBL = hardwareMap.crservo.get("GBL");
+        GTR = hardwareMap.crservo.get("GTR");
+        GBR = hardwareMap.crservo.get("GBR");
+        SqueezerL = hardwareMap.servo.get("SqueezerL");
+        SqueezerR = hardwareMap.servo.get("SqueezerR");
         BigRelicBack = hardwareMap.servo.get("BRB");
         BigRelicFront = hardwareMap.servo.get("BRF");
-       relicSmall = hardwareMap.servo.get("B4");
+        relicSmall = hardwareMap.servo.get("SmallRelic");
         Camera = hardwareMap.servo.get("Camera");
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
-        GBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        GBR.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        //bno055IMU = hardwareMap.get(BNO055IMU.class, "IMU");
         Touch = hardwareMap.get(ModernRoboticsTouchSensor.class, "Touch");
-        Color = hardwareMap.get(ModernRoboticsI2cColorSensor.class,"Color");
         Dist = hardwareMap.get(OpticalDistanceSensor.class, "Distance");
 
 
-        Color.enableLed(true);
 
 
 
         SqueezerL.setPosition(robotConstants.SqueezerL_Close);
         SqueezerR.setPosition(robotConstants.SqueezerR_Close);
-       // GTR.setPower(robotConstants.Suckers_Stay);
-        //GTL.setPower(robotConstants.Suckers_Stay);
-        //GBR.setPower(robotConstants.Suckers_Stay);
-        //GBL.setPower(robotConstants.Suckers_Stay);
-        GTR.setPower(-.07);
-        GTL.setPower(-.12);
-        GBR.setPower(-.137);
-        GBL.setPower(0);
-        BigRelicFront.setPosition(robotConstants.BigRelicFront_In);
-        BigRelicBack.setPosition(robotConstants.BigRelicBack_In);
+        Suckers(RobotConstants.Suckers_Stay);
+        BigRelicFront.setPosition(0);//robotConstants.BigRelicFront_In);
+        BigRelicBack.setPosition(1);//robotConstants.BigRelicBack_In);
 
 
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-        Camera.setPosition(robotConstants.Camera_Jewel);
+        Camera.setPosition(robotConstants.Camera_VuMark);
 
 
 
@@ -148,14 +136,7 @@ public class Robot {
     }
     */
 
-    public void SetParameters() {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.mode = BNO055IMU.SensorMode.IMU;
-        parameters.i2cAddr = BNO055IMU.I2CADDR_DEFAULT;
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        bno055IMU.initialize(parameters);
 
-    }
 
     public void GlyphDetectorInit(HardwareMap hardwareMap){
         glyphDetector = new GlyphDetector();
@@ -216,15 +197,15 @@ public class Robot {
         }
         SetDrivePower(0);
     }
-    public void MoveTo(double power, long centimeters){
+    public void MoveTo(double power, long centimeters, Telemetry telemetry){
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         double ticks = centimeters * robotConstants.Tickspercm;
         int rounded = (int)(ticks);
         BackRight.setTargetPosition(rounded);
         BackLeft.setTargetPosition(rounded);
         FrontRight.setTargetPosition(rounded);
         FrontLeft.setTargetPosition(rounded);
-
 
         DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
         SetDrivePower(power);
@@ -233,11 +214,16 @@ public class Robot {
         BLCurr = BackLeft.getCurrentPosition();
         FRCurr = FrontRight.getCurrentPosition();
         FLCurr = FrontLeft.getCurrentPosition();
-        while (!withindistance(BRCurr,rounded,50)||!withindistance(BLCurr,rounded,50)||!withindistance(FRCurr,rounded,50) || !withindistance(FLCurr,rounded,50)){
+        while (FrontRight.isBusy() || FrontLeft.isBusy()|| BackRight.isBusy()||BackLeft.isBusy()){
+            telemetry.addData("FRPos: ", FRCurr);
+            telemetry.addData("FLPos: ", FLCurr);
+            telemetry.addData("BRPos: ",BRCurr);
+            telemetry.addData("BLPos", BRCurr);
             BRCurr = BackRight.getCurrentPosition();
             BLCurr = BackLeft.getCurrentPosition();
             FRCurr = FrontRight.getCurrentPosition();
             FLCurr = FrontLeft.getCurrentPosition();
+            telemetry.update();
         }
         SetDrivePower(0);
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -449,28 +435,54 @@ public class Robot {
 
 
     public void Suckers(double power){
-        GTR.setPower(power-.07);
-        GBR.setPower(power-.137);
-        GBL.setPower(power-0);
-        GTL.setPower(power-.12);
+        GTR.setPower(power);
+        GBR.setPower(power);
+        GBL.setPower(power);
+        GTL.setPower(power);
 
     }
-    public void SuckersStop(){
-        GTR.setPower(-.07);
-        GTL.setPower(-.12);
-        GBR.setPower(-.137);
-        GBL.setPower(0);
-    }
+
 
     public boolean withindistance(int current, int target, int threshold ){
         int error = target - current;
 
-        if (Math.abs(error)<=threshold){
+        if (Math.abs(error)<= threshold){
             return true;
         }
         else{
             return false;
         }
+    }
+    public void encoderDrive(double speed, double leftcm,double rightcm,Telemetry telemetry){
+
+        ResetDriveEncoders();
+        while(BackLeft.getCurrentPosition() != 0){}
+        int leftticks = (int)(robotConstants.Tickspercm*leftcm);
+        int rightticks = (int)(robotConstants.Tickspercm*rightcm);
+
+        BackRight.setTargetPosition(rightticks);
+        BackLeft.setTargetPosition(leftticks);
+        FrontLeft.setTargetPosition(leftticks);
+        FrontRight.setTargetPosition(rightticks);
+
+        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        BackLeft.setPower(speed);
+        BackRight.setPower(speed);
+        FrontLeft.setPower(speed);
+        FrontRight.setPower(speed);
+
+        while ( BackLeft.isBusy() || BackRight.isBusy() || FrontLeft.isBusy() || FrontRight.isBusy()){
+            telemetry.addData("BR",BackRight.getCurrentPosition());
+            telemetry.addData("FR",FrontRight.getCurrentPosition());
+            telemetry.addData("BL", BackLeft.getCurrentPosition());
+            telemetry.addData("FL", FrontLeft.getCurrentPosition());
+            telemetry.update();
+        }
+        SetDrivePower(0);
+        ResetDriveEncoders();
+
+
     }
 
 
