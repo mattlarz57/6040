@@ -105,7 +105,7 @@ public class Robot {
 
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-        Camera.setPosition(robotConstants.Camera_VuMark);
+        Camera.setPosition(robotConstants.Camera_Jewel);
 
 
 
@@ -481,6 +481,51 @@ public class Robot {
         }
         SetDrivePower(0);
         ResetDriveEncoders();
+
+
+    }
+
+
+    public void Drive(double speed, double centimeters, Telemetry telemetry){
+
+        DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        int ticks = (int)(robotConstants.Tickspercm *centimeters);
+
+
+        BackRight.setTargetPosition(ticks);
+        BackLeft.setTargetPosition(ticks);
+        FrontRight.setTargetPosition(ticks);
+        FrontLeft.setTargetPosition(ticks);
+
+
+        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+        SetDrivePower(speed);
+        int BRPos = (BackRight.getCurrentPosition());
+        int BLPos = (BackLeft.getCurrentPosition());
+        int FRPos = (FrontRight.getCurrentPosition());
+        int FLPos = (FrontLeft.getCurrentPosition());
+
+
+        while(Math.abs(BRPos-ticks) > 30 || Math.abs(BLPos-ticks) > 30 || Math.abs(FRPos-ticks) > 30 ||Math.abs(FLPos-ticks) > 30 ){
+            telemetry.addData("posBR", BackRight.getCurrentPosition());
+            telemetry.addData("PosBL", BackLeft.getCurrentPosition());
+            telemetry.addData("PosFR", FrontRight.getCurrentPosition());
+            telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
+
+            telemetry.update();
+            BRPos = (BackRight.getCurrentPosition());
+            BLPos = (BackLeft.getCurrentPosition());
+            FRPos = (FrontRight.getCurrentPosition());
+            FLPos = (FrontLeft.getCurrentPosition());
+        }
+        /*if(BackLeft.getCurrentPosition() == ticks && BackRight.getCurrentPosition() == ticks
+            && FrontLeft.getCurrentPosition() == ticks && FrontRight.getCurrentPosition() == ticks){
+            SetDrivePower(0);
+            DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+        */
+
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
     }

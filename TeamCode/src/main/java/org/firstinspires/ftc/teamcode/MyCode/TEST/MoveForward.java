@@ -34,7 +34,7 @@ public class MoveForward extends LinearOpMode {
         counter = 1;
         waitForStart();
         if (counter == 1) {
-            robot.MoveTo(.5,25,telemetry);
+            robot.encoderDrive(.5,100,100,telemetry);
         }
 
 

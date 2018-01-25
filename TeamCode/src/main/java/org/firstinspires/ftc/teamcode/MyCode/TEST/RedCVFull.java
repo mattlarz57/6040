@@ -81,6 +81,7 @@ public class RedCVFull extends LinearOpMode {
                 counter++;
             }
             if (disabled && counter == 2) {
+                robot.Camera.setPosition(RobotConstants.Camera_VuMark);
                 int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
                 VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
                 parameters.vuforiaLicenseKey = "AS27cgT/////AAAAGacqx+RYz0dSqIWMSx+FB79tKwqL9bLs7dBcaOXHn9ZQu/mYUYWrJ2MDCHK9cKYXXKxjngTt8l0UvX854CETHuQxzI9LqSzYMyLp+Dz+hv7gV1OSZsA2mpimvfj/4mKuw7IvK8W8vBJ1IeeLkI9Zv+njNHofzdqJeMcYS35Yt/fsNSGaNo9KanFBiy4GnV1SAHSQ7qODzXN6PzbHPXw5mVWewb1XuJez0VdebTS7X5bTYzvXnMt8od4YYqIChFoLox70Jf3OKoS9IZZLUVDwBBJUG3TspO2jusJHahFWAPw5hWZkE60VUXDcfF1Pc2Q5n57FlDe5I94Sg9ca61yx6aUs42vrDPcBvq+T6mxiG52c";
@@ -91,38 +92,34 @@ public class RedCVFull extends LinearOpMode {
                 relicTrackables.activate();
                 counter = 3;
             }
+
             if (counter == 3) {
-                robot.Move(-.1, 10);
-                counter++;
-            }
-            if (counter == 4) {
                 telemetry.addLine("Searching for VuMark");
                 if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                     VuMarkOutput = vuMark;
                     vuforia.close();
                     closed = true;
                     robot.Camera.setPosition(RobotConstants.Camera_Forward);
-                    counter = 5;
+                    counter = 4;
                 }
             }
-            if (counter == 5) {
+            if (counter == 4) {
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Move(-.25, 30);
-                    counter = 6;
+                    robot.Drive(.35,-20,telemetry);
+                    counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Move(-.25, 40);
-                    counter = 6;
+                    robot.Drive(.35,-40,telemetry);
+                    counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Move(-.25, 50);
-                    counter = 6;
+                    robot.Drive(.35,-60,telemetry);
+                    counter = 5;
                 }
 
             }
-            if (counter == 6) {
-                robot.BetterTurn(Robot.Direction.CounterClockWise, .25, 90);
-                counter++;
-            }
-            if (counter == 7) {
+
+            if (counter == 5) {
+
+
 
             }
 

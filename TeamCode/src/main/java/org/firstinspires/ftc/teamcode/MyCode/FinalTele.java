@@ -113,6 +113,8 @@ public class FinalTele extends OpMode {
 
         if (gamepad2.y) {
             AutoSucc = true;
+            robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
+            robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
 
         } else if (gamepad2.x) {
             AutoSucc = false;
