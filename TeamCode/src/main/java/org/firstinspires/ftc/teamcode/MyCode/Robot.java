@@ -52,7 +52,7 @@ public class Robot {
 
 
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
-    public Servo  SqueezerR, SqueezerL, relicSmall, BigRelicBack,BigRelicFront, Jeweler1, Jeweler2, Camera ;
+    public Servo  SqueezerR, SqueezerL, relicSmall, BigRelic, Jeweler1, Jeweler2, Camera ;
     public CRServo GBR, GBL, GTR, GTL;
     public BNO055IMU bno055IMU;
     public ModernRoboticsTouchSensor Touch;
@@ -81,8 +81,7 @@ public class Robot {
         GBR = hardwareMap.crservo.get("GBR");
         SqueezerL = hardwareMap.servo.get("SqueezerL");
         SqueezerR = hardwareMap.servo.get("SqueezerR");
-        BigRelicBack = hardwareMap.servo.get("BRB");
-        BigRelicFront = hardwareMap.servo.get("BRF");
+        BigRelic = hardwareMap.servo.get("BigRelic");
         relicSmall = hardwareMap.servo.get("SmallRelic");
         Camera = hardwareMap.servo.get("Camera");
         GTR.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -99,9 +98,8 @@ public class Robot {
         SqueezerL.setPosition(robotConstants.SqueezerL_Close);
         SqueezerR.setPosition(robotConstants.SqueezerR_Close);
         Suckers(RobotConstants.Suckers_Stay);
-        BigRelicFront.setPosition(0);//robotConstants.BigRelicFront_In);
-        BigRelicBack.setPosition(1);//robotConstants.BigRelicBack_In);
-
+        BigRelic.setPosition(0);
+        relicSmall.setPosition(0);
 
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         Jeweler1.setPosition(robotConstants.Jeweler1_Up);
@@ -526,6 +524,7 @@ public class Robot {
         */
 
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
 
     }

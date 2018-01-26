@@ -153,15 +153,15 @@ public class OpModeManagerImpl implements OpModeServices, OpModeManagerNotifier 
     this.context = activity;
     synchronized (mapActivityToOpModeManager) {
       mapActivityToOpModeManager.put(activity, this);
-      }
+    }
 
   }
 
   public static OpModeManagerImpl getOpModeManagerOfActivity(Activity activity) {
     synchronized (mapActivityToOpModeManager) {
       return mapActivityToOpModeManager.get(activity);
-      }
     }
+  }
 
   // called from the RobotSetupRunnable.run thread
   public void init(EventLoopManager eventLoopManager) {
@@ -368,7 +368,7 @@ public class OpModeManagerImpl implements OpModeServices, OpModeManagerNotifier 
     detectStuck(activeOpMode.msStuckDetectStop, "stop()", new Runnable() {
       @Override public void run() {
         activeOpMode.stop();
-    }});
+      }});
     synchronized (this.listeners) {
       for (OpModeManagerNotifier.Notifications listener : this.listeners) {
         listener.onOpModePostStop(activeOpMode);
@@ -491,7 +491,7 @@ public class OpModeManagerImpl implements OpModeServices, OpModeManagerNotifier 
     detectStuck(activeOpMode.msStuckDetectInit, "init()", new Runnable() {
       @Override public void run() {
         activeOpMode.init();
-    }}, true);
+      }}, true);
   }
 
   protected void callActiveOpModeStart() {
@@ -508,14 +508,14 @@ public class OpModeManagerImpl implements OpModeServices, OpModeManagerNotifier 
     detectStuck(activeOpMode.msStuckDetectStart, "start()", new Runnable() {
       @Override public void run() {
         activeOpMode.start();
-    }});
+      }});
   }
 
   protected void callActiveOpModeInitLoop() {
     detectStuck(activeOpMode.msStuckDetectInitLoop, "init_loop()", new Runnable() {
       @Override public void run() {
         activeOpMode.init_loop();
-    }});
+      }});
     activeOpMode.internalPostInitLoop();
   }
 
@@ -523,7 +523,7 @@ public class OpModeManagerImpl implements OpModeServices, OpModeManagerNotifier 
     detectStuck(activeOpMode.msStuckDetectLoop, "loop()", new Runnable() {
       @Override public void run() {
         activeOpMode.loop();
-    }});
+      }});
     activeOpMode.internalPostLoop();
   }
 
@@ -549,7 +549,7 @@ public class OpModeManagerImpl implements OpModeServices, OpModeManagerNotifier 
     // here be running on literally any thread, including the loop() thread or a linear OpMode's
     // thread.
     this.eventLoopManager.getEventLoop().requestOpModeStop(opModeToStopIfActive);
-    }
+  }
 
   //------------------------------------------------------------------------------------------------
   // Default OpMode
@@ -562,7 +562,7 @@ public class OpModeManagerImpl implements OpModeServices, OpModeManagerNotifier 
    */
   @SuppressWarnings("WeakerAccess")
   public static class DefaultOpMode extends OpMode {
-  
+
     //----------------------------------------------------------------------------------------------
     // State
     //----------------------------------------------------------------------------------------------

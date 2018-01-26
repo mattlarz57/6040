@@ -105,20 +105,20 @@ public class RedCVFull extends LinearOpMode {
             }
             if (counter == 4) {
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35,-20,telemetry);
+                    robot.Drive(.35,-60,telemetry);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35,-40,telemetry);
+                    robot.Drive(.35,-80,telemetry);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35,-60,telemetry);
+                    robot.Drive(.35,-100,telemetry);
                     counter = 5;
                 }
 
             }
 
             if (counter == 5) {
-
+                telemetry.addLine("Done");
 
 
             }

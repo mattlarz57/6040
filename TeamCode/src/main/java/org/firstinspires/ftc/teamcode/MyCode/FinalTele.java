@@ -27,6 +27,7 @@ public class FinalTele extends OpMode {
     public void init() {
         robot.initialize(hardwareMap, telemetry);
         //robot.SetParameters();
+        robot.Camera.setPosition(RobotConstants.Camera_Forward);
 
 
     }
@@ -90,12 +91,10 @@ public class FinalTele extends OpMode {
             robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
         }
         if (gamepad2.dpad_up) {
-            robot.BigRelicBack.setPosition(.925);//RobotConstants.BigRelicBack_In);
-            robot.BigRelicFront.setPosition(.075);//RobotConstants.BigRelicFront_In);
+            robot.BigRelic.setPosition(0);
         }
         else if (gamepad2.dpad_down) {
-            robot.BigRelicFront.setPosition(0);//RobotConstantsBigRelicFront_Out);
-            robot.BigRelicBack.setPosition(1);//RobotConstants.BigRelicBack_Out);
+            robot.BigRelic.setPosition(1);//RobotConstants.BigRelicBack_Out);
         }
         if (gamepad2.dpad_right) {
             robot.relicSmall.setPosition(RobotConstants.Small_Relic_Close);
