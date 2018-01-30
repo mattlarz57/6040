@@ -77,7 +77,7 @@ public class RedSecondary extends LinearOpMode {
                 counter++;
             }
             if (counter == 4) {
-                robot.EncoderTurn("ClockWise", .3, 90);
+                robot.EncoderTurn(Robot.Direction.ClockWise, .3, 90);
                 sleep(500);
                 counter++;
             }
@@ -98,7 +98,7 @@ public class RedSecondary extends LinearOpMode {
                 }
             }
             if (counter == 6) {
-                robot.EncoderTurn("ClockWise", .3, 90);
+                robot.EncoderTurn(Robot.Direction.ClockWise, .3, 90);
                 counter++;
             }
             if (counter == 7) {

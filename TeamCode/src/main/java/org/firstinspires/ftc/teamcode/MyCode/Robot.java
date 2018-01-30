@@ -104,6 +104,7 @@ public class Robot {
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         Jeweler1.setPosition(robotConstants.Jeweler1_Up);
         Camera.setPosition(robotConstants.Camera_Jewel);
+        relicSmall.setPosition(robotConstants.Small_Relic_Close);
 
 
 
@@ -277,35 +278,15 @@ public class Robot {
             FLPos = Math.abs(FrontLeft.getCurrentPosition());
             avg = (BRPos + BLPos + FRPos + FLPos) / 4;
         }
+
         SetDrivePower(0);
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void EncoderTurn(String Direction , double power, double degrees ) throws InterruptedException{
+    public void EncoderTurn(Direction Direction , double power, double degrees ) throws InterruptedException{
         ResetDriveEncoders();
         double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
-        if(Direction == "CounterClockWise"){
-            int BRPos = Math.abs(BackRight.getCurrentPosition());
-            int BLPos = Math.abs(BackLeft.getCurrentPosition());
-            int FRPos = Math.abs(FrontRight.getCurrentPosition());
-            int FLPos = Math.abs(FrontLeft.getCurrentPosition());
-            int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-
-            while(avg < ticks){
-                BackRight.setPower(-power);
-                BackLeft.setPower(-power);
-                FrontRight.setPower(power);
-                FrontLeft.setPower(power);
-                BRPos = Math.abs(BackRight.getCurrentPosition());
-                BLPos = Math.abs(BackLeft.getCurrentPosition());
-                FRPos = Math.abs(FrontRight.getCurrentPosition());
-                FLPos = Math.abs(FrontLeft.getCurrentPosition());
-                avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-            }
-            SetDrivePower(0);
-
-        }
-
-        else if (Direction == "ClockWise"){
+        if(Direction == Robot.Direction.CounterClockWise){
             int BRPos = Math.abs(BackRight.getCurrentPosition());
             int BLPos = Math.abs(BackLeft.getCurrentPosition());
             int FRPos = Math.abs(FrontRight.getCurrentPosition());
@@ -314,8 +295,8 @@ public class Robot {
 
             while(avg < ticks){
                 BackRight.setPower(power);
-                BackLeft.setPower(power);
-                FrontRight.setPower(-power);
+                BackLeft.setPower(-power);
+                FrontRight.setPower(power);
                 FrontLeft.setPower(-power);
                 BRPos = Math.abs(BackRight.getCurrentPosition());
                 BLPos = Math.abs(BackLeft.getCurrentPosition());
@@ -324,6 +305,30 @@ public class Robot {
                 avg = (BRPos + BLPos + FRPos + FLPos) / 4;
             }
             SetDrivePower(0);
+            ResetDriveEncoders();
+
+        }
+
+        else if (Direction == Robot.Direction.ClockWise){
+            int BRPos = Math.abs(BackRight.getCurrentPosition());
+            int BLPos = Math.abs(BackLeft.getCurrentPosition());
+            int FRPos = Math.abs(FrontRight.getCurrentPosition());
+            int FLPos = Math.abs(FrontLeft.getCurrentPosition());
+            int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
+
+            while(avg < ticks){
+                BackRight.setPower(-power);
+                BackLeft.setPower(power);
+                FrontRight.setPower(-power);
+                FrontLeft.setPower(power);
+                BRPos = Math.abs(BackRight.getCurrentPosition());
+                BLPos = Math.abs(BackLeft.getCurrentPosition());
+                FRPos = Math.abs(FrontRight.getCurrentPosition());
+                FLPos = Math.abs(FrontLeft.getCurrentPosition());
+                avg = (BRPos + BLPos + FRPos + FLPos) / 4;
+            }
+            SetDrivePower(0);
+            ResetDriveEncoders();
         }
 
     }
@@ -526,6 +531,47 @@ public class Robot {
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
+
+    }
+
+    public void Turn(Direction direction, double speed, double degrees, Telemetry telemetry){
+        DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        int ticks = (int)(degrees*robotConstants.Tickspercm*robotConstants.cmPerDegree);
+
+        if(direction == Direction.ClockWise){
+            FrontLeft.setTargetPosition(ticks);
+            FrontRight.setTargetPosition(-ticks);
+            BackLeft.setTargetPosition(ticks);
+            BackRight.setTargetPosition(-ticks);
+        }
+        else if (direction == Direction.CounterClockWise){
+            FrontLeft.setTargetPosition(-ticks);
+            FrontRight.setTargetPosition(ticks);
+            BackLeft.setTargetPosition(-ticks);
+            BackRight.setTargetPosition(ticks);
+        }
+        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+        SetDrivePower(speed);
+
+        int BRPos = (BackRight.getCurrentPosition());
+        int BLPos = (BackLeft.getCurrentPosition());
+        int FRPos = (FrontRight.getCurrentPosition());
+        int FLPos = (FrontLeft.getCurrentPosition());
+
+
+        while(Math.abs(BRPos-ticks) > 75 || Math.abs(BLPos-ticks) > 75 || Math.abs(FRPos-ticks) > 75 ||Math.abs(FLPos-ticks) > 75 ){
+            telemetry.addData("posBR", BackRight.getCurrentPosition());
+            telemetry.addData("PosBL", BackLeft.getCurrentPosition());
+            telemetry.addData("PosFR", FrontRight.getCurrentPosition());
+            telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
+
+            telemetry.update();
+            BRPos = (BackRight.getCurrentPosition());
+            BLPos = (BackLeft.getCurrentPosition());
+            FRPos = (FrontRight.getCurrentPosition());
+            FLPos = (FrontLeft.getCurrentPosition());
+        }
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     }
 

@@ -90,7 +90,7 @@ public class BluePrimary extends LinearOpMode {
             }
 
             if (counter == 4){
-                robot.EncoderTurn("CounterClockWise",.3,90);
+                robot.EncoderTurn(Robot.Direction.CounterClockWise,.3,90);
                 sleep(500);
                 counter ++;
             }

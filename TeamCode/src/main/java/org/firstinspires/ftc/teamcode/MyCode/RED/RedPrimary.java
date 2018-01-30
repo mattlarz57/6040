@@ -86,7 +86,7 @@ public class RedPrimary extends LinearOpMode {
             }
 
             if (counter == 4){
-              robot.EncoderTurn("CounterClockWise",.3,100);// we made the turn 100 so that it goes in at an angle , seemed to be more consistantly in rather than straight on at 90 degrees
+              robot.EncoderTurn(Robot.Direction.CounterClockWise,.3,100);// we made the turn 100 so that it goes in at an angle , seemed to be more consistantly in rather than straight on at 90 degrees
                 sleep(500);
                 counter ++;
             }

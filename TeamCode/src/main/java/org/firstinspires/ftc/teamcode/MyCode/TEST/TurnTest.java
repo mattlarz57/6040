@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.DogeExamples.*;
 
 //* Created by user on 12/07/17.
 
-
+@Autonomous
 public class TurnTest extends LinearOpMode {
 
     Robot robot = new Robot();
@@ -60,7 +60,7 @@ public class TurnTest extends LinearOpMode {
             robot.SetDrivePower(0);
             counter = 2;
             */
-            robot.EncoderTurn("CounterClockWise",.75,90);
+            robot.EncoderTurn(Robot.Direction.CounterClockWise,.75,90);
             counter ++;
 
             }

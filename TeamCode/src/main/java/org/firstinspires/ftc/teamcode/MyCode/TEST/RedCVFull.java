@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.MyCode.TEST;
 
+import android.media.NotProvisionedException;
+
 import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.detectors.GlyphDetector;
 import com.disnodeteam.dogecv.detectors.JewelDetector;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -14,6 +18,8 @@ import org.firstinspires.ftc.teamcode.MyCode.Robot;
 import org.firstinspires.ftc.teamcode.MyCode.RobotConstants;
 import org.firstinspires.ftc.teamcode.OtherFiles.ClosableVuforiaLocalizer;
 
+import java.sql.Time;
+
 /**
  * Created by user on 1/18/18.
  */
@@ -22,20 +28,25 @@ public class RedCVFull extends LinearOpMode {
 
     Robot robot = new Robot();
     JewelDetector jewelDetector = new JewelDetector();
+    GlyphDetector glyphDetector = new GlyphDetector();
     Robot.team TeamColor = Robot.team.Red;
     ClosableVuforiaLocalizer vuforia;
     RelicRecoveryVuMark VuMarkOutput = RelicRecoveryVuMark.UNKNOWN;
     JewelDetector.JewelOrder JewelOutput = JewelDetector.JewelOrder.UNKNOWN;
 
+
     int counter;
     boolean closed = false;
     boolean disabled = false;
+    boolean first = true;
     private VuforiaTrackable relicTemplate;
     private VuforiaTrackables relicTrackables;
+    boolean NeedTime = true;
+    double Vutime;
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException{
         telemetry.addLine("Initialization: Loading...");
         robot.initialize(hardwareMap, telemetry);
         robot.Camera.setPosition(RobotConstants.Camera_Jewel);
@@ -55,6 +66,7 @@ public class RedCVFull extends LinearOpMode {
         waitForStart();
         jewelDetector.enable();
         while (opModeIsActive()) {
+            telemetry.addData("Step", counter);
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (VuMarkOutput != RelicRecoveryVuMark.UNKNOWN || JewelOutput != JewelDetector.JewelOrder.UNKNOWN) {
                 telemetry.addData("VuMark: ", VuMarkOutput);
@@ -92,34 +104,108 @@ public class RedCVFull extends LinearOpMode {
                 relicTrackables.activate();
                 counter = 3;
             }
+            if(counter == 3 && NeedTime){
+                Vutime = getRuntime();
+                NeedTime = false;
+            }
 
-            if (counter == 3) {
+
+             else if (counter == 3) {
                 telemetry.addLine("Searching for VuMark");
                 if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                     VuMarkOutput = vuMark;
                     vuforia.close();
                     closed = true;
                     robot.Camera.setPosition(RobotConstants.Camera_Forward);
-                    counter = 4;
+
+                    if (first) {
+                        counter = 4;
+                    }
+                    if(!first){
+                        counter = 99;
+                    }
+                }
+                 else if(getRuntime() - Vutime >= 3.5){
+                    counter = 98;
                 }
             }
-            if (counter == 4) {
+
+            if(counter == 98){
+                if(first){
+                    robot.Drive(.35,-20,telemetry);
+                    robot.Camera.setPosition(RobotConstants.Camera_Jewel);
+                    first = false;
+                    NeedTime = true;
+                    counter = 3;
+                }
+                else {
+                    robot.Drive(.35,-50,telemetry);
+                    counter = 5;
+                }
+
+            }
+            if(counter == 99){
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35,-60,telemetry);
+                    robot.Drive(.35,-50,telemetry);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35,-80,telemetry);
+                    robot.Drive(.35,-70,telemetry);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35,-100,telemetry);
+                    robot.Drive(.35,-90,telemetry);
+                    counter = 5;
+                }
+
+            }
+
+            if (counter == 4) {
+                if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
+                    robot.Drive(.35,-70,telemetry);
+                    counter = 5;
+                } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
+                    robot.Drive(.35,-90,telemetry);
+                    counter = 5;
+                } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
+                    robot.Drive(.35,-110,telemetry);
                     counter = 5;
                 }
 
             }
 
             if (counter == 5) {
-                telemetry.addLine("Done");
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 90);
+                counter++;
+            }
+            if(counter == 6){
+               robot.Drive(.35,20,telemetry);
+                counter++;
 
+            }
+            if(counter == 7){
+                robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
+                robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
+                robot.Suckers(RobotConstants.Suckers_Out);
+                sleep(2000);
+                robot.Suckers(RobotConstants.Suckers_Stay);
+                robot.Drive(.35,-20,telemetry);
+                counter ++;
+            }
+            if(counter == 8){
+                robot.EncoderTurn(Robot.Direction.ClockWise,.5,180);
+                glyphDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
+                glyphDetector.speed = GlyphDetector.GlyphDetectionSpeed.FAST;
+                glyphDetector.minScore = 1;
+                glyphDetector.downScaleFactor = .3;
+                robot.Camera.setPosition(RobotConstants.Camera_Forward);
+                glyphDetector.enable();
+                counter ++;
+
+            }
+            while(counter == 9){
+                if(glyphDetector.isFoundRect()){
+                     telemetry.addData("offset", glyphDetector.getChosenGlyphOffset());
+
+                }
 
             }
 

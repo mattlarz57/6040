@@ -90,16 +90,19 @@ public class FinalTele extends OpMode {
             robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
             robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
         }
-        if (gamepad2.dpad_up) {
+        if (gamepad2.dpad_down) {
             robot.BigRelic.setPosition(0);
         }
-        else if (gamepad2.dpad_down) {
+        else if (gamepad2.dpad_up) {
             robot.BigRelic.setPosition(1);//RobotConstants.BigRelicBack_Out);
         }
         if (gamepad2.dpad_right) {
             robot.relicSmall.setPosition(RobotConstants.Small_Relic_Close);
         } else if (gamepad2.dpad_left) {
             robot.relicSmall.setPosition(RobotConstants.Small_Relic_Open);
+        }
+        else if (gamepad2.left_bumper){
+            robot.relicSmall.setPosition(RobotConstants.Small_Relic_Grab);
         }
 
         if (gamepad2.left_stick_y > .1) {
@@ -126,14 +129,6 @@ public class FinalTele extends OpMode {
 
 
         }
-        if(gamepad2.right_bumper){
-            robot.Camera.setPosition(RobotConstants.Camera_VuMark);
-
-        }
-         else if(gamepad2.left_bumper){
-            robot.Camera.setPosition(RobotConstants.Camera_Jewel);
-        }
-
 
 
     }

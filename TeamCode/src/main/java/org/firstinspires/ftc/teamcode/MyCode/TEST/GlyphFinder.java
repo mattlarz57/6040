@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.MyCode.TEST;
 
+import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.detectors.GlyphDetector;
 import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 import com.disnodeteam.dogecv.filters.HSVColorFilter;
@@ -22,6 +23,7 @@ import org.opencv.core.Scalar;
 public class GlyphFinder extends OpMode {
     Robot robot = new Robot();
     RobotConstants robotConstants;
+    GlyphDetector glyphDetector = new GlyphDetector();
     int counter;
     VuforiaLocalizer vuforia;
     int VuMarkSeen;
@@ -34,8 +36,11 @@ public class GlyphFinder extends OpMode {
 
         telemetry.addLine("Initialization: Loading...");
         robot.initialize(hardwareMap, telemetry);
-        robot.GlyphDetectorInit(hardwareMap);
-
+        glyphDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
+        glyphDetector.minScore = 1;
+        glyphDetector.downScaleFactor = 0.3;
+        glyphDetector.speed = GlyphDetector.GlyphDetectionSpeed.SLOW;
+        glyphDetector.enable();
 
         telemetry.addLine("Initialization: Success");
         counter = 1;
