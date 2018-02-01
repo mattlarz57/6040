@@ -46,11 +46,11 @@ public class FinalTele extends OpMode {
         else{touchpressed = 1;}
 
 
-        robot.BackRight.setPower(Range.clip((-turn + strafe - drive),-.85,.85));
-        robot.BackLeft.setPower(Range.clip((turn - strafe - drive),-.85,.85));
-        robot.FrontRight.setPower(Range.clip((-turn - strafe - drive),-.85,.85));
-        robot.FrontLeft.setPower(Range.clip((turn + strafe - drive),-.85,.85));
-        robot.relicArm.setPower(-relic / 2);
+        robot.BackRight.setPower((-turn + strafe - drive));
+        robot.BackLeft.setPower((turn - strafe - drive));
+        robot.FrontRight.setPower((-turn - strafe - drive));
+        robot.FrontLeft.setPower((turn + strafe - drive));
+        robot.relicArm.setPower(relic / 1.3);
 
 
         if (gamepad2.right_trigger >= .1) {

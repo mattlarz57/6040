@@ -104,7 +104,7 @@ public class Robot {
         Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         Jeweler1.setPosition(robotConstants.Jeweler1_Up);
         Camera.setPosition(robotConstants.Camera_Jewel);
-        relicSmall.setPosition(robotConstants.Small_Relic_Close);
+        relicSmall.setPosition(robotConstants.Small_Relic_Open);
 
 
 
@@ -374,7 +374,7 @@ public class Robot {
     public void WackJewel(team TeamColor, JewelDetector.JewelOrder orientation)  throws  InterruptedException{
         Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
         Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
 
         if (TeamColor == team.Blue) {
@@ -573,6 +573,41 @@ public class Robot {
         }
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+    }
+
+
+    public boolean SuckDone(){
+
+        int ODSCount = 0;
+        int touchpressed;
+        SetDrivePower(.35);
+
+        while(ODSCount < 2){
+
+            if(Touch.isPressed()){touchpressed = 0; }
+            else{touchpressed = 1;}
+
+            GTR.setPower(touchpressed);
+            GTL.setPower(touchpressed);
+            GBR.setPower(robotConstants.Suckers_In);
+            GBL.setPower(robotConstants.Suckers_In);
+
+            if(Dist.getLightDetected() >= .015){
+                SqueezerL.setPosition(robotConstants.SqueezerL_Close);
+                SqueezerR.setPosition(robotConstants.SqueezerR_Close);
+                ODSCount ++;
+            }
+            else{
+                SqueezerL.setPosition(robotConstants.SqueezerL_Open);
+                SqueezerR.setPosition(robotConstants.SqueezerR_Open);
+            }
+
+        }
+        SetDrivePower(0);
+        Suckers(robotConstants.Suckers_Stay);
+        SqueezerL.setPosition(robotConstants.SqueezerL_Open);
+        SqueezerR.setPosition(robotConstants.SqueezerR_Open);
+        return true;
     }
 
 

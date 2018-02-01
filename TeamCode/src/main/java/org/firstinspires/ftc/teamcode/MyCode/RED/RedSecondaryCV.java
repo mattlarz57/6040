@@ -1,14 +1,10 @@
-package org.firstinspires.ftc.teamcode.MyCode.TEST;
-
-import android.media.NotProvisionedException;
+package org.firstinspires.ftc.teamcode.MyCode.RED;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.detectors.GlyphDetector;
 import com.disnodeteam.dogecv.detectors.JewelDetector;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -16,16 +12,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.MyCode.Robot;
 import org.firstinspires.ftc.teamcode.MyCode.RobotConstants;
+import org.firstinspires.ftc.teamcode.OtherFiles.AutoTransitioner;
 import org.firstinspires.ftc.teamcode.OtherFiles.ClosableVuforiaLocalizer;
 
-import java.sql.Time;
-
 /**
- * Created by user on 1/18/18.
+ * Created by user on 2/01/18.
  */
 @Autonomous
-public class RedCVFull extends LinearOpMode {
-
+public class RedSecondaryCV extends LinearOpMode {
     Robot robot = new Robot();
     JewelDetector jewelDetector = new JewelDetector();
     GlyphDetector glyphDetector = new GlyphDetector();
@@ -42,11 +36,12 @@ public class RedCVFull extends LinearOpMode {
     private VuforiaTrackable relicTemplate;
     private VuforiaTrackables relicTrackables;
     boolean NeedTime = true;
-    double Vutime, Glyphtime;
+    double Vutime;
 
 
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
+
         telemetry.addLine("Initialization: Loading...");
         robot.initialize(hardwareMap, telemetry);
         robot.Camera.setPosition(RobotConstants.Camera_Jewel);
@@ -58,14 +53,15 @@ public class RedCVFull extends LinearOpMode {
         jewelDetector.ratioWeight = 15;
         jewelDetector.minArea = 700;
 
-
+        AutoTransitioner.transitionOnStop(this, "FinalTele");
         telemetry.update();
-        telemetry.addLine("Initialization: Success");
+        telemetry.addLine("Initialization: Complete");
 
 
+        counter = 1;
         waitForStart();
         jewelDetector.enable();
-        while (opModeIsActive()) {
+        while (opModeIsActive()){
             telemetry.addData("Step", counter);
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (VuMarkOutput != RelicRecoveryVuMark.UNKNOWN || JewelOutput != JewelDetector.JewelOrder.UNKNOWN) {
@@ -110,7 +106,7 @@ public class RedCVFull extends LinearOpMode {
             }
 
 
-             else if (counter == 3) {
+            else if (counter == 3) {
                 telemetry.addLine("Searching for VuMark");
                 if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                     VuMarkOutput = vuMark;
@@ -125,7 +121,7 @@ public class RedCVFull extends LinearOpMode {
                         counter = 99;
                     }
                 }
-                 else if(getRuntime() - Vutime >= 3.5){
+                else if(getRuntime() - Vutime >= 3.5){
                     counter = 98;
                 }
             }
@@ -139,49 +135,46 @@ public class RedCVFull extends LinearOpMode {
                     counter = 3;
                 }
                 else {
-                    robot.Drive(.35,-50,telemetry);
-                    counter = 5;
+                    VuMarkOutput = RelicRecoveryVuMark.RIGHT;
+                    counter = 99;
                 }
 
+            }
+            if(counter == 4){
+                robot.Drive(.35,-30,telemetry);
+                counter ++;
             }
             if(counter == 99){
-                if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35,-50,telemetry);
-                    counter = 5;
-                } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35,-70,telemetry);
-                    counter = 5;
-                } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35,-90,telemetry);
-                    counter = 5;
-                }
-
+                robot.Drive(.35,-10,telemetry);
+                counter = 5;
             }
-
-            if (counter == 4) {
-                if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35,-70,telemetry);
-                    counter = 5;
-                } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35,-90,telemetry);
-                    counter = 5;
-                } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35,-110,telemetry);
-                    counter = 5;
-                }
-
-            }
-
-            if (counter == 5) {
-                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 90);
-                counter++;
+            if(counter == 5){
+                robot.EncoderTurn(Robot.Direction.ClockWise,.35,90);
+                counter ++;
             }
             if(counter == 6){
-               robot.Drive(.35,20,telemetry);
-                counter++;
+                if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
+                    robot.Drive(.35,10,telemetry);
+                    counter = 7;
+                } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
+                    robot.Drive(.35,30,telemetry);
+                    counter = 7;
+                } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
+                    robot.Drive(.35,50,telemetry);
+                    counter = 7;
+                }
 
             }
             if(counter == 7){
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 90);
+                counter++;
+            }
+            if(counter == 8){
+                robot.Drive(.35,20,telemetry);
+                counter++;
+
+            }
+            if(counter == 9){
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
                 robot.Suckers(RobotConstants.Suckers_Out);
@@ -190,29 +183,15 @@ public class RedCVFull extends LinearOpMode {
                 robot.Drive(.35,-20,telemetry);
                 counter ++;
             }
-            if(counter == 8){
-                robot.EncoderTurn(Robot.Direction.ClockWise,.5,180);
-                NeedTime = true;
+            if(counter == 10){
+                robot.EncoderTurn(Robot.Direction.CounterClockWise,.5,180);
                 counter ++;
-
             }
-            if(counter == 9 && NeedTime){
-                Glyphtime = getRuntime();
-                NeedTime = false;
+            if(counter == 11){
+                requestOpModeStop();
             }
-            while(counter == 9){
-                if (robot.SuckDone()){
-                    counter ++;
-                }
-                else if(getRuntime() - Glyphtime > 10){
-                    counter ++;
-                }
-
-
-            }
-
-
         }
-        counter = 10;
+
     }
+
 }
