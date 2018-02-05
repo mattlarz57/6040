@@ -61,6 +61,7 @@ public class BluePrimaryCV extends LinearOpMode {
         waitForStart();
         ElapsedTime elapsedTime = new ElapsedTime(0);
         jewelDetector.enable();
+        robot.ResetDriveEncoders();
         while (opModeIsActive()) {
             if (counter == 8 || getRuntime() > 30) {
                 robot.Suckers(RobotConstants.Suckers_Stay);
@@ -126,24 +127,24 @@ public class BluePrimaryCV extends LinearOpMode {
 
             if (counter == 4) {
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35, 85, telemetry,elapsedTime,5);
+                    robot.Drive(.35, 85, telemetry, elapsedTime,4);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35, 65, telemetry,elapsedTime,5);
+                    robot.Drive(.35, 65, telemetry,elapsedTime, 4);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35, 45, telemetry,elapsedTime,5);
+                    robot.Drive(.35, 45, telemetry, elapsedTime,4);
                     counter = 5;
                 }
 
             }
 
             if (counter == 5) {
-                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 50,elapsedTime,3);
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 50, elapsedTime,3);
                 counter++;
             }
             if (counter == 6) {
-                robot.Drive(.35, 23, telemetry,elapsedTime,3);
+                robot.Drive(.35, 23, telemetry,elapsedTime, 3);
                 counter++;
 
             }
@@ -153,7 +154,7 @@ public class BluePrimaryCV extends LinearOpMode {
                 robot.Suckers(RobotConstants.Suckers_Out);
                 sleep(2000);
                 robot.Suckers(RobotConstants.Suckers_Stay);
-                robot.Drive(.35, -25, telemetry,elapsedTime,3);
+                robot.Drive(.35, -25, telemetry, elapsedTime,3);
                 counter++;
             }
 

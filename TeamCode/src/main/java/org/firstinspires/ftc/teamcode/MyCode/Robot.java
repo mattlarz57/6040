@@ -287,7 +287,7 @@ public class Robot {
 
     public void EncoderTurn(Direction Direction , double power, double degrees, ElapsedTime elapsedTime, double timeout) throws InterruptedException{
         ResetDriveEncoders();
-        double startime  = elapsedTime.seconds();
+        double startime = elapsedTime.seconds();
         double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
         if(Direction == Robot.Direction.CounterClockWise){
             int BRPos = Math.abs(BackRight.getCurrentPosition());
@@ -295,9 +295,9 @@ public class Robot {
             int FRPos = Math.abs(FrontRight.getCurrentPosition());
             int FLPos = Math.abs(FrontLeft.getCurrentPosition());
             int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-            double currenttime = elapsedTime.seconds();
+            double currentime = elapsedTime.seconds();
 
-            while(avg < ticks && currenttime - startime < timeout ){
+            while(avg < ticks  && currentime - startime < timeout){
                 BackRight.setPower(power);
                 BackLeft.setPower(-power);
                 FrontRight.setPower(power);
@@ -307,7 +307,7 @@ public class Robot {
                 FRPos = Math.abs(FrontRight.getCurrentPosition());
                 FLPos = Math.abs(FrontLeft.getCurrentPosition());
                 avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-                currenttime = elapsedTime.seconds();
+                currentime = elapsedTime.seconds();
 
             }
             SetDrivePower(0);
@@ -517,21 +517,25 @@ public class Robot {
         int BLPos = (BackLeft.getCurrentPosition());
         int FRPos = (FrontRight.getCurrentPosition());
         int FLPos = (FrontLeft.getCurrentPosition());
-        double currenttime = elapsedTime.seconds();
+        double currentime = elapsedTime.seconds();
 
 
-        while((Math.abs(BRPos-ticks) > 75 || Math.abs(BLPos-ticks) > 75 || Math.abs(FRPos-ticks) > 75 ||Math.abs(FLPos-ticks) > 75) && (currenttime - starttime < timeout) ){
+        while((Math.abs(BRPos-ticks) > 75 || Math.abs(BLPos-ticks) > 75 || Math.abs(FRPos-ticks) > 75 ||Math.abs(FLPos-ticks) > 75)  && currentime - starttime < timeout) {
             telemetry.addData("posBR", BackRight.getCurrentPosition());
             telemetry.addData("PosBL", BackLeft.getCurrentPosition());
             telemetry.addData("PosFR", FrontRight.getCurrentPosition());
             telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
+            currentime = elapsedTime.seconds();
 
             telemetry.update();
             BRPos = (BackRight.getCurrentPosition());
             BLPos = (BackLeft.getCurrentPosition());
             FRPos = (FrontRight.getCurrentPosition());
             FLPos = (FrontLeft.getCurrentPosition());
-            currenttime = elapsedTime.seconds();
+
+
+
+
         }
         /*if(BackLeft.getCurrentPosition() == ticks && BackRight.getCurrentPosition() == ticks
             && FrontLeft.getCurrentPosition() == ticks && FrontRight.getCurrentPosition() == ticks){

@@ -63,6 +63,7 @@ public class RedSecondaryCV extends LinearOpMode {
         waitForStart();
         ElapsedTime elapsedTime = new ElapsedTime(0);
         jewelDetector.enable();
+        robot.ResetDriveEncoders();
         while (opModeIsActive()){
             telemetry.addData("Step", counter);
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -134,7 +135,7 @@ public class RedSecondaryCV extends LinearOpMode {
                     robot.Camera.setPosition(RobotConstants.Camera_Jewel);
                     first = false;
                     NeedTime = true;
-                    counter = 3;
+                    counter = 99;//counnter = 3
                 }
                 else {
                     VuMarkOutput = RelicRecoveryVuMark.RIGHT;
@@ -143,11 +144,11 @@ public class RedSecondaryCV extends LinearOpMode {
 
             }
             if(counter == 4){
-                robot.Drive(.35,-30,telemetry,elapsedTime,4);
+                robot.Drive(.35,-40,telemetry,elapsedTime,4);
                 counter ++;
             }
             if(counter == 99){
-                robot.Drive(.35,-10,telemetry,elapsedTime,2);
+                robot.Drive(.35,-20,telemetry,elapsedTime,2);
                 counter = 5;
             }
             if(counter == 5){
@@ -168,7 +169,7 @@ public class RedSecondaryCV extends LinearOpMode {
 
             }
             if(counter == 7){
-                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 90,elapsedTime,3);
+                robot.EncoderTurn(Robot.Direction.ClockWise, .5, 40,elapsedTime,3);
                 counter++;
             }
             if(counter == 8){

@@ -125,7 +125,7 @@ public class FinalTele extends OpMode {
             AutoSucc = false;
         }
 
-        if (AutoSucc && robot.Dist.getLightDetected() > 0.015) {
+        if (AutoSucc && robot.Dist.getLightDetected() > 0.013) {
             robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
             robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
             AutoSucc = false;
