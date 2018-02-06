@@ -5,6 +5,7 @@ import com.disnodeteam.dogecv.detectors.GlyphDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -25,6 +26,7 @@ public class MoveForward extends LinearOpMode {
     Robot robot = new Robot();
     int counter = 0;
     Robot.team TeamColor = Robot.team.Blue;
+    ElapsedTime elapsedTime = new ElapsedTime(0);
 
 
 
@@ -34,7 +36,7 @@ public class MoveForward extends LinearOpMode {
         counter = 1;
         waitForStart();
         if (counter == 1) {
-            robot.encoderDrive(.5,100,100,telemetry);
+            robot.Drive(.5,30,telemetry,elapsedTime,2);
         }
 
 

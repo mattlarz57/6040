@@ -10,6 +10,8 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -502,14 +504,13 @@ public class Robot {
     public void Drive(double speed, double centimeters, Telemetry telemetry, ElapsedTime elapsedTime, double timeout){
 
         DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ElapsedTime time = new ElapsedTime();
         int ticks = (int)(robotConstants.Tickspercm *centimeters);
-        double starttime = elapsedTime.seconds();
 
         BackRight.setTargetPosition(ticks);
         BackLeft.setTargetPosition(ticks);
         FrontRight.setTargetPosition(ticks);
         FrontLeft.setTargetPosition(ticks);
-
 
         DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
         SetDrivePower(speed);
@@ -517,37 +518,23 @@ public class Robot {
         int BLPos = (BackLeft.getCurrentPosition());
         int FRPos = (FrontRight.getCurrentPosition());
         int FLPos = (FrontLeft.getCurrentPosition());
-        double currentime = elapsedTime.seconds();
+        double currenttime = time.seconds();
 
-
-        while((Math.abs(BRPos-ticks) > 75 || Math.abs(BLPos-ticks) > 75 || Math.abs(FRPos-ticks) > 75 ||Math.abs(FLPos-ticks) > 75)  && currentime - starttime < timeout) {
+        while((FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() ||BackRight.isBusy()) /* && (currenttime  < timeout)*/ ){
             telemetry.addData("posBR", BackRight.getCurrentPosition());
             telemetry.addData("PosBL", BackLeft.getCurrentPosition());
             telemetry.addData("PosFR", FrontRight.getCurrentPosition());
             telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
-            currentime = elapsedTime.seconds();
+            telemetry.addData("time", currenttime);
 
             telemetry.update();
             BRPos = (BackRight.getCurrentPosition());
             BLPos = (BackLeft.getCurrentPosition());
             FRPos = (FrontRight.getCurrentPosition());
             FLPos = (FrontLeft.getCurrentPosition());
-
-
-
-
+            currenttime = time.seconds();
         }
-        /*if(BackLeft.getCurrentPosition() == ticks && BackRight.getCurrentPosition() == ticks
-            && FrontLeft.getCurrentPosition() == ticks && FrontRight.getCurrentPosition() == ticks){
-            SetDrivePower(0);
-            DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-        */
-
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-
     }
 
     public void Turn(Direction direction, double speed, double degrees, Telemetry telemetry){
@@ -624,6 +611,48 @@ public class Robot {
         SqueezerL.setPosition(robotConstants.SqueezerL_Open);
         SqueezerR.setPosition(robotConstants.SqueezerR_Open);
         return true;
+    }
+
+
+
+
+    public void OtherDrive(double distance, double speed, Telemetry telemetry,double timeout ){
+        int ticks =  (int)(robotConstants.Tickspercm * distance);
+        ElapsedTime elapsedTime = new ElapsedTime(0);
+
+        BackRight.setTargetPosition(ticks);
+        BackLeft.setTargetPosition(ticks);
+        FrontRight.setTargetPosition(ticks);
+        FrontLeft.setTargetPosition(ticks);
+        SetDrivePower(speed);
+        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+       /* int BRPos = (BackRight.getCurrentPosition());
+        int BLPos = (BackLeft.getCurrentPosition());
+        int FRPos = (FrontRight.getCurrentPosition());
+        int FLPos = (FrontLeft.getCurrentPosition());
+        */
+        double currentime = elapsedTime.seconds();
+
+        while ((currentime < timeout) && (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())  ){
+            telemetry.addData("posBR", BackRight.getCurrentPosition());
+            telemetry.addData("PosBL", BackLeft.getCurrentPosition());
+            telemetry.addData("PosFR", FrontRight.getCurrentPosition());
+            telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
+            currentime = elapsedTime.seconds();
+
+            telemetry.update();
+           /* BRPos = (BackRight.getCurrentPosition());
+            BLPos = (BackLeft.getCurrentPosition());
+            FRPos = (FrontRight.getCurrentPosition());
+            FLPos = (FrontLeft.getCurrentPosition());
+            */
+        }
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        SetDrivePower(0);
+
+
+
     }
 
 
