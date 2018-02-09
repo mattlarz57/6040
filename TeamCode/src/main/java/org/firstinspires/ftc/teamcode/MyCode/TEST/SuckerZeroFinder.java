@@ -6,7 +6,6 @@ import org.firstinspires.ftc.teamcode.MyCode.*;
 /**
  * Created by user on 1/11/18.
  */
-@TeleOp
 public class SuckerZeroFinder extends OpMode{
 
     Robot robot = new Robot();

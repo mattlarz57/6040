@@ -19,7 +19,6 @@ import org.firstinspires.ftc.teamcode.OtherFiles.ClosableVuforiaLocalizer;
 /**
  * Created by user on 2/01/18.
  */
-@Autonomous
 public class RedSecondaryCV extends LinearOpMode {
     Robot robot = new Robot();
     JewelDetector jewelDetector = new JewelDetector();

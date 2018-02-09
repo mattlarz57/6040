@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.MyCode.RobotConstants;
 /**
  * Created by user on 1/25/18.
  */
-@Autonomous
 public class Wack extends LinearOpMode {
 
     Robot robot = new Robot();

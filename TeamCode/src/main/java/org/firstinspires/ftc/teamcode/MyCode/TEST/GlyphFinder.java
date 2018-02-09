@@ -19,7 +19,6 @@ import org.opencv.core.Scalar;
 /**
  * Created by user on 1/08/18.
  */
-@Autonomous
 public class GlyphFinder extends OpMode {
     Robot robot = new Robot();
     RobotConstants robotConstants;

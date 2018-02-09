@@ -19,7 +19,6 @@ import org.firstinspires.ftc.teamcode.OtherFiles.ClosableVuforiaLocalizer;
 /**
  * Created by user on 1/16/18.
  */
-@Autonomous
 public class NewerJeweler extends LinearOpMode {
 
     Robot robot = new Robot();

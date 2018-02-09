@@ -20,7 +20,6 @@ import org.opencv.imgproc.Moments;
 /**
  * Created by matthew on 1/14/2018.
  */
-@Autonomous
 public class JewelConfig extends LinearOpMode {
 
 

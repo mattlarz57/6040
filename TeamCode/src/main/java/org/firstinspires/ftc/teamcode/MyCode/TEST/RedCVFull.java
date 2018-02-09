@@ -25,7 +25,6 @@ import java.sql.Time;
 /**
  * Created by user on 1/18/18.
  */
-@Autonomous
 public class RedCVFull extends LinearOpMode {
 
     Robot robot = new Robot();

@@ -25,7 +25,7 @@ public class newdrive extends LinearOpMode {
         counter = 1;
 
         if(counter == 1){
-            robot.encoderDrive(.5,25,25,telemetry);
+            //robot.encoderDrive(.5,25,25,telemetry);
             sleep(5000);
             counter = 2;
         }

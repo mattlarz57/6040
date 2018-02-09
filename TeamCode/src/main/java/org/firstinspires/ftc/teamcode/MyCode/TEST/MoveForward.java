@@ -19,7 +19,6 @@ import org.firstinspires.ftc.teamcode.DogeExamples.*;
 /**
  * Created by user on 11/30/17.
  */
-@Autonomous
 public class MoveForward extends LinearOpMode {
 
 
@@ -36,7 +35,7 @@ public class MoveForward extends LinearOpMode {
         counter = 1;
         waitForStart();
         if (counter == 1) {
-            robot.Drive(.5,30,telemetry,elapsedTime,2);
+            robot.Drive(.5,50,telemetry,elapsedTime,2);
         }
 
 

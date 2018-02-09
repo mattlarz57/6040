@@ -19,7 +19,6 @@ import static android.graphics.Color.red;
 /**
  * Created by matthew on 1/13/2018.
  */
-@Autonomous
 public class NewJeweler extends LinearOpMode{
     Robot robot = new Robot();
     VuforiaLocalizer vuforia;

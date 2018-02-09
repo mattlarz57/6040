@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.MyCode.Robot;
 /**
  * Created by user on 1/31/18.
  */
-@Autonomous
 public class OptimumSucker extends LinearOpMode {
     int counter;
     Robot robot = new Robot();

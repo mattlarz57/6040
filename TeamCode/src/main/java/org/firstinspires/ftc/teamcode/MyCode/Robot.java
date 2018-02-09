@@ -141,14 +141,6 @@ public class Robot {
 
 
 
-    public void GlyphDetectorInit(HardwareMap hardwareMap){
-        glyphDetector = new GlyphDetector();
-        glyphDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
-        glyphDetector.minScore =1;
-        glyphDetector.downScaleFactor = 0.3;
-        glyphDetector.speed = GlyphDetector.GlyphDetectionSpeed.BALANCED;
-        glyphDetector.enable();
-    }
 
     public void ResetDriveEncoders() {
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -180,80 +172,9 @@ public class Robot {
         FrontLeft.setPower(power);
     }
 
-    public void Move(double power, double centimeters) {
-        ResetDriveEncoders();
-        double ticks = centimeters * robotConstants.Tickspercm;
-        int BRPos = Math.abs(BackRight.getCurrentPosition());
-        int BLPos = Math.abs(BackLeft.getCurrentPosition());
-        int FRPos = Math.abs(FrontRight.getCurrentPosition());
-        int FLPos = Math.abs(FrontLeft.getCurrentPosition());
 
-        double avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
 
-        while (avg < ticks) {
-            SetDrivePower(power);
-            BRPos = Math.abs(BackRight.getCurrentPosition());
-            BLPos = Math.abs(BackLeft.getCurrentPosition());
-            FRPos = Math.abs(FrontRight.getCurrentPosition());
-            FLPos = Math.abs(FrontLeft.getCurrentPosition());
-            avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
-        }
-        SetDrivePower(0);
-    }
-    public void MoveTo(double power, long centimeters, Telemetry telemetry){
-        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        double ticks = centimeters * robotConstants.Tickspercm;
-        int rounded = (int)(ticks);
-        BackRight.setTargetPosition(rounded);
-        BackLeft.setTargetPosition(rounded);
-        FrontRight.setTargetPosition(rounded);
-        FrontLeft.setTargetPosition(rounded);
 
-        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-        SetDrivePower(power);
-        int BRCurr,BLCurr,FRCurr,FLCurr;
-        BRCurr = BackRight.getCurrentPosition();
-        BLCurr = BackLeft.getCurrentPosition();
-        FRCurr = FrontRight.getCurrentPosition();
-        FLCurr = FrontLeft.getCurrentPosition();
-        while (FrontRight.isBusy() || FrontLeft.isBusy()|| BackRight.isBusy()||BackLeft.isBusy()){
-            telemetry.addData("FRPos: ", FRCurr);
-            telemetry.addData("FLPos: ", FLCurr);
-            telemetry.addData("BRPos: ",BRCurr);
-            telemetry.addData("BLPos", BRCurr);
-            BRCurr = BackRight.getCurrentPosition();
-            BLCurr = BackLeft.getCurrentPosition();
-            FRCurr = FrontRight.getCurrentPosition();
-            FLCurr = FrontLeft.getCurrentPosition();
-            telemetry.update();
-        }
-        SetDrivePower(0);
-        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    }
-
-    public void Backwards(double power, double centimeters) {
-        ResetDriveEncoders();
-        double ticks = centimeters * robotConstants.Tickspercm;
-        int BRPos = (BackRight.getCurrentPosition());
-        int BLPos = (BackLeft.getCurrentPosition());
-        int FRPos = (FrontRight.getCurrentPosition());
-        int FLPos = (FrontLeft.getCurrentPosition());
-
-        double avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
-
-        while (avg > ticks) {
-            SetDrivePower(-power);
-            BRPos = (BackRight.getCurrentPosition());
-            BLPos = (BackLeft.getCurrentPosition());
-            FRPos = (FrontRight.getCurrentPosition());
-            FLPos = (FrontLeft.getCurrentPosition());
-            avg = ((BRPos + BLPos + FRPos + FLPos) / 4);
-        }
-
-        SetDrivePower(0);
-    }
 
     public void Sideways(String direction, double power, double centimeters) {
         ResetDriveEncoders();
@@ -287,99 +208,68 @@ public class Robot {
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void EncoderTurn(Direction Direction , double power, double degrees, ElapsedTime elapsedTime, double timeout) throws InterruptedException{
-        ResetDriveEncoders();
-        double startime = elapsedTime.seconds();
-        double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
-        if(Direction == Robot.Direction.CounterClockWise){
-            int BRPos = Math.abs(BackRight.getCurrentPosition());
-            int BLPos = Math.abs(BackLeft.getCurrentPosition());
-            int FRPos = Math.abs(FrontRight.getCurrentPosition());
-            int FLPos = Math.abs(FrontLeft.getCurrentPosition());
-            int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-            double currentime = elapsedTime.seconds();
+    public void EncoderTurn(Direction Direction , double power, double degrees, ElapsedTime elapsedTime, double timeout) throws InterruptedException {
+        DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ElapsedTime time = new ElapsedTime();
+        int ticks = (int) (robotConstants.Tickspercm * degrees * RobotConstants.cmPerDegree);
+        double FRPos = FrontRight.getCurrentPosition(),
+                FLPos = FrontLeft.getCurrentPosition(),
+                BRPos = BackRight.getCurrentPosition(),
+                BLPos = BackLeft.getCurrentPosition();
 
-            while(avg < ticks  && currentime - startime < timeout){
-                BackRight.setPower(power);
-                BackLeft.setPower(-power);
-                FrontRight.setPower(power);
-                FrontLeft.setPower(-power);
-                BRPos = Math.abs(BackRight.getCurrentPosition());
-                BLPos = Math.abs(BackLeft.getCurrentPosition());
-                FRPos = Math.abs(FrontRight.getCurrentPosition());
-                FLPos = Math.abs(FrontLeft.getCurrentPosition());
-                avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-                currentime = elapsedTime.seconds();
+        if (Direction == Robot.Direction.CounterClockWise) {
+            BackRight.setTargetPosition(ticks);
+            BackLeft.setTargetPosition(-ticks);
+            FrontRight.setTargetPosition(ticks);
+            FrontLeft.setTargetPosition(-ticks);
 
+            DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            FrontRight.setPower(power);
+            FrontLeft.setPower(-power);
+            BackLeft.setPower(-power);
+            BackRight.setPower(power);
+            double currenttime;
+
+
+            while (Math.abs(ticks - FRPos) > 75 || Math.abs(-ticks - FLPos) > 75 || Math.abs(ticks - BRPos) > 75 || Math.abs(-ticks - BLPos) > 75) {
+                FRPos = FrontRight.getCurrentPosition();
+                FLPos = FrontLeft.getCurrentPosition();
+                BRPos = BackRight.getCurrentPosition();
+                BLPos = BackLeft.getCurrentPosition();
+
+                currenttime = time.seconds();
+                if (timeout < currenttime) {
+                    DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                }
             }
-            SetDrivePower(0);
-            ResetDriveEncoders();
+            DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        } else if (Direction == Robot.Direction.ClockWise) {
 
-        }
+            BackRight.setTargetPosition(-ticks);
+            BackLeft.setTargetPosition(ticks);
+            FrontRight.setTargetPosition(-ticks);
+            FrontLeft.setTargetPosition(ticks);
 
-        else if (Direction == Robot.Direction.ClockWise){
-            int BRPos = Math.abs(BackRight.getCurrentPosition());
-            int BLPos = Math.abs(BackLeft.getCurrentPosition());
-            int FRPos = Math.abs(FrontRight.getCurrentPosition());
-            int FLPos = Math.abs(FrontLeft.getCurrentPosition());
-            int avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-            double currenttime = elapsedTime.seconds();
+            DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            SetDrivePower(power);
 
+            double currenttime;
 
-            while(avg < ticks && currenttime - startime < timeout){
-                BackRight.setPower(-power);
-                BackLeft.setPower(power);
-                FrontRight.setPower(-power);
-                FrontLeft.setPower(power);
-                BRPos = Math.abs(BackRight.getCurrentPosition());
-                BLPos = Math.abs(BackLeft.getCurrentPosition());
-                FRPos = Math.abs(FrontRight.getCurrentPosition());
-                FLPos = Math.abs(FrontLeft.getCurrentPosition());
-                avg = (BRPos + BLPos + FRPos + FLPos) / 4;
-                currenttime = elapsedTime.seconds();
+            while (Math.abs(-ticks - FRPos) > 75 || Math.abs(ticks - FLPos) > 75 || Math.abs(-ticks - BRPos) > 75 || Math.abs(ticks - BLPos) > 75) {
+                FRPos = FrontRight.getCurrentPosition();
+                FLPos = FrontLeft.getCurrentPosition();
+                BRPos = BackRight.getCurrentPosition();
+                BLPos = BackLeft.getCurrentPosition();
 
+                currenttime = time.seconds();
+                if (timeout < currenttime) {
+                    ticks = (int)(FRPos);
+                }
             }
-            SetDrivePower(0);
             DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
-
     }
 
-    public void BetterTurn(Direction direction, double power, double degrees){
-        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        double ticks = degrees * robotConstants.cmPerDegree * robotConstants.Tickspercm;
-        int rounded = (int)(ticks);
-        if (direction == Direction.ClockWise) {
-            BackRight.setTargetPosition(-rounded);
-            BackLeft.setTargetPosition(rounded);
-            FrontRight.setTargetPosition(-rounded);
-            FrontLeft.setTargetPosition(rounded);
-        }
-        else if (direction == Direction.CounterClockWise) {
-            BackRight.setTargetPosition(rounded);
-            BackLeft.setTargetPosition(-rounded);
-            FrontRight.setTargetPosition(rounded);
-            FrontLeft.setTargetPosition(-rounded);
-        }
-
-        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-        SetDrivePower(power);
-
-        int BRCurr,BLCurr,FRCurr,FLCurr;
-        BRCurr = BackRight.getCurrentPosition();
-        BLCurr = BackLeft.getCurrentPosition();
-        FRCurr = FrontRight.getCurrentPosition();
-        FLCurr = FrontLeft.getCurrentPosition();
-        while (!withindistance(BRCurr,rounded,50)||!withindistance(BLCurr,rounded,50)||!withindistance(FRCurr,rounded,50) || !withindistance(FLCurr,rounded,50)){
-            BRCurr = BackRight.getCurrentPosition();
-            BLCurr = BackLeft.getCurrentPosition();
-            FRCurr = FrontRight.getCurrentPosition();
-            FLCurr = FrontLeft.getCurrentPosition();
-        }
-        SetDrivePower(0);
-        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    }
 
 
 
@@ -390,10 +280,10 @@ public class Robot {
 
 
         if (TeamColor == team.Blue) {
-            if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
+            if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
                 Thread.sleep(500);
-            } else if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
+            } else if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
                 Thread.sleep(500);
             }
@@ -402,10 +292,10 @@ public class Robot {
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
         }
         else if (TeamColor == team.Red){
-            if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
+            if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
                 Thread.sleep(500);
-            } else if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
+            } else if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
                 Thread.sleep(500);
             }
@@ -416,37 +306,7 @@ public class Robot {
 
     }
 
-    public void DogeWack(team TeamColor) throws InterruptedException{
-        Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
-        Thread.sleep(775);
-        Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
-        Thread.sleep(2000);
 
-        if (TeamColor == team.Blue) {
-            if (jewelDetector.getLastOrder() == JewelDetector.JewelOrder.RED_BLUE) {
-                Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(500);
-            } else if (jewelDetector.getLastOrder() == JewelDetector.JewelOrder.BLUE_RED) {
-                Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(500);
-            }
-            Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Thread.sleep(400);
-            Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-        }
-        else if (TeamColor == team.Red){
-            if (jewelDetector.getLastOrder() == JewelDetector.JewelOrder.RED_BLUE) {
-                Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(500);
-            } else if (jewelDetector.getLastOrder() == JewelDetector.JewelOrder.BLUE_RED) {
-                Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(500);
-            }
-            Jeweler1.setPosition(robotConstants.Jeweler1_Up);
-            Thread.sleep(400);
-            Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-        }
-    }
 
 
     public void Suckers(double power){
@@ -454,49 +314,6 @@ public class Robot {
         GBR.setPower(power);
         GBL.setPower(power);
         GTL.setPower(power);
-
-    }
-
-
-    public boolean withindistance(int current, int target, int threshold ){
-        int error = target - current;
-
-        if (Math.abs(error)<= threshold){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public void encoderDrive(double speed, double leftcm,double rightcm,Telemetry telemetry){
-
-        ResetDriveEncoders();
-        while(BackLeft.getCurrentPosition() != 0){}
-        int leftticks = (int)(robotConstants.Tickspercm*leftcm);
-        int rightticks = (int)(robotConstants.Tickspercm*rightcm);
-
-        BackRight.setTargetPosition(rightticks);
-        BackLeft.setTargetPosition(leftticks);
-        FrontLeft.setTargetPosition(leftticks);
-        FrontRight.setTargetPosition(rightticks);
-
-        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        BackLeft.setPower(speed);
-        BackRight.setPower(speed);
-        FrontLeft.setPower(speed);
-        FrontRight.setPower(speed);
-
-        while ( BackLeft.isBusy() || BackRight.isBusy() || FrontLeft.isBusy() || FrontRight.isBusy()){
-            telemetry.addData("BR",BackRight.getCurrentPosition());
-            telemetry.addData("FR",FrontRight.getCurrentPosition());
-            telemetry.addData("BL", BackLeft.getCurrentPosition());
-            telemetry.addData("FL", FrontLeft.getCurrentPosition());
-            telemetry.update();
-        }
-        SetDrivePower(0);
-        ResetDriveEncoders();
-
 
     }
 
@@ -514,13 +331,10 @@ public class Robot {
 
         DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
         SetDrivePower(speed);
-        int BRPos = (BackRight.getCurrentPosition());
-        int BLPos = (BackLeft.getCurrentPosition());
-        int FRPos = (FrontRight.getCurrentPosition());
-        int FLPos = (FrontLeft.getCurrentPosition());
+
         double currenttime = time.seconds();
 
-        while((FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() ||BackRight.isBusy()) /* && (currenttime  < timeout)*/ ){
+        while((FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() ||BackRight.isBusy())/*  && (currenttime  < timeout) */){
             telemetry.addData("posBR", BackRight.getCurrentPosition());
             telemetry.addData("PosBL", BackLeft.getCurrentPosition());
             telemetry.addData("PosFR", FrontRight.getCurrentPosition());
@@ -528,55 +342,16 @@ public class Robot {
             telemetry.addData("time", currenttime);
 
             telemetry.update();
-            BRPos = (BackRight.getCurrentPosition());
-            BLPos = (BackLeft.getCurrentPosition());
-            FRPos = (FrontRight.getCurrentPosition());
-            FLPos = (FrontLeft.getCurrentPosition());
+
             currenttime = time.seconds();
+            if(timeout < currenttime){
+                DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
         }
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void Turn(Direction direction, double speed, double degrees, Telemetry telemetry){
-        DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int ticks = (int)(degrees*robotConstants.Tickspercm*robotConstants.cmPerDegree);
 
-        if(direction == Direction.ClockWise){
-            FrontLeft.setTargetPosition(ticks);
-            FrontRight.setTargetPosition(-ticks);
-            BackLeft.setTargetPosition(ticks);
-            BackRight.setTargetPosition(-ticks);
-        }
-        else if (direction == Direction.CounterClockWise){
-            FrontLeft.setTargetPosition(-ticks);
-            FrontRight.setTargetPosition(ticks);
-            BackLeft.setTargetPosition(-ticks);
-            BackRight.setTargetPosition(ticks);
-        }
-        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-        SetDrivePower(speed);
-
-        int BRPos = (BackRight.getCurrentPosition());
-        int BLPos = (BackLeft.getCurrentPosition());
-        int FRPos = (FrontRight.getCurrentPosition());
-        int FLPos = (FrontLeft.getCurrentPosition());
-
-
-        while(Math.abs(BRPos-ticks) > 75 || Math.abs(BLPos-ticks) > 75 || Math.abs(FRPos-ticks) > 75 ||Math.abs(FLPos-ticks) > 75 ){
-            telemetry.addData("posBR", BackRight.getCurrentPosition());
-            telemetry.addData("PosBL", BackLeft.getCurrentPosition());
-            telemetry.addData("PosFR", FrontRight.getCurrentPosition());
-            telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
-
-            telemetry.update();
-            BRPos = (BackRight.getCurrentPosition());
-            BLPos = (BackLeft.getCurrentPosition());
-            FRPos = (FrontRight.getCurrentPosition());
-            FLPos = (FrontLeft.getCurrentPosition());
-        }
-        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    }
 
 
     public boolean SuckDone(){

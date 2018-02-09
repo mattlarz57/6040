@@ -127,20 +127,20 @@ public class BluePrimaryCV extends LinearOpMode {
 
             if (counter == 4) {
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35, 85, telemetry, elapsedTime,4);
+                    robot.Drive(.35, 95, telemetry, elapsedTime,4);//85
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35, 65, telemetry,elapsedTime, 4);
+                    robot.Drive(.35, 75, telemetry,elapsedTime, 4);//65
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35, 45, telemetry, elapsedTime,4);
+                    robot.Drive(.35, 55, telemetry, elapsedTime,4);//45
                     counter = 5;
                 }
 
             }
 
             if (counter == 5) {
-                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 50, elapsedTime,3);
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 60, elapsedTime,3);//50
                 counter++;
             }
             if (counter == 6) {
