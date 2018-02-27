@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.MyCode.RED;
+package org.firstinspires.ftc.teamcode.MyCode.BLUE;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.detectors.GlyphDetector;
@@ -20,11 +20,11 @@ import org.firstinspires.ftc.teamcode.OtherFiles.ClosableVuforiaLocalizer;
  * Created by user on 2/01/18.
  */
 @Autonomous
-public class RedSecondaryCV extends LinearOpMode {
+public class BlueSecondaryCV extends LinearOpMode {
     Robot robot = new Robot();
     JewelDetector jewelDetector = new JewelDetector();
     GlyphDetector glyphDetector = new GlyphDetector();
-    Robot.team TeamColor = Robot.team.Red;
+    Robot.team TeamColor = Robot.team.Blue;
     ClosableVuforiaLocalizer vuforia;
     RelicRecoveryVuMark VuMarkOutput = RelicRecoveryVuMark.UNKNOWN;
     JewelDetector.JewelOrder JewelOutput = JewelDetector.JewelOrder.UNKNOWN;
@@ -116,64 +116,45 @@ public class RedSecondaryCV extends LinearOpMode {
                     vuforia.close();
                     closed = true;
                     robot.Camera.setPosition(RobotConstants.Camera_Forward);
+                    counter = 4;
 
-                    if (first) {
-                        counter = 4;
-                    }
-                    if(!first){
-                        counter = 99;
-                    }
+
                 }
                 else if(getRuntime() - Vutime >= 3.5){
-                    counter = 98;
-                }
-            }
-
-            if(counter == 98){
-                if(first){
-                    robot.Drive(.35,-20,telemetry, 3);
-                    robot.Camera.setPosition(RobotConstants.Camera_Jewel);
-                    first = false;
-                    NeedTime = true;
-                    counter = 3;//counnter = 3
-                }
-                else {
                     VuMarkOutput = RelicRecoveryVuMark.RIGHT;
-                    counter = 99;
+                    counter = 4;
                 }
-
             }
+
+
             if(counter == 4){
-                robot.Drive(.35,-80,telemetry, 4);
+                robot.Drive(.35,70,telemetry, 4);
                 counter ++;
             }
-            if(counter == 99){
-                robot.Drive(.35,-60,telemetry, 2);
-                counter = 5;
-            }
+
             if(counter == 5){
                 robot.EncoderTurn(Robot.Direction.ClockWise,.35,100, 3);
                 counter ++;
             }
             if(counter == 6){
-                if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35,10,telemetry, 2);
+                if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
+                    robot.Drive(.35,7,telemetry, 2);
                     counter = 7;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35, 20,telemetry, 3);
+                    robot.Drive(.35, 22,telemetry, 3);
                     counter = 7;
-                } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35,35,telemetry, 3);
+                } else if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
+                    robot.Drive(.35,42,telemetry, 3);
                     counter = 7;
                 }
 
             }
             if(counter == 7){
-                robot.EncoderTurn(Robot.Direction.ClockWise, .5, 55, 3);
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 65, 3);
                 counter++;
             }
             if(counter == 8){
-                robot.Drive(.35,15,telemetry, 3);
+                robot.Drive(.35,12,telemetry, 3);
                 counter++;
 
             }
@@ -183,11 +164,12 @@ public class RedSecondaryCV extends LinearOpMode {
                 robot.Suckers(RobotConstants.Suckers_Out);
                 sleep(2000);
                 robot.Suckers(RobotConstants.Suckers_Stay);
-                robot.Drive(.35,-20,telemetry, 3);
+                robot.Drive(.35,-14,telemetry, 3);
                 counter ++;
             }
             if(counter == 10){
             }
+
         }
 
     }

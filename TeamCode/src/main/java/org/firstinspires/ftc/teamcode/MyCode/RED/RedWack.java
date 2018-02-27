@@ -12,14 +12,13 @@ import org.firstinspires.ftc.teamcode.MyCode.RobotConstants;
 /**
  * Created by user on 2/08/18.
  */
-@Autonomous
 public class RedWack extends LinearOpMode {
 
 
     @Override
     public void runOpMode() throws InterruptedException{
         Robot robot = new Robot();
-        ElapsedTime elapsedTime = new ElapsedTime(0);
+        //ElapsedTime elapsedTime = new ElapsedTime(0);
         JewelDetector jewelDetector = new JewelDetector();
         Robot.team TeamColor = Robot.team.Red;
         JewelDetector.JewelOrder JewelOutput = JewelDetector.JewelOrder.UNKNOWN;
@@ -37,6 +36,7 @@ public class RedWack extends LinearOpMode {
         jewelDetector.maxDiffrence = 15;
         jewelDetector.ratioWeight = 15;
         jewelDetector.minArea = 700;
+
 
 
         telemetry.update();
@@ -61,15 +61,15 @@ public class RedWack extends LinearOpMode {
                 counter ++;
             }
             if(counter == 2){
-                robot.Drive(.35,-60,telemetry,elapsedTime,3);
+                robot.Drive(.35,-60,telemetry, 3);
                 counter ++;
             }
             if(counter == 3){
-                robot.EncoderTurn(Robot.Direction.ClockWise,.35,90,elapsedTime,3);
+                robot.EncoderTurn(Robot.Direction.ClockWise,.35,90, 3);
                 counter ++;
             }
             if(counter == 4){
-                robot.Drive(.35,20,telemetry,elapsedTime,3);
+                robot.Drive(.35,20,telemetry, 3);
                 counter ++;
             }
             if(counter == 5){}

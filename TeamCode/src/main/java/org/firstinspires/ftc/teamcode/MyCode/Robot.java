@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
@@ -46,7 +47,8 @@ public class Robot {
     public enum team {
         Red, Blue, NotSensed
     }
-    public enum Direction{
+
+    public enum Direction {
         CounterClockWise, ClockWise
     }
 
@@ -55,13 +57,12 @@ public class Robot {
 
 
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
-    public Servo  SqueezerR, SqueezerL, relicSmall, BigRelic, Jeweler1, Jeweler2, Camera ;
+    public Servo SqueezerR, SqueezerL, relicSmall, BigRelic, Jeweler1, Jeweler2, Camera;
     public CRServo GBR, GBL, GTR, GTL;
     public BNO055IMU bno055IMU;
     public ModernRoboticsTouchSensor Touch;
     public JewelDetector jewelDetector;
-    public GlyphDetector glyphDetector;
-    public OpticalDistanceSensor Dist;
+    public ModernRoboticsI2cRangeSensor Side, Inside,BackSide;
 
 
     Telemetry t;
@@ -92,10 +93,15 @@ public class Robot {
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         Touch = hardwareMap.get(ModernRoboticsTouchSensor.class, "Touch");
-        Dist = hardwareMap.get(OpticalDistanceSensor.class, "Distance");
-
-
-
+        Side = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "Side");
+        BackSide = hardwareMap.get(ModernRoboticsI2cRangeSensor.class,"BackSide");
+        Inside = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "Inside");
+        I2cAddr SideRangeAdress = I2cAddr.create8bit(0x1a);
+        I2cAddr InsideRangeAdress = I2cAddr.create8bit(0x2a);
+        I2cAddr BackSideRangeAdress = I2cAddr.create8bit(0x3a);
+        Side.setI2cAddress(SideRangeAdress);
+        Inside.setI2cAddress(InsideRangeAdress);
+        BackSide.setI2cAddress(BackSideRangeAdress);
 
 
         SqueezerL.setPosition(robotConstants.SqueezerL_Open);
@@ -111,13 +117,7 @@ public class Robot {
         BigRelic.setPosition(robotConstants.BigRelicIn);
 
 
-
-
         //SetParameters();
-
-
-
-
 
 
         return true;
@@ -140,8 +140,6 @@ public class Robot {
     */
 
 
-
-
     public void ResetDriveEncoders() {
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -158,7 +156,8 @@ public class Robot {
         FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
-    public void DriveMotorMode(DcMotor.RunMode mode){
+
+    public void DriveMotorMode(DcMotor.RunMode mode) {
         BackRight.setMode(mode);
         BackLeft.setMode(mode);
         FrontLeft.setMode(mode);
@@ -172,8 +171,14 @@ public class Robot {
         FrontLeft.setPower(power);
     }
 
+    public void Rangemovement(Telemetry telemetry) {  //havent tested this in robot.rangemovement yet, but i think it should work, the same thing worked in HUH
+        telemetry.addData("raw ultrasonic", Side.rawUltrasonic());
+        telemetry.addData("raw optical", Side.rawOptical());
+        telemetry.addData("cm optical", "%.2f cm", Side.cmOptical());
+        telemetry.addData("cm", "%.2f cm", Side.getDistance(DistanceUnit.CM));
+        telemetry.update();
 
-
+    }
 
 
     public void Sideways(String direction, double power, double centimeters) {
@@ -208,7 +213,8 @@ public class Robot {
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void EncoderTurn(Direction Direction , double power, double degrees, ElapsedTime elapsedTime, double timeout) throws InterruptedException {
+    public void EncoderTurn(Direction Direction, double power, double degrees, double timeout) throws InterruptedException {
+        boolean timedout =false;
         DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ElapsedTime time = new ElapsedTime();
         int ticks = (int) (robotConstants.Tickspercm * degrees * RobotConstants.cmPerDegree);
@@ -231,16 +237,14 @@ public class Robot {
             double currenttime;
 
 
-            while (Math.abs(ticks - FRPos) > 75 || Math.abs(-ticks - FLPos) > 75 || Math.abs(ticks - BRPos) > 75 || Math.abs(-ticks - BLPos) > 75) {
+            while (!timedout && (Math.abs(ticks - FRPos) > 75 || Math.abs(-ticks - FLPos) > 75 || Math.abs(ticks - BRPos) > 75 || Math.abs(-ticks - BLPos) > 75)) {
                 FRPos = FrontRight.getCurrentPosition();
                 FLPos = FrontLeft.getCurrentPosition();
                 BRPos = BackRight.getCurrentPosition();
                 BLPos = BackLeft.getCurrentPosition();
 
                 currenttime = time.seconds();
-                if (timeout < currenttime) {
-                    DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                }
+                if (timeout < currenttime) {timedout=true;}
             }
             DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         } else if (Direction == Robot.Direction.ClockWise) {
@@ -255,49 +259,44 @@ public class Robot {
 
             double currenttime;
 
-            while (Math.abs(-ticks - FRPos) > 75 || Math.abs(ticks - FLPos) > 75 || Math.abs(-ticks - BRPos) > 75 || Math.abs(ticks - BLPos) > 75) {
+            while (!timedout && (Math.abs(-ticks - FRPos) > 75 || Math.abs(ticks - FLPos) > 75 || Math.abs(-ticks - BRPos) > 75 || Math.abs(ticks - BLPos) > 75)) {
                 FRPos = FrontRight.getCurrentPosition();
                 FLPos = FrontLeft.getCurrentPosition();
                 BRPos = BackRight.getCurrentPosition();
                 BLPos = BackLeft.getCurrentPosition();
 
                 currenttime = time.seconds();
-                if (timeout < currenttime) {
-                    ticks = (int)(FRPos);
-                }
+                if (timeout < currenttime) {timedout = true;}
             }
             DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
 
 
-
-
-    public void WackJewel(team TeamColor, JewelDetector.JewelOrder orientation)  throws  InterruptedException{
+    public void WackJewel(team TeamColor, JewelDetector.JewelOrder orientation) throws InterruptedException {
         Jeweler1.setPosition(RobotConstants.Jeweler1_Down);
         Jeweler2.setPosition(RobotConstants.Jeweler2_Middle);
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
 
         if (TeamColor == team.Blue) {
             if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(500);
+                Thread.sleep(250);
             } else if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(500);
+                Thread.sleep(250);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
             Thread.sleep(400);
             Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-        }
-        else if (TeamColor == team.Red){
+        } else if (TeamColor == team.Red) {
             if (orientation == JewelDetector.JewelOrder.BLUE_RED) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Right);
-                Thread.sleep(500);
+                Thread.sleep(250);
             } else if (orientation == JewelDetector.JewelOrder.RED_BLUE) {
                 Jeweler2.setPosition(robotConstants.Jeweler2_Left);
-                Thread.sleep(500);
+                Thread.sleep(250);
             }
             Jeweler1.setPosition(robotConstants.Jeweler1_Up);
             Thread.sleep(400);
@@ -307,9 +306,7 @@ public class Robot {
     }
 
 
-
-
-    public void Suckers(double power){
+    public void Suckers(double power) {
         GTR.setPower(power);
         GBR.setPower(power);
         GBL.setPower(power);
@@ -318,11 +315,12 @@ public class Robot {
     }
 
 
-    public void Drive(double speed, double centimeters, Telemetry telemetry, ElapsedTime elapsedTime, double timeout){
+    public void Drive(double speed, double centimeters, Telemetry telemetry, double timeout) {
 
         DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        boolean timedout = false;
         ElapsedTime time = new ElapsedTime();
-        int ticks = (int)(robotConstants.Tickspercm *centimeters);
+        int ticks = (int) (robotConstants.Tickspercm * centimeters);
 
         BackRight.setTargetPosition(ticks);
         BackLeft.setTargetPosition(ticks);
@@ -334,7 +332,7 @@ public class Robot {
 
         double currenttime = time.seconds();
 
-        while((FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() ||BackRight.isBusy())/*  && (currenttime  < timeout) */){
+        while (!timedout && (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())/*  && (currenttime  < timeout) */) {
             telemetry.addData("posBR", BackRight.getCurrentPosition());
             telemetry.addData("PosBL", BackLeft.getCurrentPosition());
             telemetry.addData("PosFR", FrontRight.getCurrentPosition());
@@ -344,38 +342,38 @@ public class Robot {
             telemetry.update();
 
             currenttime = time.seconds();
-            if(timeout < currenttime){
-                DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            if (timeout < currenttime) {
+                timedout = true;
             }
         }
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
 
-
-
-    public boolean SuckDone(){
+    public boolean SuckDone(LinearOpMode opmode) {
 
         int ODSCount = 0;
         int touchpressed;
         SetDrivePower(.35);
 
-        while(ODSCount < 2){
+        while (ODSCount < 2 && opmode.opModeIsActive()) {
 
-            if(Touch.isPressed()){touchpressed = 0; }
-            else{touchpressed = 1;}
+            if (Touch.isPressed()) {
+                touchpressed = 0;
+            } else {
+                touchpressed = 1;
+            }
 
             GTR.setPower(touchpressed);
             GTL.setPower(touchpressed);
             GBR.setPower(robotConstants.Suckers_In);
             GBL.setPower(robotConstants.Suckers_In);
 
-            if(Dist.getLightDetected() >= .015){
+            if (Inside.getDistance(DistanceUnit.CM) < 5) {
                 SqueezerL.setPosition(robotConstants.SqueezerL_Close);
                 SqueezerR.setPosition(robotConstants.SqueezerR_Close);
-                ODSCount ++;
-            }
-            else{
+                ODSCount++;
+            } else {
                 SqueezerL.setPosition(robotConstants.SqueezerL_Open);
                 SqueezerR.setPosition(robotConstants.SqueezerR_Open);
             }
@@ -389,10 +387,8 @@ public class Robot {
     }
 
 
-
-
-    public void OtherDrive(double distance, double speed, Telemetry telemetry,double timeout ){
-        int ticks =  (int)(robotConstants.Tickspercm * distance);
+    public void OtherDrive(double distance, double speed, Telemetry telemetry, double timeout) {
+        int ticks = (int) (robotConstants.Tickspercm * distance);
         ElapsedTime elapsedTime = new ElapsedTime(0);
 
         BackRight.setTargetPosition(ticks);
@@ -409,7 +405,7 @@ public class Robot {
         */
         double currentime = elapsedTime.seconds();
 
-        while ((currentime < timeout) && (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())  ){
+        while ((currentime < timeout) && (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())) {
             telemetry.addData("posBR", BackRight.getCurrentPosition());
             telemetry.addData("PosBL", BackLeft.getCurrentPosition());
             telemetry.addData("PosFR", FrontRight.getCurrentPosition());
@@ -427,10 +423,59 @@ public class Robot {
         SetDrivePower(0);
 
 
-
     }
 
+    public double DriveWithSuck(double speed, double distance, Telemetry telemetry, double timeout) {
 
+
+        DriveMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        boolean timedout = false;
+        ElapsedTime time = new ElapsedTime();
+        int ticks = (int) (robotConstants.Tickspercm * distance);
+
+        BackRight.setTargetPosition(ticks);
+        BackLeft.setTargetPosition(ticks);
+        FrontRight.setTargetPosition(ticks);
+        FrontLeft.setTargetPosition(ticks);
+
+        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        SetDrivePower(speed);
+
+        double currenttime = time.seconds();
+
+        while (!timedout && (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())/*  && (currenttime  < timeout) */)
+
+        {
+            telemetry.addData("posBR", BackRight.getCurrentPosition());
+            telemetry.addData("PosBL", BackLeft.getCurrentPosition());
+            telemetry.addData("PosFR", FrontRight.getCurrentPosition());
+            telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
+            telemetry.addData("time", currenttime);
+
+            telemetry.update();
+
+            currenttime = time.seconds();
+            if(Inside.getDistance(DistanceUnit.CM) < 15){
+                SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
+                SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
+
+            }
+            if (timeout < currenttime) {
+                timedout = true;
+            }
+        }
+        double avg = (BackRight.getCurrentPosition()+
+         BackLeft.getCurrentPosition()+
+         FrontRight.getCurrentPosition()+
+         FrontLeft.getCurrentPosition())/4;
+
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        return avg;
+
+    }
 }
 
 

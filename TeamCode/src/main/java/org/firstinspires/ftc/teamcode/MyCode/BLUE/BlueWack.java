@@ -12,14 +12,13 @@ import org.firstinspires.ftc.teamcode.MyCode.RobotConstants;
 /**
  * Created by user on 2/08/18.
  */
-@Autonomous
 public class BlueWack extends LinearOpMode {
 
 
     @Override
     public void runOpMode() throws InterruptedException{
         Robot robot = new Robot();
-        ElapsedTime elapsedTime = new ElapsedTime(0);
+        //ElapsedTime elapsedTime = new ElapsedTime(0);
         JewelDetector jewelDetector = new JewelDetector();
         Robot.team TeamColor = Robot.team.Blue;
         JewelDetector.JewelOrder JewelOutput = JewelDetector.JewelOrder.UNKNOWN;
@@ -42,7 +41,8 @@ public class BlueWack extends LinearOpMode {
         telemetry.update();
         telemetry.addLine("Initialization: Success");
 
-        waitForStart();
+
+
         jewelDetector.enable();
         while (opModeIsActive()){
             if ( !disabled && jewelDetector.getLastOrder() != JewelDetector.JewelOrder.UNKNOWN) {
@@ -61,15 +61,15 @@ public class BlueWack extends LinearOpMode {
                 counter ++;
             }
             if(counter == 2){
-                robot.Drive(.35,60,telemetry,elapsedTime,3);
+                robot.Drive(.35,60,telemetry, 3);
                 counter ++;
             }
             if(counter == 3){
-                robot.EncoderTurn(Robot.Direction.CounterClockWise,.35,90,elapsedTime,3);
+                robot.EncoderTurn(Robot.Direction.CounterClockWise,.35,90, 3);
                 counter ++;
             }
             if(counter == 4){
-                robot.Drive(.35,20,telemetry,elapsedTime,3);
+                robot.Drive(.35,20,telemetry, 3);
                 counter ++;
             }
             if(counter == 5){}

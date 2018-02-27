@@ -7,6 +7,7 @@ import com.disnodeteam.dogecv.filters.HSVColorFilter;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -19,6 +20,7 @@ import org.opencv.core.Scalar;
 /**
  * Created by user on 1/08/18.
  */
+@TeleOp
 public class GlyphFinder extends OpMode {
     Robot robot = new Robot();
     RobotConstants robotConstants;
@@ -36,10 +38,12 @@ public class GlyphFinder extends OpMode {
         telemetry.addLine("Initialization: Loading...");
         robot.initialize(hardwareMap, telemetry);
         glyphDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
-        glyphDetector.minScore = 1;
+        glyphDetector.minScore = 4;
         glyphDetector.downScaleFactor = 0.3;
         glyphDetector.speed = GlyphDetector.GlyphDetectionSpeed.SLOW;
+        glyphDetector.rotateMat = true;
         glyphDetector.enable();
+
 
         telemetry.addLine("Initialization: Success");
         counter = 1;
@@ -48,18 +52,30 @@ public class GlyphFinder extends OpMode {
 
 
     @Override
-    public void loop(){
+    public void loop() {
 
-        telemetry.addData("Glyph Pos X", robot.glyphDetector.getChosenGlyphOffset());
-        telemetry.addData("Glyph Pos Offest String", robot.glyphDetector.getChosenGlyphPosition().toString());
-        telemetry.addData("Glyph Pos Offest", robot.glyphDetector.getChosenGlyphPosition());
 
+        double turn = gamepad1.left_stick_x;
+        double strafe = gamepad1.right_stick_x;
+        double drive = gamepad1.right_stick_y;
+        robot.BackRight.setPower((-turn + strafe - drive));
+        robot.BackLeft.setPower((turn - strafe - drive));
+        robot.FrontRight.setPower((-turn - strafe - drive));
+        robot.FrontLeft.setPower((turn + strafe - drive));
+        if (glyphDetector.isFoundRect()) {
+
+            telemetry.addData("Glyph Pos X", glyphDetector.getChosenGlyphOffset());
+           // telemetry.addData("Glyph Pos Offest String", glyphDetector.getChosenGlyphPosition().toString());
+            telemetry.addData("Glyph Pos Offest", glyphDetector.getChosenGlyphPosition());
+            telemetry.addData("height: ", glyphDetector.getHeight());
+            telemetry.addData("width: ", glyphDetector.getWidth());
+        }
 
     }
 
 
     @Override
     public void stop(){
-        robot.glyphDetector.disable();
+        glyphDetector.disable();
     }
 }

@@ -19,10 +19,10 @@ public class RobotConstants {
     public   static final double Suckers_Stay = 0;
 
 
-    public   static final double SqueezerR_Open = .03;
-    public   static final double SqueezerL_Open = .87;
-    public   static final double SqueezerR_Close =.21;
-    public   static final double SqueezerL_Close = .65;
+    public   static final double SqueezerR_Open = .09;
+    public   static final double SqueezerL_Open = .97;
+    public   static final double SqueezerR_Close =.24;
+    public   static final double SqueezerL_Close = .80;
 
     public   static final double Jeweler1_Down = 1;
     public   static final double Jeweler1_Up = .02;
@@ -36,7 +36,7 @@ public class RobotConstants {
     public   static final double Small_Relic_Close = 1;
     public   static final double Small_Relic_Open = .95;
     public static final double Small_Relic_Grab = .887;
-    public static final double Small_Relic_Stand = .892;
+    public static final double Small_Relic_Stand = .910;
 
     public static final double Camera_Jewel = .6;
     public static final double Camera_VuMark = .8;

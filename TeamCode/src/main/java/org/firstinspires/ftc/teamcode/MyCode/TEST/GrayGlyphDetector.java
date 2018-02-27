@@ -1,6 +1,8 @@
-package com.disnodeteam.dogecv.detectors;
+package org.firstinspires.ftc.teamcode.MyCode.TEST;
 
 import com.disnodeteam.dogecv.OpenCVPipeline;
+import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
+import com.disnodeteam.dogecv.filters.HSVColorFilter;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -22,7 +24,7 @@ import java.util.List;
  * Created by Victo on 11/25/2017.
  */
 
-public class GlyphDetector extends OpenCVPipeline {
+public class GrayGlyphDetector extends OpenCVPipeline {
 
 
     public enum GlyphDetectionMode {
@@ -47,13 +49,14 @@ public class GlyphDetector extends OpenCVPipeline {
     public boolean             debugDrawStats       = false;
     public boolean             debugDrawRects       = true;
 
+    public DogeCVColorFilter colorFilter = new HSVColorFilter(new Scalar(50,50,50), new Scalar(50,50,50));
+
+
 
     //results
     private Point chosenGlyphPosition = null;
     private double chosenGlyphOffset = 0;
     private boolean foundRect = false;
-    private double height;
-    private double width;
 
     private Mat workingMat = new Mat();
     private Mat edges = new Mat();
@@ -65,20 +68,22 @@ public class GlyphDetector extends OpenCVPipeline {
 
         Size initSize = rgba.size();
         newSize = new Size(initSize.width * downScaleFactor, initSize.height * downScaleFactor);
-
         rgba.copyTo(workingMat);
+
         Imgproc.resize(workingMat,workingMat, newSize);
 
         if(rotateMat){
             Mat tempBefore = workingMat.t();
+
             Core.flip(tempBefore, workingMat, 1); //mRgba.t() is the transpose
+
             tempBefore.release();
         }
 
 
         Imgproc.putText(workingMat,newSize.toString() + " - " + speed.toString(),new Point(5,15),0,0.5,new Scalar(0,255,0),1);
 
-        Imgproc.cvtColor(workingMat,processed,Imgproc.COLOR_RGB2GRAY);
+        //Imgproc.cvtColor(workingMat,processed,Imgproc.COLOR_RGB2GRAY);
 
         switch (speed){
             case VERY_FAST:
@@ -241,8 +246,6 @@ public class GlyphDetector extends OpenCVPipeline {
 
             chosenGlyphPosition = new Point((x+(w/2)), (y+(h/2)));
             chosenGlyphOffset = newSize.width - (x+(w/2)) ;
-            width = w;
-            height = h;
 
             foundRect = false;
         }else{
@@ -296,9 +299,4 @@ public class GlyphDetector extends OpenCVPipeline {
     public Size getFrameSize() {
         return newSize;
     }
-
-    public double getHeight(){return  height;}
-
-    public double getWidth(){return  width;}
-
 }

@@ -135,26 +135,26 @@ public class RedCVFull extends LinearOpMode {
 
             if (counter == 98) {
                 if (first) {
-                    robot.Drive(.35, -20, telemetry, elapsedTime,3);
+                    robot.Drive(.35, -20, telemetry,  3);
                     robot.Camera.setPosition(RobotConstants.Camera_Jewel);
                     first = false;
                     NeedTime = true;
                     counter = 3;
                 } else {
-                    robot.Drive(.35, -50, telemetry,elapsedTime, 4);
+                    robot.Drive(.35, -50, telemetry,  4);
                     counter = 5;
                 }
 
             }
             if (counter == 99) {
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35, -30, telemetry, elapsedTime,4);
+                    robot.Drive(.35, -30, telemetry,  4);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35, -50, telemetry, elapsedTime,5);
+                    robot.Drive(.35, -50, telemetry,  5);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35, -70, telemetry, elapsedTime,5);
+                    robot.Drive(.35, -70, telemetry,  5);
                     counter = 5;
                 }
 
@@ -162,24 +162,24 @@ public class RedCVFull extends LinearOpMode {
 
             if (counter == 4) {
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35, -50, telemetry,elapsedTime, 5);
+                    robot.Drive(.35, -50, telemetry,  5);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35, -70, telemetry, elapsedTime,5);
+                    robot.Drive(.35, -70, telemetry,  5);
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35, -90, telemetry, elapsedTime,5);
+                    robot.Drive(.35, -90, telemetry,  5);
                     counter = 5;
                 }
 
             }
 
             if (counter == 5) {
-                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 130, elapsedTime,5);
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 130,  5);
                 counter++;
             }
             if (counter == 6) {
-                robot.Drive(.35, 27, telemetry, elapsedTime,3);
+                robot.Drive(.35, 27, telemetry,  3);
                 counter++;
 
             }
@@ -189,17 +189,17 @@ public class RedCVFull extends LinearOpMode {
                 robot.Suckers(RobotConstants.Suckers_Out);
                 sleep(2000);
                 robot.Suckers(RobotConstants.Suckers_Stay);
-                robot.Drive(.35, -27, telemetry, elapsedTime,3);
+                robot.Drive(.35, -27, telemetry,  3);
                 counter++;
             }
             if (counter == 8) {
-                robot.EncoderTurn(Robot.Direction.ClockWise, .5, 215, elapsedTime,5);
+                robot.EncoderTurn(Robot.Direction.ClockWise, .5, 215,  5);
                 NeedTime = true;
                 counter++;
 
             }
             if(counter == 9){
-                robot.Drive(.35,100,telemetry, elapsedTime,7.5);
+                robot.Drive(.35,100,telemetry,  7.5);
                 counter ++;
             }
             if(counter == 10 ){
@@ -208,7 +208,7 @@ public class RedCVFull extends LinearOpMode {
                 robot.Suckers(RobotConstants.Suckers_In);
                 sleep(2000);
 
-                robot.Drive(.35, -100, telemetry, elapsedTime,7.5);
+                robot.Drive(.35, -100, telemetry,  7.5);
                 robot.Suckers(RobotConstants.Suckers_Stay);
                 robot.SqueezerL.setPosition(RobotConstants.SqueezerL_Open);
                 robot.SqueezerR.setPosition(RobotConstants.SqueezerR_Open);
@@ -216,11 +216,11 @@ public class RedCVFull extends LinearOpMode {
                 counter ++;
             }
             if(counter == 11){
-                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5,215, elapsedTime,3);
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5,215,  3);
                 counter ++;
             }
             if(counter == 12){
-                robot.Drive(.35,27,telemetry, elapsedTime,3);
+                robot.Drive(.35,27,telemetry,  3);
                 counter ++;
             }
             if(counter == 13){
@@ -229,7 +229,7 @@ public class RedCVFull extends LinearOpMode {
                 robot.Suckers(RobotConstants.Suckers_Out);
                 sleep(2000);
                 robot.Suckers(RobotConstants.Suckers_Stay);
-                robot.Drive(.35, -27, telemetry, elapsedTime,3);
+                robot.Drive(.35, -27, telemetry,  3);
                 counter++;
             }
 

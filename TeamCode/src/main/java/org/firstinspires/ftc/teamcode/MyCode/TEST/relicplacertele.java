@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.MyCode;
+package org.firstinspires.ftc.teamcode.MyCode.TEST;
 
 import com.google.gson.graph.GraphAdapterBuilder;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -14,16 +14,19 @@ import com.qualcomm.robotcore.hardware.ServoController;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.GhostExamples.GhostController;
+import org.firstinspires.ftc.teamcode.MyCode.Robot;
+import org.firstinspires.ftc.teamcode.MyCode.RobotConstants;
 
 import javax.microedition.khronos.opengles.GL;
 
 /**
  * Created by user on 2017-09-14.
  */
-@TeleOp
-public class FinalTele extends OpMode {
+public class relicplacertele extends OpMode {
     Robot robot = new Robot();
     boolean AutoSucc;
+
 
 
 
@@ -73,7 +76,7 @@ public class FinalTele extends OpMode {
             robot.Suckers(RobotConstants.Suckers_Stay);
         }
 
-      if (gamepad1.dpad_left) {
+        if (gamepad1.dpad_left) {
             robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Left);
         } else if (gamepad1.dpad_right) {
             robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
@@ -147,6 +150,35 @@ public class FinalTele extends OpMode {
             AutoSucc = false;
 
 
+        }
+        if(gamepad1.right_bumper){
+            GhostController ghostController = new GhostController("rx:1.0 175 bl:true 2 bl:false 325 rx:0.0 du:true 3 du:false br:true 3 br:false 175 br:true 1 br:false 75 br:true 1 br:false 75 br:true 1 br:false 75\n" +
+                    "rx:-1.0 175 dr:true 2 dr:false rx:-1.0 325 rx:0.0 10\n");
+            while (ghostController.areInstructionsLeft()){
+                ghostController.update();
+                double recordedrelic = ghostController.rightStickX();
+                robot.relicArm.setPower(recordedrelic/1.3);
+                if (ghostController.dpadRight()) {
+                    robot.relicSmall.setPosition(RobotConstants.Small_Relic_Close);
+                } else if (ghostController.dpadLeft()) {
+                    robot.relicSmall.setPosition(RobotConstants.Small_Relic_Open);
+                }
+                else if (ghostController.bumperLeft()){
+                    robot.relicSmall.setPosition(RobotConstants.Small_Relic_Grab);
+                }
+                while(ghostController.bumperRight()){
+                    robot.relicSmall.setPosition(robot.relicSmall.getPosition() + .00025);
+
+                }
+                if (ghostController.dpadDown()) {
+                    robot.BigRelic.setPosition(RobotConstants.BigRelicOut);
+                }
+                else if (ghostController.dpadUp()) {
+                    robot.BigRelic.setPosition(RobotConstants.BigRelicIn);//RobotConstants.BigRelicBack_Out);
+                }
+
+
+            }
         }
 
 

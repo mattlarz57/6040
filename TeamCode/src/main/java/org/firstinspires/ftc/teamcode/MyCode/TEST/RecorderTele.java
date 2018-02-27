@@ -1,47 +1,48 @@
-package org.firstinspires.ftc.teamcode.MyCode;
+package org.firstinspires.ftc.teamcode.MyCode.TEST;
 
-import com.google.gson.graph.GraphAdapterBuilder;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.lynx.commands.core.LynxGetMotorPIDControlLoopCoefficientsCommand;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import javax.microedition.khronos.opengles.GL;
+import org.firstinspires.ftc.teamcode.GhostExamples.CodeSharer;
+import org.firstinspires.ftc.teamcode.GhostExamples.GhostRecorder;
+import org.firstinspires.ftc.teamcode.MyCode.Robot;
+import org.firstinspires.ftc.teamcode.MyCode.RobotConstants;
 
 /**
- * Created by user on 2017-09-14.
+ * Created by Matthew Larsen for Team 6040 The Canton RoboDogs on 2/20/18.
  */
-@TeleOp
-public class FinalTele extends OpMode {
+public class RecorderTele extends OpMode {
     Robot robot = new Robot();
     boolean AutoSucc;
+    GhostRecorder relicplacer = new GhostRecorder();
 
 
 
     @Override
-    public void init() {
-        robot.initialize(hardwareMap, telemetry);
-        //robot.SetParameters();
+    public void init(){
+        robot.initialize(hardwareMap,telemetry);
+
         robot.Camera.setPosition(RobotConstants.Camera_Forward);
+
 
 
 
     }
 
+
     @Override
-    public void loop() { //this is what happens when you press the play button
-        telemetry.addData("AutoSucc On:", AutoSucc);
-        //telemetry.addData("Closeness: " , robot.Dist.getLightDetected());
-        telemetry.update();
+    public void loop(){
+
+        relicplacer.recordLeftBumper(gamepad2.left_bumper);
+        relicplacer.recordRightBumper(gamepad2.right_bumper);
+        relicplacer.recordDpadDown(gamepad2.dpad_down);
+        relicplacer.recordDpadLeft(gamepad2.dpad_left);
+        relicplacer.recordDpadRight(gamepad2.dpad_right);
+        relicplacer.recordDpadUp(gamepad2.dpad_up);
+        relicplacer.recordRightStickX(gamepad2.right_stick_x);
+
         double turn = gamepad1.left_stick_x;
         double strafe = gamepad1.right_stick_x;
         double drive = gamepad1.right_stick_y;
@@ -73,7 +74,7 @@ public class FinalTele extends OpMode {
             robot.Suckers(RobotConstants.Suckers_Stay);
         }
 
-      if (gamepad1.dpad_left) {
+        if (gamepad1.dpad_left) {
             robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Left);
         } else if (gamepad1.dpad_right) {
             robot.Jeweler2.setPosition(RobotConstants.Jeweler2_Right);
@@ -149,8 +150,13 @@ public class FinalTele extends OpMode {
 
         }
 
+        relicplacer.update();
 
-
+    }
+    @Override
+    public void stop(){
+        CodeSharer CodeSharer=new CodeSharer(hardwareMap.appContext);
+        CodeSharer.share(relicplacer.getString());
     }
 
 }

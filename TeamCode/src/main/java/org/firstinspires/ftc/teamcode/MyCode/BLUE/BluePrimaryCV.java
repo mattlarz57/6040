@@ -53,20 +53,17 @@ public class BluePrimaryCV extends LinearOpMode {
         jewelDetector.ratioWeight = 15;
         jewelDetector.minArea = 700;
 
-
         telemetry.update();
         telemetry.addLine("Initialization: Success");
 
 
         waitForStart();
-        ElapsedTime elapsedTime = new ElapsedTime(0);
         jewelDetector.enable();
         robot.ResetDriveEncoders();
         while (opModeIsActive()) {
-            if (counter == 8 || getRuntime() > 30) {
+            if (counter == 8) {
                 robot.Suckers(RobotConstants.Suckers_Stay);
                 robot.SetDrivePower(0);
-                requestOpModeStop();
             }
             telemetry.addData("Step", counter);
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -127,24 +124,24 @@ public class BluePrimaryCV extends LinearOpMode {
 
             if (counter == 4) {
                 if (VuMarkOutput == RelicRecoveryVuMark.RIGHT) {
-                    robot.Drive(.35, 95, telemetry, elapsedTime,4);//85
+                    robot.Drive(.35, 95, telemetry,  4);//85
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.CENTER) {
-                    robot.Drive(.35, 75, telemetry,elapsedTime, 4);//65
+                    robot.Drive(.35, 75, telemetry,  4);//65
                     counter = 5;
                 } else if (VuMarkOutput == RelicRecoveryVuMark.LEFT) {
-                    robot.Drive(.35, 55, telemetry, elapsedTime,4);//45
+                    robot.Drive(.35, 55, telemetry,  4);//45
                     counter = 5;
                 }
 
             }
 
             if (counter == 5) {
-                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 60, elapsedTime,3);//50
+                robot.EncoderTurn(Robot.Direction.CounterClockWise, .5, 60,  3);//50
                 counter++;
             }
             if (counter == 6) {
-                robot.Drive(.35, 23, telemetry,elapsedTime, 3);
+                robot.Drive(.35, 23, telemetry,  3);
                 counter++;
 
             }
@@ -154,7 +151,7 @@ public class BluePrimaryCV extends LinearOpMode {
                 robot.Suckers(RobotConstants.Suckers_Out);
                 sleep(2000);
                 robot.Suckers(RobotConstants.Suckers_Stay);
-                robot.Drive(.35, -25, telemetry, elapsedTime,3);
+                robot.Drive(.35, -25, telemetry,  3);
                 counter++;
             }
 
