@@ -59,7 +59,6 @@ public class Robot {
     public DcMotor BackRight, BackLeft, FrontRight, FrontLeft, Glyphter, relicArm;
     public Servo SqueezerR, SqueezerL, relicSmall, BigRelic, Jeweler1, Jeweler2, Camera;
     public CRServo GBR, GBL, GTR, GTL;
-    public BNO055IMU bno055IMU;
     public ModernRoboticsTouchSensor Touch;
     public JewelDetector jewelDetector;
     public ModernRoboticsI2cRangeSensor Side, Inside,BackSide;
@@ -125,19 +124,6 @@ public class Robot {
 
     }
 
-   /* public VuforiaTrackable vuforia(HardwareMap hardwareMap, Telemetry telemetry){
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "AS27cgT/////AAAAGacqx+RYz0dSqIWMSx+FB79tKwqL9bLs7dBcaOXHn9ZQu/mYUYWrJ2MDCHK9cKYXXKxjngTt8l0UvX854CETHuQxzI9LqSzYMyLp+Dz+hv7gV1OSZsA2mpimvfj/4mKuw7IvK8W8vBJ1IeeLkI9Zv+njNHofzdqJeMcYS35Yt/fsNSGaNo9KanFBiy4GnV1SAHSQ7qODzXN6PzbHPXw5mVWewb1XuJez0VdebTS7X5bTYzvXnMt8od4YYqIChFoLox70Jf3OKoS9IZZLUVDwBBJUG3TspO2jusJHahFWAPw5hWZkE60VUXDcfF1Pc2Q5n57FlDe5I94Sg9ca61yx6aUs42vrDPcBvq+T6mxiG52c";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate");
-        return relicTemplate;
-
-    }
-    */
 
 
     public void ResetDriveEncoders() {
@@ -171,14 +157,6 @@ public class Robot {
         FrontLeft.setPower(power);
     }
 
-    public void Rangemovement(Telemetry telemetry) {  //havent tested this in robot.rangemovement yet, but i think it should work, the same thing worked in HUH
-        telemetry.addData("raw ultrasonic", Side.rawUltrasonic());
-        telemetry.addData("raw optical", Side.rawOptical());
-        telemetry.addData("cm optical", "%.2f cm", Side.cmOptical());
-        telemetry.addData("cm", "%.2f cm", Side.getDistance(DistanceUnit.CM));
-        telemetry.update();
-
-    }
 
 
     public void Sideways(String direction, double power, double centimeters) {
@@ -350,80 +328,7 @@ public class Robot {
     }
 
 
-    public boolean SuckDone(LinearOpMode opmode) {
 
-        int ODSCount = 0;
-        int touchpressed;
-        SetDrivePower(.35);
-
-        while (ODSCount < 2 && opmode.opModeIsActive()) {
-
-            if (Touch.isPressed()) {
-                touchpressed = 0;
-            } else {
-                touchpressed = 1;
-            }
-
-            GTR.setPower(touchpressed);
-            GTL.setPower(touchpressed);
-            GBR.setPower(robotConstants.Suckers_In);
-            GBL.setPower(robotConstants.Suckers_In);
-
-            if (Inside.getDistance(DistanceUnit.CM) < 5) {
-                SqueezerL.setPosition(robotConstants.SqueezerL_Close);
-                SqueezerR.setPosition(robotConstants.SqueezerR_Close);
-                ODSCount++;
-            } else {
-                SqueezerL.setPosition(robotConstants.SqueezerL_Open);
-                SqueezerR.setPosition(robotConstants.SqueezerR_Open);
-            }
-
-        }
-        SetDrivePower(0);
-        Suckers(robotConstants.Suckers_Stay);
-        SqueezerL.setPosition(robotConstants.SqueezerL_Open);
-        SqueezerR.setPosition(robotConstants.SqueezerR_Open);
-        return true;
-    }
-
-
-    public void OtherDrive(double distance, double speed, Telemetry telemetry, double timeout) {
-        int ticks = (int) (robotConstants.Tickspercm * distance);
-        ElapsedTime elapsedTime = new ElapsedTime(0);
-
-        BackRight.setTargetPosition(ticks);
-        BackLeft.setTargetPosition(ticks);
-        FrontRight.setTargetPosition(ticks);
-        FrontLeft.setTargetPosition(ticks);
-        SetDrivePower(speed);
-        DriveMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-       /* int BRPos = (BackRight.getCurrentPosition());
-        int BLPos = (BackLeft.getCurrentPosition());
-        int FRPos = (FrontRight.getCurrentPosition());
-        int FLPos = (FrontLeft.getCurrentPosition());
-        */
-        double currentime = elapsedTime.seconds();
-
-        while ((currentime < timeout) && (FrontLeft.isBusy() || FrontRight.isBusy() || BackLeft.isBusy() || BackRight.isBusy())) {
-            telemetry.addData("posBR", BackRight.getCurrentPosition());
-            telemetry.addData("PosBL", BackLeft.getCurrentPosition());
-            telemetry.addData("PosFR", FrontRight.getCurrentPosition());
-            telemetry.addData("PosFL", FrontLeft.getCurrentPosition());
-            currentime = elapsedTime.seconds();
-
-            telemetry.update();
-           /* BRPos = (BackRight.getCurrentPosition());
-            BLPos = (BackLeft.getCurrentPosition());
-            FRPos = (FrontRight.getCurrentPosition());
-            FLPos = (FrontLeft.getCurrentPosition());
-            */
-        }
-        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        SetDrivePower(0);
-
-
-    }
 
     public double DriveWithSuck(double speed, double distance, Telemetry telemetry, double timeout) {
 
