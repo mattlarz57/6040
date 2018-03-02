@@ -328,8 +328,6 @@ public class Robot {
     }
 
 
-
-
     public double DriveWithSuck(double speed, double distance, Telemetry telemetry, double timeout) {
 
 
