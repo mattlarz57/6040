@@ -120,11 +120,7 @@ public class Robot {
 
 
         return true;
-
-
     }
-
-
 
     public void ResetDriveEncoders() {
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
