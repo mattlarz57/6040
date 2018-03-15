@@ -42,6 +42,9 @@ public class RobotConstants {
     public static final double Camera_VuMark = .8;
     public static final double Camera_Forward = 0;
 
+    public static final double RightAngle = 75;
+    public static final double HalfRotation = 160;
+
 
 
 

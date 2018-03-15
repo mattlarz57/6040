@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
@@ -62,6 +63,7 @@ public class Robot {
     public ModernRoboticsTouchSensor Touch;
     public JewelDetector jewelDetector;
     public ModernRoboticsI2cRangeSensor Side, Inside,BackSide;
+    public ModernRoboticsI2cGyro Gyro;
 
 
     Telemetry t;
@@ -101,6 +103,9 @@ public class Robot {
         Side.setI2cAddress(SideRangeAdress);
         Inside.setI2cAddress(InsideRangeAdress);
         BackSide.setI2cAddress(BackSideRangeAdress);
+        Gyro = hardwareMap.get(ModernRoboticsI2cGyro.class,"Gyro");
+        Gyro.setI2cAddress(I2cAddr.create8bit(0x1c));
+
 
 
         SqueezerL.setPosition(robotConstants.SqueezerL_Open);
@@ -118,7 +123,7 @@ public class Robot {
 
         //SetParameters();
 
-
+        Gyro.calibrate();
         return true;
 
 
@@ -324,7 +329,10 @@ public class Robot {
                 timedout = true;
             }
         }
+        SetDrivePower(0);
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        telemetry.update();
+        telemetry.addLine("Drive Complete");
     }
 
 
@@ -376,11 +384,65 @@ public class Robot {
          FrontRight.getCurrentPosition()+
          FrontLeft.getCurrentPosition())/4;
 
+        SqueezerR.setPosition(RobotConstants.SqueezerR_Close);
+        SqueezerL.setPosition(RobotConstants.SqueezerL_Close);
+
         DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         return avg;
 
     }
+
+    public boolean GyroTurn(Direction direction,double degrees, double speed,Telemetry telemetry,double timeout) {
+        double y = 0;
+        DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ElapsedTime ttime = new ElapsedTime();
+        while(FrontLeft.getCurrentPosition() >5 || FrontRight.getCurrentPosition() >5 || BackLeft.getCurrentPosition() >5 || BackRight.getCurrentPosition() >5){
+            telemetry.update();
+            telemetry.addLine("resetting");}
+        DriveMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        while (Gyro.isCalibrating()) {
+            telemetry.update();
+            telemetry.addLine("claibrating");}
+
+
+        if (direction == Direction.ClockWise) {
+            while (Math.abs(y) < (Math.abs(degrees)) && (ttime.seconds() < timeout)) {
+                y = Gyro.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
+                BackRight.setPower(-speed);
+                FrontRight.setPower(-speed);
+                BackLeft.setPower(speed);
+                FrontLeft.setPower(speed);
+                telemetry.addData("Y : ", y);
+            }
+            SetDrivePower(0);
+            DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Gyro.calibrate();
+
+            return true;
+        } else if (direction == Direction.CounterClockWise) {
+            while (Math.abs(y) < (Math.abs(degrees)) && ttime.seconds() < timeout) {
+                y = Gyro.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
+                BackRight.setPower(speed);
+                FrontRight.setPower(speed);
+                BackLeft.setPower(-speed);
+                FrontLeft.setPower(-speed);
+                telemetry.addData("Y : ", y);
+            }
+            SetDrivePower(0);
+            DriveMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Gyro.calibrate();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+
+
+
 }
 
 

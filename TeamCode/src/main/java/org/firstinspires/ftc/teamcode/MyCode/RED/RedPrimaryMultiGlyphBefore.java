@@ -194,7 +194,7 @@ public class RedPrimaryMultiGlyphBefore extends LinearOpMode {
                     counter ++;
                 }
                 if(counter == 11){
-                    robot.Drive(.35, 15, telemetry, 3);
+                    robot.Drive(.35, 20, telemetry, 3);
                     counter++;
                 }
                 if (counter == 12){
