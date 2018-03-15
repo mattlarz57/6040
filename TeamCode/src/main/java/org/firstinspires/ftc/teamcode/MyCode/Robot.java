@@ -125,11 +125,7 @@ public class Robot {
 
         Gyro.calibrate();
         return true;
-
-
     }
-
-
 
     public void ResetDriveEncoders() {
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -334,8 +330,6 @@ public class Robot {
         telemetry.update();
         telemetry.addLine("Drive Complete");
     }
-
-
 
 
     public double DriveWithSuck(double speed, double distance, Telemetry telemetry, double timeout) {
